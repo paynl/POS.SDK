@@ -1,0 +1,16 @@
+PODS:
+  - PayNlPOSSdkSwift (0.0.11)
+
+DEPENDENCIES:
+  - PayNlPOSSdkSwift (~> 0.0.10)
+
+SPEC REPOS:
+  https://github.com/paynl/paynlSpec:
+    - PayNlPOSSdkSwift
+
+SPEC CHECKSUMS:
+  PayNlPOSSdkSwift: 47e4c91fca4d865d6d6842dff4a83266a8f22caa
+
+PODFILE CHECKSUM: 5ccbcf85e1660d57ad3cc88d181fce9fa852f087
+
+COCOAPODS: 1.16.2

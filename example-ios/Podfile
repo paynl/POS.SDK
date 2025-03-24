@@ -1,0 +1,9 @@
+# PAY.POS SDK requirement
+platform :ios, 18.0
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/paynl/paynlSpec.git'
+
+target 'pos-sdk' do
+    project './pos-sdk.xcodeproj'
+    pod 'PayNlPOSSdkSwift', '~> 0.0.10'
+end

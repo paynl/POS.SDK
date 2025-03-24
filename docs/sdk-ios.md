@@ -6,6 +6,8 @@
 - iOS 18 or higher
 - iPhone only (iPad not supported)
 - Make sure you have your app's bundle ID at hand
+- Make sure you have access to the `Tap to Pay on iPhone` entitlement
+  - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
 
 ### Getting started
 To get started, make sure your app is using cocoapods.
@@ -20,12 +22,29 @@ source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/paynl/paynlSpec.git'
 
 target 'MyApp' do
-  pod 'PayNlPOSSdkSwift', '~> 0.0.6'
+    project './MyApp.xcodeproj'
+    pod 'PayNlPOSSdkSwift', '~> 1.0.0'
 end
 ```
 
+Also make sure the `Pods` project is added to your `MyApp.xcworkspace/contents.xcworkspacedata` file:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+        version = "1.0">
+  <FileRef
+          location = "group:MyApp.xcodeproj">
+  </FileRef>
+  <FileRef
+          location = "group:Pods/Pods.xcodeproj">
+  </FileRef>
+</Workspace>
+```
+
 > [!TIP]
-> Make sure you reopen your project with the `xcworkspace` file.
+> After setting up CocoaPods, make sure to run `pod install`.
+> 
+> Also make sure you reopen your project with the `xcworkspace` file.
 > You can use the following command `xed .` in the root to open your project with the correct file
 
 ### SDK flow
@@ -62,7 +81,7 @@ import PayNlPOSSdkSwift
 class PayNLService {
     private let posService: PosService
     init() {
-        self.posService = PosService
+        self.posService = PosService()
     }
     
     public func initSdk() async {
@@ -77,12 +96,12 @@ class PayNLService {
                 break
             }
         } catch {
-            if let error = error as? SVError {
+            if let error = error as? PayNlSVError {
                 print("Got error from SDK: \(error.code) - \(error.description)")
                 return
             }
             
-            print("Unknown error from PAY.POS sdk: \(error.localizedError)")
+            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
         }
     }
 }
@@ -110,12 +129,12 @@ public func getActivationCode() async -> PayNlActivationResponse {
     do {
         return try await self.posService.getActivationCode()
     } catch {
-        if let error = error as? SVError {
+        if let error = error as? PayNlSVError {
             print("Got error from SDK: \(error.code) - \(error.description)")
             return
         }
         
-        print("Unknown error from PAY.POS sdk: \(error.localizedError)")
+        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -138,7 +157,7 @@ public func loginViaCode(code: String) async {
     do {
         try await self.posService.loginViaCode(code)
     } catch {
-        if let error = error as? SVError {
+        if let error = error as? PayNlSVError {
             switch error {
             case .TERMINAL_NOT_ACTIVATED:
                 print("This activation code has not been activated, please use the Terminals:create endpoint to activate the code...")
@@ -149,7 +168,7 @@ public func loginViaCode(code: String) async {
             }
         }
         
-        print("Unknown error from PAY.POS sdk: \(error.localizedError)")
+        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -175,12 +194,12 @@ public func loginViaCredentials(aCode: String, serviceCode: String, serviceSecre
     do {
         try await self.posService.loginViaCredentials(aCode, serviceCode, serviceSecret)
     } catch {
-        if let error = error as? SVError {
+        if let error = error as? PayNlSVError {
             print("Got error from SDK: \(error.code) - \(error.description)")
             return
         }
         
-        print("Unknown error from PAY.POS sdk: \(error.localizedError)")
+        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -293,7 +312,7 @@ public func startPayment(transaction: PayNlTransaction, service: PayNlTransactio
         print("Ticket:")
         print(ticket)
     } catch {
-        if let error = error as? SVError {
+        if let error = error as? PayNlSVError {
             switch error {
             case .TRANSACTION_CANCELLED:
                 print("Transaction cancelled...)
@@ -305,7 +324,7 @@ public func startPayment(transaction: PayNlTransaction, service: PayNlTransactio
             }
         }
         
-        print("Unknown error from PAY.POS sdk: \(error.localizedError)")
+        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
