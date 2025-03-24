@@ -31,17 +31,28 @@ end
 ### SDK flow
 
 ```mermaid
+---
+config:
+  look: handDrawn
+  theme: neutral
+---
 flowchart LR;
-  A[initSDK] --> B{Init result}
-  B --> |readyForPayments| F[startPayment]
+  A[initSDK] --> B{readyForPayments}
+  A --> M{needsLogin}
+  B --> K[logout]
+  K --> L{Terminal:delete api}
+  L --> A
+  B --> F[startPayment]
   F --> H{Payment result}
   H --> |PAID: Show Ticket & payerMessage to customer| F
   H --> |FAILED: Show payerMessage to customer| F
-  B --> |needsLogin| C[getActivationCode]
+  B --> I[getTerminalInfo]
+  B --> J[getAllowedCurrencies]
+  M --> C[getActivationCode]
   C --> D{Terminal:Create API}
   D --> E[loginViaCode]
   E --> A
-  B --> |needsLogin| G[loginViaCredentials]
+  M --> G[loginViaCredentials]
   G --> A
 ```
 
