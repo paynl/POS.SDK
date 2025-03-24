@@ -51,13 +51,20 @@ struct ContentView: View {
                                 .padding()
                                 .font(.title3)
                                 .foregroundStyle(.white),
-                             alignment: .leading)
+                            alignment: .leading)
+                        .overlay(!viewModel.isReady ? ProgressView()
+                            .progressViewStyle(.circular) : nil,
+                                 alignment: .trailing)
                 }
                 .tint(.payPrimary)
                 .buttonStyle(.borderedProminent)
+                .disabled(!viewModel.isReady)
             }
         }
         .padding()
+        .onAppear {
+            viewModel.initSDK()
+        }
     }
 }
 

@@ -5,14 +5,17 @@
 //  Created by Bastiaan Verhaar on 24/03/2025.
 //
 
+import OSLog
 import PayNlPOSSdkSwift
 import SwiftUI
 
 class ViewModel: ObservableObject {
+    @Published var isReady = false
     @Published var amount = 0
     @Published var currency = "EUR"
     
     private let posService = PosService()
+    private let logger = Logger(subsystem: "com.paynl.example.pos-sdk", category: "ViewModel")
     
     func addToAmount(_ value: Int) {
         var amountStr = String(amount)
@@ -31,25 +34,56 @@ class ViewModel: ObservableObject {
         self.amount = Int(amountStr) ?? 0
     }
     
-    func initSDK() {
+    func initSDK(_ attempt: Int = 0) {
         Task {
             do {
                 let result = try await self.posService.initSdk()
                 switch result {
                 case .needsLogin:
-                    // Start login flow
+                    guard attempt < 2 else {
+                        self.logger.error("Failed to init SDK")
+                        return
+                    }
+                    self.loginViaCreds(attempt: attempt)
                     break
                 case .readyForPayment:
                     // The SDK is ready to start payment
+                    self.logger.info("Ready to accept payments!")
+                    self.isReady = true
                     break
                 }
             } catch {
-                if let error = error as? SVError {
-    //                print("Got error from SDK: \(error.code) - \(error.description)")
+                if let error = error as? PayNlSVError {
+                    self.logger.error("Got error from SDK: \(error.code) - \(error.description)")
                     return
                 }
                 
-                print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
+                self.logger.error("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func loginViaCreds(attempt: Int) {
+        self.logger.info("Logging in using credentials...")
+        let x = Bundle.main.infoDictionary
+        guard Configuration.aCode != "", Configuration.slCode != "", Configuration.slSecret != "" else {
+            self.logger.error("Missing credentials -> Copy Config_example to Config and fill in the empty values")
+            return
+        }
+        
+        Task {
+            do {
+                try await self.posService.loginViaCredentials(aCode: Configuration.aCode, serviceCode: Configuration.slCode, serviceSecret: Configuration.slSecret)
+                
+                self.logger.info("Login successfull!")
+                self.initSDK(attempt + 1)
+            } catch {
+                if let error = error as? PayNlSVError {
+                    self.logger.error("Got error from SDK: \(error.code) - \(error.description)")
+                    return
+                }
+                
+                self.logger.error("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
             }
         }
     }

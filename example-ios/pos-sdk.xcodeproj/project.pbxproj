@@ -19,9 +19,22 @@
 		3EC4302D2D9166830091DB07 /* libPods-pos-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-pos-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3ED6C5892D9187D3007014CE /* Exceptions for "pos-sdk" folder in "pos-sdk" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3E735E6A2D916470001D40D9 /* pos-sdk */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3E735E6D2D916470001D40D9 /* pos-sdk */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3ED6C5892D9187D3007014CE /* Exceptions for "pos-sdk" folder in "pos-sdk" target */,
+			);
 			path = "pos-sdk";
 			sourceTree = "<group>";
 		};
@@ -313,6 +326,7 @@
 				DEVELOPMENT_TEAM = 7JJ3854U83;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "pos-sdk/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "PAY.POS.SDK example";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -351,6 +365,7 @@
 				DEVELOPMENT_TEAM = 7JJ3854U83;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "pos-sdk/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "PAY.POS.SDK example";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
