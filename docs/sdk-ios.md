@@ -31,11 +31,6 @@ end
 ### SDK flow
 
 ```mermaid
----
-config:
-  look: handDrawn
-  theme: neutral
----
 flowchart LR;
   A[initSDK] --> B{readyForPayments}
   A --> M{needsLogin}
