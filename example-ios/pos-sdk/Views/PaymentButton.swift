@@ -9,13 +9,14 @@ import SwiftUI
 struct PaymentButton: View {
     var value: Int
     var geo: GeometryProxy
+    var disabled: Bool
     var action: (Int) -> Void
     
     var body: some View {
         Button(action: { action(value) }) {
             ZStack {
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(.payPrimary)
+                    .fill(self.disabled ? Color.gray : .payPrimary)
                     .frame(height: (geo.size.height / 4).rounded())
                 
                 if value != 10 {
@@ -30,6 +31,7 @@ struct PaymentButton: View {
                 }
             }
         }
+        .disabled(self.disabled)
         .buttonStyle(.plain)
     }
     

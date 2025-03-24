@@ -315,7 +315,7 @@ public func startPayment(transaction: PayNlTransaction, service: PayNlTransactio
         if let error = error as? PayNlSVError {
             switch error {
             case .TRANSACTION_CANCELLED:
-                print("Transaction cancelled...)
+                print("Transaction cancelled...")
                 return
             
             default:
