@@ -23,7 +23,7 @@
 		3ED6C5892D9187D3007014CE /* Exceptions for "pos-sdk" folder in "pos-sdk" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Info_example.plist,
 			);
 			target = 3E735E6A2D916470001D40D9 /* pos-sdk */;
 		};
@@ -314,8 +314,7 @@
 		};
 		3E735E7A2D916471001D40D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 3E735E6D2D916470001D40D9 /* pos-sdk */;
-			baseConfigurationReferenceRelativePath = Config.xcconfig;
+			baseConfigurationReference = 0F7276C21541DD13E7A32929 /* Pods-pos-sdk.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -353,8 +352,7 @@
 		};
 		3E735E7B2D916471001D40D9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 3E735E6D2D916470001D40D9 /* pos-sdk */;
-			baseConfigurationReferenceRelativePath = Config.xcconfig;
+			baseConfigurationReference = 1A313B483796E33EFDA3C065 /* Pods-pos-sdk.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

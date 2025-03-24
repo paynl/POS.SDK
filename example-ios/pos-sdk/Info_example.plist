@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>A_CODE</key>
-	<string>$(A_CODE)</string>
+	<string></string>
 	<key>SL_CODE</key>
-	<string>$(SL_CODE)</string>
+	<string></string>
 	<key>SL_SECRET</key>
-	<string>$(SL_SECRET)</string>
+	<string></string>
 </dict>
 </plist>

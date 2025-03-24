@@ -4,6 +4,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/paynl/paynlSpec.git'
 
 target 'pos-sdk' do
-    project './pos-sdk.xcodeproj'
+#     project './pos-sdk.xcodeproj'
     pod 'PayNlPOSSdkSwift', '~> 0.0.12'
 end
