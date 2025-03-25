@@ -3,13 +3,15 @@
 # PAY.POS SDK - iOS
 
 ### Requirements:
+
 - iOS 18 or higher
 - iPhone only (iPad not supported)
-- Make sure you have your app's bundle ID at hand
+- Make sure you have contacted PayNL support for an `integrationId`
 - Make sure you have access to the `Tap to Pay on iPhone` entitlement
-  - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
+    - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
 
 ### Getting started
+
 To get started, make sure your app is using cocoapods.
 If not, create a `Podfile` at the root of your codebase.
 
@@ -28,22 +30,23 @@ end
 ```
 
 Also make sure the `Pods` project is added to your `MyApp.xcworkspace/contents.xcworkspacedata` file:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
-        version = "1.0">
-  <FileRef
-          location = "group:MyApp.xcodeproj">
-  </FileRef>
-  <FileRef
-          location = "group:Pods/Pods.xcodeproj">
-  </FileRef>
+        version="1.0">
+    <FileRef
+            location="group:MyApp.xcodeproj">
+    </FileRef>
+    <FileRef
+            location="group:Pods/Pods.xcodeproj">
+    </FileRef>
 </Workspace>
 ```
 
 > [!TIP]
 > After setting up CocoaPods, make sure to run `pod install`.
-> 
+>
 > Also make sure you reopen your project with the `xcworkspace` file.
 > You can use the following command `xed .` in the root to open your project with the correct file
 
@@ -71,10 +74,13 @@ flowchart LR;
 ```
 
 ### API Spec
+
 #### Init sdk
+
 This function will initialize the SDK. It will return `PayNlInitResult` enum type. No parameters required
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -108,11 +114,13 @@ class PayNLService {
 ```
 
 #### Get activation code
+
 > [!WARNING]
 > Only use this if the `initSdk` method returned `.needsLogin`.
 > Otherwise this method will log out this device and you will be forced to activate this activation code
 
-This function will register this device and get an activation code to be activated via [Terminals:create](https://developer.pay.nl/reference/post_terminals).
+This function will register this device and get an activation code to be activated
+via [Terminals:create](https://developer.pay.nl/reference/post_terminals).
 This function does not take parameters and has the following return type: `PayNlActivationResponse`:
 
 | **Name**             | **Type** | **Description**                                               |
@@ -122,6 +130,7 @@ This function does not take parameters and has the following return type: `PayNl
 | `response.expiresAt` | Date     | This activation response is valid till this date              |
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -140,16 +149,19 @@ public func getActivationCode() async -> PayNlActivationResponse {
 ```
 
 #### loginViaCode
+
 > [!NOTE]
 > This method requires the usage of `getActivationCode`
 
 > [!NOTE]
 > After completing this method, you need to re-invoke the `initSdk` function
 
-After using the `getActivationCode` and [Terminals:create](https://developer.pay.nl/reference/post_terminals), you can use this `loginViaCode`.
+After using the `getActivationCode` and [Terminals:create](https://developer.pay.nl/reference/post_terminals), you can
+use this `loginViaCode`.
 It does not have a return type, but you need to provide the code from the `getActivationCode` to complete the login.
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -174,6 +186,7 @@ public func loginViaCode(code: String) async {
 ```
 
 #### loginViaCode
+
 > [!WARNING]
 > Only use this if the `initSdk` method returned `.needsLogin`.
 > Otherwise this method will log out this device and reactivate using your account
@@ -184,9 +197,12 @@ public func loginViaCode(code: String) async {
 An alternative way to activate your device is via your PayNL account.
 For this you need your a-code, service code, and service secret.
 
-These codes can be found in the PayNL dashboard or using the API: [Account:Me](https://developer.pay.nl/reference/accounts_me_get) and [Merchant:info](https://developer.pay.nl/reference/merchants_info).
+These codes can be found in the PayNL dashboard or using the
+API: [Account:Me](https://developer.pay.nl/reference/accounts_me_get)
+and [Merchant:info](https://developer.pay.nl/reference/merchants_info).
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -227,6 +243,7 @@ The available information is the following:
 | `terminalInfo.tradeName.name` | String   | The tradeName's name                                                                                    |
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -252,6 +269,7 @@ With an activated terminal, you can fetch the allowed currencies this SDK suppor
 | `allowedCurrencies[].sign` | String   | The sign of this currency (example Euro -> "€")             |
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -263,7 +281,6 @@ public func getAllowedCurrencies() {
     }
 }
 ```
-
 
 #### Start payment
 
@@ -288,8 +305,8 @@ This function returns the `PayNlTransactionResult` type:
 | `result.reference`    | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
 | `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
 
-
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -339,6 +356,7 @@ Sometimes, it might be needed to log out/de-activate this terminal.
 Reasons can be: A switch between merchants or this device will not be used for a while.
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
@@ -353,6 +371,7 @@ When encountering problems with the SDK, PayNL support needs the logs stored in 
 To provide these logs, you can invoke the `sendLogs()` function
 
 ##### Example
+
 ```swift
 import PayNlPOSSdkSwift
 
