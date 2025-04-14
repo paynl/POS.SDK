@@ -47,29 +47,25 @@ class ViewModel: ObservableObject {
     
     func initSDK(_ attempt: Int = 0) {
         Task {
-            do {
-                let result = try await self.posService.initSdk()
-                switch result {
-                case .needsLogin:
-                    guard attempt < 2 else {
-                        self.logger.error("Failed to init SDK")
-                        return
-                    }
-                    self.loginViaCreds(attempt: attempt)
-                    break
-                case .readyForPayment:
-                    // The SDK is ready to start payment
-                    self.readyForPayments()
-                    break
-                }
-            } catch {
-                if let error = error as? PayNlSVError {
-                    self.logger.error("Got error from SDK: \(error.code) - \(error.description)")
+            let result = await self.posService.initSdk(integrationId: "00000000-0000-0000-0000-000000000000")
+            switch result {
+            case .needsLogin:
+                guard attempt < 2 else {
+                    self.logger.error("Failed to init SDK")
                     return
                 }
+                self.loginViaCreds(attempt: attempt)
+                break
+            case .readyForPayment:
+                // The SDK is ready to start payment
+                self.readyForPayments()
+                break
                 
-                self.logger.error("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
+            case .failed(let error):
+                self.logger.error("Got error from SDK: \(error.code) - \(error.description)")
+                break
             }
+            
         }
     }
     

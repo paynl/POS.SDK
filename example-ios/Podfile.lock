@@ -1,16 +1,23 @@
 PODS:
-  - PayNlPOSSdkSwift (0.0.12)
+  - PayNlPOSSdkSwift (0.0.16):
+    - SQLite.swift (~> 0.14.0)
+  - SQLite.swift (0.14.1):
+    - SQLite.swift/standard (= 0.14.1)
+  - SQLite.swift/standard (0.14.1)
 
 DEPENDENCIES:
-  - PayNlPOSSdkSwift (~> 0.0.12)
+  - PayNlPOSSdkSwift (~> 0.0.16)
 
 SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - SQLite.swift
   https://github.com/paynl/paynlSpec:
     - PayNlPOSSdkSwift
 
 SPEC CHECKSUMS:
-  PayNlPOSSdkSwift: 364b6d5772bf7da645ee47e3b98a0cf14ec2236f
+  PayNlPOSSdkSwift: cc2bb7e96a5a399f324f1b770c1b2f0d7f5281ce
+  SQLite.swift: 2992550ebf3c5b268bf4352603e3df87d2a4ed72
 
-PODFILE CHECKSUM: 38056af0d0dea418565e84f3b153bacaf80ed037
+PODFILE CHECKSUM: 59a86704dc36569cf9238fe7cfb4f70425fba159
 
 COCOAPODS: 1.16.2

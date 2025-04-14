@@ -5,5 +5,5 @@ source 'https://github.com/paynl/paynlSpec.git'
 
 target 'pos-sdk' do
 #     project './pos-sdk.xcodeproj'
-    pod 'PayNlPOSSdkSwift', '~> 0.0.12'
+    pod 'PayNlPOSSdkSwift', '~> 0.0.16'
 end

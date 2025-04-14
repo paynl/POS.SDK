@@ -9,7 +9,7 @@
 
 - React native using new architecture (Turbo modules)
 - iOS 18 or higher
-- Make sure you have contacted PayNL support for an `integrationId`
+- Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have access to the `Tap to Pay on iPhone` entitlement
     - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
 
@@ -79,16 +79,19 @@ import {PayNlSdk} from '@paynl/pos-sdk-react-native';
 
 class PayNLService {
     async initSdk() {
-        try {
-            const result = await PayNlSdk.initSdk();
-            if (result === 'needs_login') {
+        const result = await PayNlSdk.initSdk({integrationId: ''});
+        switch (result) {
+            case 'needs_login':
                 // Start login flow and reinitialized the SDK
                 return;
-            }
 
-            // The SDK is ready to start payment
-        } catch (error) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
+            case 'ready_for_payment':
+                // The SDK is ready to start payment
+                return;
+
+            case 'failed':
+                // Failed to init SDK. Please consult logs or contact PayNL support
+                return;
         }
     }
 }

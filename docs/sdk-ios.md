@@ -6,7 +6,8 @@
 
 - iOS 18 or higher
 - iPhone only (iPad not supported)
-- Make sure you have contacted PayNL support for an `integrationId`
+- Your project supports CocoaPods (swift package manager is comming)
+- Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have access to the `Tap to Pay on iPhone` entitlement
     - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
 
@@ -91,24 +92,18 @@ class PayNLService {
     }
     
     public func initSdk() async {
-        do {
-            let result = try await self.posService.initSdk()
-            switch result {
-            case .needsLogin:
-                // Start login flow
-                break
-            case .readyForPayment:
-                // The SDK is ready to start payment
-                break
-            }
-        } catch {
-            if let error = error as? PayNlSVError {
-                print("Got error from SDK: \(error.code) - \(error.description)")
-                return
-            }
-            
-            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
-        }
+          let result = try await self.posService.initSdk(integrationId: '')
+          switch result {
+          case .needsLogin:
+              // Start login flow
+              break
+          case .readyForPayment:
+              // The SDK is ready to start payment
+              break
+          case .failed(let error):
+            print("Failed to init SDK: \(error.code) - \(error.description)")
+            break
+          }
     }
 }
 ```
