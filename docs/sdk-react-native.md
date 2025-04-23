@@ -239,13 +239,13 @@ class PayNLService {
 
 With an activated terminal, you can fetch the allowed currencies this SDK supports:
 
-| **Name**                   | **Type** | **Description**                                             |
-|----------------------------|----------|-------------------------------------------------------------|
-| `allowedCurrencies`        | array?   |                                                             |
-| `allowedCurrencies[]`      | object   |                                                             |
-| `allowedCurrencies[].id`   | string   | The ISO 4217 num of this currency (example: Euro -> "978")  |
-| `allowedCurrencies[].code` | string   | The ISO 4217 code of this currency (example: Euro -> "EUR") |
-| `allowedCurrencies[].sign` | string   | The sign of this currency (example Euro -> "€")             |
+| **Name**                   | **Type** | **Description**                                               |
+|----------------------------|----------|---------------------------------------------------------------|
+| `allowedCurrencies`        | array?   |                                                               |
+| `allowedCurrencies[]`      | object   |                                                               |
+| `allowedCurrencies[].id`   | string   | The ISO 4217 number of this currency (example: Euro -> "978") |
+| `allowedCurrencies[].code` | string   | The ISO 4217 code of this currency (example: Euro -> "EUR")   |
+| `allowedCurrencies[].sign` | string   | The sign of this currency (example Euro -> "€")               |
 
 ##### Example
 

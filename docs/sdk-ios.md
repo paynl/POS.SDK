@@ -255,13 +255,13 @@ public func getTerminalInfo() {
 
 With an activated terminal, you can fetch the allowed currencies this SDK supports:
 
-| **Name**                   | **Type** | **Description**                                             |
-|----------------------------|----------|-------------------------------------------------------------|
-| `allowedCurrencies`        | Array    |                                                             |
-| `allowedCurrencies[]`      | object   |                                                             |
-| `allowedCurrencies[].id`   | String   | The ISO 4217 num of this currency (example: Euro -> "978")  |
-| `allowedCurrencies[].code` | String   | The ISO 4217 code of this currency (example: Euro -> "EUR") |
-| `allowedCurrencies[].sign` | String   | The sign of this currency (example Euro -> "€")             |
+| **Name**                   | **Type** | **Description**                                               |
+|----------------------------|----------|---------------------------------------------------------------|
+| `allowedCurrencies`        | Array    |                                                               |
+| `allowedCurrencies[]`      | object   |                                                               |
+| `allowedCurrencies[].id`   | String   | The ISO 4217 number of this currency (example: Euro -> "978") |
+| `allowedCurrencies[].code` | String   | The ISO 4217 code of this currency (example: Euro -> "EUR")   |
+| `allowedCurrencies[].sign` | String   | The sign of this currency (example Euro -> "€")               |
 
 ##### Example
 

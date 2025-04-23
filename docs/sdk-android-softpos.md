@@ -18,10 +18,10 @@ To get started, create a `gradle.properties` file in your global gradle file:
 - MacOS: `~/.gradle/gradle.properties`
 - Windows: `USER_HOME/.gradle/gradle.properties`
 
-```groovy
-# Minesec client registry
-MINESEC_REGISTRY_LOGIN=...
-MINESEC_REGISTRY_TOKEN=...
+```
+# Pay.POS SDK registry credentials
+PAYNL_REGISTRY_LOGIN=...
+PAYNL_REGISTRY_TOKEN=...
 ```
 
 Now that you have set your credentials, go to the root `build.gradle` file and make sure the following is in this file:
@@ -31,19 +31,18 @@ allprojects {
     repositories {
        google()
        mavenCentral()
+       
+       // ---- These two need to be added ----
        maven { url "https://maven.pkg.github.com/paynl/pos-sdk" }
-
-      maven {
-        def MINESEC_REGISTRY_LOGIN = project.MINESEC_REGISTRY_LOGIN
-        def MINESEC_REGISTRY_TOKEN = project.MINESEC_REGISTRY_TOKEN
-
-        name = "MineSecMavenClientRegistry"
+       maven {
+        name = "PayNLMavenClientRegistry"
         url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
         credentials {
-          username = MINESEC_REGISTRY_LOGIN
-          password = MINESEC_REGISTRY_TOKEN
+          username = project.PAYNL_REGISTRY_LOGIN
+          password = project.PAYNL_REGISTRY_TOKEN
         }
       }
+      // ---- END ----
     }
 }
 ```
@@ -163,7 +162,7 @@ class PayNLService {
 #### Get activation code
 
 > [!WARNING]
-> Only use this if the `initSdk` method returned `.needsLogin`.
+> Only use this if the `initSdk` method returned `needsLogin`.
 > Otherwise this method will log out this device, and you will be forced to activate this activation code
 
 This function will register this device and get an activation code to be activated
@@ -280,21 +279,21 @@ With an activated terminal, you can fetch some basic information for reporting o
 
 The available information is the following:
 
-| **Name**                      | **Type** | **Description**                                                                                         |
-|-------------------------------|----------|---------------------------------------------------------------------------------------------------------|
-| `terminalInfo`                | object   |                                                                                                         |
-| `terminalInfo.terminal`       | object   |                                                                                                         |
-| `terminalInfo.terminal.code`  | String   | The terminal code known at PayNL                                                                        |
-| `terminalInfo.terminal.name`  | String   | The terminal name giving during activation                                                              |
-| `terminalInfo.merchant`       | object   |                                                                                                         |
-| `terminalInfo.merchant.code`  | String   | Your M-code known at PayNL                                                                              |
-| `terminalInfo.merchant.name`  | String   | Your merchant's name                                                                                    |
-| `terminalInfo.service`        | object   | If no service data is provided during payment, this will be the service the payment will be recorded to |
-| `terminalInfo.service.code`   | String   | The SL-code known at PayNL                                                                              |
-| `terminalInfo.service.name`   | String   | The service's name                                                                                      |
-| `terminalInfo.tradeName`      | object   |                                                                                                         |
-| `terminalInfo.tradeName.code` | String   | The TM-code for this terminal                                                                           |
-| `terminalInfo.tradeName.name` | String   | The tradeName's name                                                                                    |
+| **Name**                      | **Type**                   | **Description**                                                                                         |
+|-------------------------------|----------------------------|---------------------------------------------------------------------------------------------------------|
+| `terminalInfo`                | PayNlTerminalInfo          |                                                                                                         |
+| `terminalInfo.terminal`       | PayNlTerminalInfoTerminal  |                                                                                                         |
+| `terminalInfo.terminal.code`  | String                     | The terminal code known at PayNL                                                                        |
+| `terminalInfo.terminal.name`  | String                     | The terminal name giving during activation                                                              |
+| `terminalInfo.merchant`       | PayNlTerminalInfoMerchant  |                                                                                                         |
+| `terminalInfo.merchant.code`  | String                     | Your M-code known at PayNL                                                                              |
+| `terminalInfo.merchant.name`  | String                     | Your merchant's name                                                                                    |
+| `terminalInfo.service`        | PayNlTerminalInfoService   | If no service data is provided during payment, this will be the service the payment will be recorded to |
+| `terminalInfo.service.code`   | String                     | The SL-code known at PayNL                                                                              |
+| `terminalInfo.service.name`   | String                     | The service's name                                                                                      |
+| `terminalInfo.tradeName`      | PayNlTerminalInfoTradeName |                                                                                                         |
+| `terminalInfo.tradeName.code` | String                     | The TM-code for this terminal                                                                           |
+| `terminalInfo.tradeName.name` | String                     | The tradeName's name                                                                                    |
 
 ##### Example
 
@@ -323,13 +322,12 @@ class PayNLService {
 
 With an activated terminal, you can fetch the allowed currencies this SDK supports:
 
-| **Name**                   | **Type** | **Description**                                             |
-|----------------------------|----------|-------------------------------------------------------------|
-| `allowedCurrencies`        | Array    |                                                             |
-| `allowedCurrencies[]`      | object   |                                                             |
-| `allowedCurrencies[].id`   | String   | The ISO 4217 num of this currency (example: Euro -> "978")  |
-| `allowedCurrencies[].code` | String   | The ISO 4217 code of this currency (example: Euro -> "EUR") |
-| `allowedCurrencies[].sign` | String   | The sign of this currency (example Euro -> "€")             |
+| **Name**                   | **Type**                   | **Description**                                               |
+|----------------------------|----------------------------|---------------------------------------------------------------|
+| `allowedCurrencies`        | List<PayNlAllowedCurrency> |                                                               |
+| `allowedCurrencies[].id`   | String                     | The ISO 4217 number of this currency (example: Euro -> "978") |
+| `allowedCurrencies[].code` | String                     | The ISO 4217 code of this currency (example: Euro -> "EUR")   |
+| `allowedCurrencies[].sign` | String                     | The sign of this currency (example Euro -> "€")               |
 
 ##### Example
 
