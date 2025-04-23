@@ -6,7 +6,7 @@
 
 - iOS 18 or higher
 - iPhone only (iPad not supported)
-- Your project supports CocoaPods (swift package manager is comming)
+- Your project supports CocoaPods
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have access to the `Tap to Pay on iPhone` entitlement
     - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
@@ -78,7 +78,11 @@ flowchart LR;
 
 #### Init sdk
 
-This function will initialize the SDK. It will return `PayNlInitResult` enum type. No parameters required
+This function will initialize the SDK. It will return `PayNlInitResult` enum type.
+
+| **Name**      | **Type** | **Description**                                                   |
+|---------------|----------|-------------------------------------------------------------------|
+| integrationId | String   | The UUID received from PayNL support in order to process payments |
 
 ##### Example
 
