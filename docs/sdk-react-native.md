@@ -2,27 +2,21 @@
 
 # PAY.POS SDK - React Native (Turbo module)
 
-> [!WARNING]
-> Currenty, this package only support iOS. Android is in development
-
 ### Requirements
 
 - React native using new architecture (Turbo modules)
-- iOS 18 or higher
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
-- Make sure you have access to the `Tap to Pay on iPhone` entitlement
-    - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
+- Make sure you have the requirements for [iOS](./sdk-ios.md#requirements)
+- Make sure you have the requirements for [Android softpos](./sdk-android-softpos.md#requirements)
 
 ### Getting started
 
-To get started, make sure you have a `.npmrc`-file containing to following at minimum at the same level as your
-`package.json`:
+#### iOS Setup
 
-```
-@paynl:registry=https://npm.pkg.github.com
-```
+> [!NOTE]
+> If you are not planning to support Tap to Pay on iPhone, you can skip this
 
-Next, update your `Podfile` adding the PayNL Spec repository:
+Update your `Podfile` adding the PayNL Spec repository:
 
 ```ruby
 ...
@@ -35,10 +29,71 @@ target 'MyApp' do
 ...
 ```
 
+#### Android setup
+
+> [!NOTE]
+> If you are not planning to support Android softpos, you can skip this
+
+First make sure you have the PayNL gradle repositories in your global gradle properties:
+
+- MacOS: `~/.gradle/gradle.properties`
+- Windows: `USER_HOME/.gradle/gradle.properties`
+
+```
+# Pay.POS SDK registry credentials
+PAYNL_REGISTRY_LOGIN=...
+PAYNL_REGISTRY_TOKEN=...
+
+# Github personal access token with read:packages scope
+GITHUB_USERNAME=...
+GITHUB_PERSONAL_TOKEN=...
+```
+
+Last, go to your `android/build.gradle` and add the following repositories:
+
+```groovy
+allprojects {
+    repositories {
+       google()
+       mavenCentral()
+       
+       // ---- These two need to be added ----
+       maven {
+        name = "PayNLRegistry"
+        url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
+        credentials {
+          username = project.GITHUB_USERNAME
+          password = project.GITHUB_PERSONAL_TOKEN
+        }
+      }
+       maven {
+        name = "PayNLMavenClientRegistry"
+        url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
+        credentials {
+          username = project.PAYNL_REGISTRY_LOGIN
+          password = project.PAYNL_REGISTRY_TOKEN
+        }
+      }
+      // ---- END ----
+    }
+}
+```
+
+#### React native
+
+Make sure you have a `.npmrc`-file containing to following at minimum at the same level as your
+`package.json`:
+
+```
+@paynl:registry=https://npm.pkg.github.com
+```
+
 Now, we can install the package via:
 
 ```bash
 npm i @paynl/pos-sdk-react-native
+
+# Skip these if you do not develop for iOS
 cd ios
 pod install
 ```
@@ -70,16 +125,49 @@ flowchart LR;
 
 #### Init sdk
 
-This function will initialize the SDK. It will return `PayNlInitResult` enum type. No parameters required
+This function will initialize the SDK. It will return `PayNlInitResult` enum type.
+
+| **Name**                            | **Type**             | **Description**                                                                                                                                                                                                                                                              |
+|-------------------------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| integrationId                       | string               | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                            |
+| licenseName                         | string               | The name of the license file in your assets folder                                                                                                                                                                                                                           |
+| overlayParams                       | PaymentOverlayParams | Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                          |
+| overlayParams.enabled               | boolean              | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                           |
+| overlayParams.closeDelayInMs        | number               | Configures an auto close delay on the overlay (default: 0 -> Keep open)                                                                                                                                                                                                      |
+| overlayParams.logoImage             | string               | The filename for your logo. Make sure the file is placed in the drawable folder (default: `paynl.xml` -> The PayNL logo)                                                                                                                                                     |
+| overlayParams.waitingCardAnimation  | string               | The filename for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `reader_animation.json`)               |
+| overlayParams.buttonShape           | string               | The filename for a custom background shape for the buttons in the overlay. Make sure the file is placed in the drawable folder (Default: pay_btn.xml)                                                                                                                        |
+| overlayParams.progressBarColor      | string               | The color of the loading spinner during processing of Payment. Hex-only (default: `#FF585FFF`)                                                                                                                                                                               |
+| overlayParams.successColor          | string               | The color of the success check when payment is success. Hex-only (default: `#FF00D388`)                                                                                                                                                                                      |
+| overlayParams.errorColor            | string               | The color of error during payment. Hex-only (default: `#FFC5362C`)                                                                                                                                                                                                           |
+| overlayParams.backgroundColor       | string               | The background color of the overlay & ticket viewer. Hex-only (default: `#FFFFFFFF`)                                                                                                                                                                                         |
+| overlayParams.amountTextColor       | string               | The text color of the amount. Hex-only (default: `#FF444444`)                                                                                                                                                                                                                |
+| overlayParams.payerMessageTextColor | string               | The text color of the payerMessage. Hex-only (default: `#FF888888`)                                                                                                                                                                                                          |
+| overlayParams.buttonTextColor       | string               | The text color of the buttons. Hex-only (default: `#FF000000`)                                                                                                                                                                                                               |
+| overlayParams.cancelButtonLabel     | string               | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                                   |
+| overlayParams.closeButtonLabel      | string               | The label text on the close button (default: `Sluiten`)                                                                                                                                                                                                                      |
+| overlayParams.waitingCardLabel      | string               | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                                |
+| overlayParams.processingCardLabel   | string               | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                                   |
+| overlayParams.ticketHeaderLabel     | string               | The label text for the ticket viewer header (default: `Betaling succesvol!`)                                                                                                                                                                                                 |
+| overlayParams.emailHeaderLabel      | string               | The label text for the email ticket header (default: `Voer email adres in`)                                                                                                                                                                                                  |
+| overlayParams.emailButtonLabel      | string               | The label text for the send ticket button (default: `Mailen`)                                                                                                                                                                                                                |
+| useExternalDisplayIfAvailable       | boolean              | (Android only) This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                          |
+| enableSound                         | boolean              | (Android only) During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`) |
+| enableLogging                       | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                        |
 
 ##### Example
 
 ```ts
+import {Platform} from 'react-native';
 import {PayNlSdk} from '@paynl/pos-sdk-react-native';
 
 class PayNLService {
     async initSdk() {
-        const result = await PayNlSdk.initSdk({integrationId: ''});
+        const result = await PayNlSdk.initSdk({
+            integrationId: Platform.select({ios: '', default: ''}), // Default is for Android
+            licenseName: '', // Required for Android softpos
+        });
+
         switch (result) {
             case 'needs_login':
                 // Start login flow and reinitialized the SDK
@@ -279,8 +367,8 @@ This function has 2 parameters:
 |---------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `transaction`       | object   | The transaction that needs to be use for this payment. For more details about this object, please check out [order:create](https://developer.pay.nl/reference/api_create_order-1) |
 | `service`           | object?  | A transaction can be re-routed to another service (within the same Merchant). NOTE: this is optional                                                                              |
-| `service.serviceId` | String   | The service code (example: SL-1234-1234). A list of services can be requested via: [Merchant:info](https://developer.pay.nl/reference/merchants_info)                             |
-| `service.secret`    | String   | The secret belonging to this service                                                                                                                                              |
+| `service.serviceId` | string   | The service code (example: SL-1234-1234). A list of services can be requested via: [Merchant:info](https://developer.pay.nl/reference/merchants_info)                             |
+| `service.secret`    | string   | The secret belonging to this service                                                                                                                                              |
 
 This function returns the `PayNlTransactionResult` type:
 
@@ -288,10 +376,10 @@ This function returns the `PayNlTransactionResult` type:
 |-----------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `result`              | object                 |                                                                                                                                                                                  |
 | `result.statusAction` | PayNlTransactionStatus | The endresult of the transaction. Example: paid, failed                                                                                                                          |
-| `result.payerMessage` | String                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
-| `result.orderId`      | String                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
-| `result.reference`    | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
-| `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
+| `result.payerMessage` | string                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
+| `result.orderId`      | string                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
+| `result.reference`    | string?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
+| `result.ticket`       | string                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
 
 ##### Example
 
@@ -312,7 +400,7 @@ class PayNLService {
             let ticket = '';
             if (result.ticket !== '') {
                 const buff = new Buffer(result.ticket, 'base64');
-                ticket = buff.toString('ascii');
+                ticket = buff.tostring('ascii');
             }
 
             console.log(JSON.stringify(result));

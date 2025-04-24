@@ -10,6 +10,7 @@
 - Your project supports Gradle (default for Android apps)
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have the gradle credentials from PayNL support
+- Make sure you have a personal access token on Github with `read:packages` scope
 
 ### Getting started
 
@@ -22,6 +23,10 @@ To get started, create a `gradle.properties` file in your global gradle file:
 # Pay.POS SDK registry credentials
 PAYNL_REGISTRY_LOGIN=...
 PAYNL_REGISTRY_TOKEN=...
+
+# Github personal access token with read:packages scope
+GITHUB_USERNAME=...
+GITHUB_PERSONAL_TOKEN=...
 ```
 
 Now that you have set your credentials, go to the root `build.gradle` file and make sure the following is in this file:
@@ -33,7 +38,14 @@ allprojects {
        mavenCentral()
        
        // ---- These two need to be added ----
-       maven { url "https://maven.pkg.github.com/paynl/pos-sdk" }
+       maven {
+        name = "PayNLRegistry"
+        url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
+        credentials {
+          username = project.GITHUB_USERNAME
+          password = project.GITHUB_PERSONAL_TOKEN
+        }
+      }
        maven {
         name = "PayNLMavenClientRegistry"
         url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
@@ -48,7 +60,7 @@ allprojects {
 ```
 
 Last but not least, let's add the SDK to your Android app.
-Go to `app/build.gradle` and go to the `dependencies`-section.
+Go to `app/build.gradle` and go to the `dependencies` section.
 In there you can add the PayNL POS SDK via:
 
 ```groovy
@@ -93,23 +105,34 @@ flowchart LR;
 
 This function will initialize the SDK. It will return `PayNlInitResult` enum type
 
-| **Name**                                 | **Type**             | **Description**                                                                                                                                                                                                                                                     |
-|------------------------------------------|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| context                                  | Context              | The current android activity/context                                                                                                                                                                                                                                |
-| integrationId                            | String               | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                   |
-| overlayParams                            | PaymentOverlayParams | Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                 |
-| overlayParams.enabled                    | boolean              | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                  |
-| overlayParams.logoImage                  | int                  | The reference id for your logo (default: `R.drawable.paynl` -> The PayNL logo)                                                                                                                                                                                      |
-| overlayParams.waitingCardAnimation       | int                  | The reference id for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `R.raw.reader_animation`) |
-| overlayParams.processingSuccessAnimation | int                  | The reference id for a lottie json animation shown after payment is successfully processed (default: `R.raw.reader_success`)                                                                                                                                        |
-| overlayParams.processingErrorAnimation   | int                  | The reference id for a lottie json animation shown after an error occured (default: `R.raw.reader_error`)                                                                                                                                                           |
-| overlayParams.progressBarColor           | String               | The color of the loading spinner during processing of Payment. Hex-only (default: `#585FFF`)                                                                                                                                                                        |
-| overlayParams.cancelButtonLabel          | String               | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                          |
-| overlayParams.waitingCardLabel           | String               | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                       |
-| overlayParams.processingCardLabel        | String               | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                          |
-| useExternalDisplayIfAvailable            | boolean              | This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                |
-| enableSound                              | boolean              | During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)       |
-| enableLogging                            | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                               |
+| **Name**                            | **Type**             | **Description**                                                                                                                                                                                                                                                     |
+|-------------------------------------|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| context                             | Context              | The current android activity/context                                                                                                                                                                                                                                |
+| integrationId                       | String               | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                   |
+| licenseName                         | String               | The name of the license file in your assets folder                                                                                                                                                                                                                  |
+| overlayParams                       | PaymentOverlayParams | Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                 |
+| overlayParams.enabled               | boolean              | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                  |
+| overlayParams.closeDelayInMs        | long                 | Configures an auto close delay on the overlay (default: 0 -> Keep open)                                                                                                                                                                                             |
+| overlayParams.logoImage             | int                  | The reference id for your logo (default: `R.drawable.paynl` -> The PayNL logo)                                                                                                                                                                                      |
+| overlayParams.waitingCardAnimation  | int                  | The reference id for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `R.raw.reader_animation`) |
+| overlayParams.buttonShape           | int                  | The reference id for a custom background shape for the buttons in the overlay. (Default: R.drawable.pay_btn)                                                                                                                                                        |
+| overlayParams.progressBarColor      | String               | The color of the loading spinner during processing of Payment. Hex-only (default: `#FF585FFF`)                                                                                                                                                                      |
+| overlayParams.successColor          | String               | The color of the success check when payment is success. Hex-only (default: `#FF00D388`)                                                                                                                                                                             |
+| overlayParams.errorColor            | String               | The color of error during payment. Hex-only (default: `#FFC5362C`)                                                                                                                                                                                                  |
+| overlayParams.backgroundColor       | String               | The background color of the overlay & ticket viewer. Hex-only (default: `#FFFFFFFF`)                                                                                                                                                                                |
+| overlayParams.amountTextColor       | String               | The text color of the amount. Hex-only (default: `#FF444444`)                                                                                                                                                                                                       |
+| overlayParams.payerMessageTextColor | String               | The text color of the payerMessage. Hex-only (default: `#FF888888`)                                                                                                                                                                                                 |
+| overlayParams.buttonTextColor       | String               | The text color of the buttons. Hex-only (default: `#FF000000`)                                                                                                                                                                                                      |
+| overlayParams.cancelButtonLabel     | String               | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                          |
+| overlayParams.closeButtonLabel      | String               | The label text on the close button (default: `Sluiten`)                                                                                                                                                                                                             |
+| overlayParams.waitingCardLabel      | String               | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                       |
+| overlayParams.processingCardLabel   | String               | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                          |
+| overlayParams.ticketHeaderLabel     | String               | The label text for the ticket viewer header (default: `Betaling succesvol!`)                                                                                                                                                                                        |
+| overlayParams.emailHeaderLabel      | String               | The label text for the email ticket header (default: `Voer email adres in`)                                                                                                                                                                                         |
+| overlayParams.emailButtonLabel      | String               | The label text for the send ticket button (default: `Mailen`)                                                                                                                                                                                                       |
+| useExternalDisplayIfAvailable       | boolean              | This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                |
+| enableSound                         | boolean              | During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)       |
+| enableLogging                       | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                               |
 
 ##### Example
 
