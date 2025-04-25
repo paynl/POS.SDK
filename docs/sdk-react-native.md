@@ -436,6 +436,9 @@ class PayNLService {
 
 #### Send logs
 
+> [!NOTE]
+> ANDROID ONLY: Pressing 5x on the logo in the overlay will also trigger this function (if `enabledLogging = true`)
+
 When encountering problems with the SDK, PayNL support needs the logs stored in the SDK.
 To provide these logs, you can invoke the `sendLogs()` function
 

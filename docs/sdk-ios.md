@@ -345,6 +345,35 @@ public func startPayment(transaction: PayNlTransaction, service: PayNlTransactio
 }
 ```
 
+#### Send ticket via E-mail
+
+After a succesfull transaction, it is possible to send the ticket via e-mail to someone else.
+For this, you need the transactionId (MV-code), the ticket self (both received after startTransaction), and the user's
+E-mail address
+
+##### Example
+
+```swift
+import PayNlPOSSdkSwift
+
+public func sendTicket(transaction: PayNlTransactionResult, email: String) async {
+  do {
+    await self.posService.sendTicket(
+      email: email,
+      transactionId: transaction.transactionId,
+      ticket: transaction.ticket
+    )
+  } catch {
+    if let error = error as? PayNlSVError {
+      print("Got error from SDK: \(error.code) - \(error.description)")
+      return
+    }
+    
+    print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
+  }
+}
+```
+
 #### Logout
 
 > [!NOTE]

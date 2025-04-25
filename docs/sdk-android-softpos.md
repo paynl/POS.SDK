@@ -12,6 +12,9 @@
 - Make sure you have the gradle credentials from PayNL support
 - Make sure you have a personal access token on Github with `read:packages` scope
 
+> [!WARNING]
+> Note that offline mode, as featured in the PAY.POS app, is not supported as of now
+
 ### Getting started
 
 To get started, create a `gradle.properties` file in your global gradle file:
@@ -438,6 +441,33 @@ class PayNLService {
 }
 ```
 
+#### Send ticket via E-mail
+
+After a succesfull transaction, it is possible to send the ticket via e-mail to someone else.
+For this, you need the transactionId (MV-code), the ticket self (both received after startTransaction), and the user's
+E-mail address
+
+##### Example
+
+```java
+import android.util.Log;
+
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionResult;
+
+class PayNLService {
+
+  // ...
+  
+  public void sendTicket(PayNlTransactionResult transaction, String email) {
+    try {
+      this.posService.sendTicket(email, transaction.transactionId, transaction.ticket);
+    } catch (SVErrorBaseException e) {
+      Log.e("PayNLExample", String.format("Failed to send ticket - code: %s, description: %s", e.code, e.description));
+    }
+  }
+}
+```
+
 #### Logout
 
 > [!NOTE]
@@ -464,6 +494,9 @@ class PayNLService {
 
 > [!NOTE]
 > This only works if the SDK configuration contains `enabledLogging = true`
+
+> [!NOTE]
+> Pressing 5x on the logo in the overlay will also trigger this function (if `enabledLogging = true`)
 
 When encountering problems with the SDK, PayNL support needs the logs stored in the SDK.
 To provide these logs, you can invoke the `sendLogs()` function

@@ -1,0 +1,49 @@
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+        maven {
+            def PAYNL_REGISTRY_LOGIN = providers.gradleProperty("PAYNL_REGISTRY_LOGIN").get()
+            def PAYNL_REGISTRY_TOKEN = providers.gradleProperty("PAYNL_REGISTRY_TOKEN").get()
+
+            name = "PayNLRegistry"
+            url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
+            credentials {
+                username = PAYNL_REGISTRY_LOGIN
+                password = PAYNL_REGISTRY_TOKEN
+            }
+        }
+        maven {
+            def MINESEC_REGISTRY_LOGIN = providers.gradleProperty("MINESEC_REGISTRY_LOGIN").get()
+            def MINESEC_REGISTRY_TOKEN = providers.gradleProperty("MINESEC_REGISTRY_TOKEN").get()
+
+            name = "MineSecMavenClientRegistry"
+            url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
+            credentials {
+                username = MINESEC_REGISTRY_LOGIN
+                password = MINESEC_REGISTRY_TOKEN
+            }
+        }
+    }
+}
+
+rootProject.name = "PAY.POS"
+include ':app'
+
+include ':paynl-sdk-softpos'
+project(":paynl-sdk-softpos").projectDir = new File("../../pay-payments-sdk/sdk-android-softpos/sdk")
