@@ -14,7 +14,7 @@ You can use this SDK on the following platforms:
 
 ### Coming soon
 
-- React Native Turbo modules android
+- React Native Old archticture
 
 ### Getting started
 

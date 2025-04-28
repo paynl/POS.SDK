@@ -47,7 +47,7 @@ class ViewModel: ObservableObject {
     
     func initSDK(_ attempt: Int = 0) {
         Task {
-            let result = await self.posService.initSdk(integrationId: "00000000-0000-0000-0000-000000000000")
+            let result = await self.posService.initSdk(integrationId: "73e6219b-4f49-43d8-a419-07f037f67d40")
             switch result {
             case .needsLogin:
                 guard attempt < 2 else {

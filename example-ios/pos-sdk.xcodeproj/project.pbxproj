@@ -7,14 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3EC4302E2D9166830091DB07 /* libPods-pos-sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC4302D2D9166830091DB07 /* libPods-pos-sdk.a */; };
-		B3C131A944761313C255C8EB /* libPods-pos-sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 027302115C4A59F0A754E87A /* libPods-pos-sdk.a */; };
+		3EF933272DBBB7CA009E904B /* PayNlPOSSdkSwiftWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF933262DBBB7CA009E904B /* PayNlPOSSdkSwiftWrapper */; };
+		3EF933902DBBC197009E904B /* PayNlPOSSdkSwiftWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF9338F2DBBC197009E904B /* PayNlPOSSdkSwiftWrapper */; };
+		3EF933932DBBC1C7009E904B /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 3EF933922DBBC1C7009E904B /* SQLite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		027302115C4A59F0A754E87A /* libPods-pos-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-pos-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F7276C21541DD13E7A32929 /* Pods-pos-sdk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pos-sdk.debug.xcconfig"; path = "Target Support Files/Pods-pos-sdk/Pods-pos-sdk.debug.xcconfig"; sourceTree = "<group>"; };
-		1A313B483796E33EFDA3C065 /* Pods-pos-sdk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pos-sdk.release.xcconfig"; path = "Target Support Files/Pods-pos-sdk/Pods-pos-sdk.release.xcconfig"; sourceTree = "<group>"; };
 		3E735E6B2D916470001D40D9 /* pos-sdk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pos-sdk.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EC4302D2D9166830091DB07 /* libPods-pos-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-pos-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -32,8 +31,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3C131A944761313C255C8EB /* libPods-pos-sdk.a in Frameworks */,
-				3EC4302E2D9166830091DB07 /* libPods-pos-sdk.a in Frameworks */,
+				3EF933932DBBC1C7009E904B /* SQLite in Frameworks */,
+				3EF933902DBBC197009E904B /* PayNlPOSSdkSwiftWrapper in Frameworks */,
+				3EF933272DBBB7CA009E904B /* PayNlPOSSdkSwiftWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,7 +54,6 @@
 			children = (
 				3E735E6D2D916470001D40D9 /* pos-sdk */,
 				3E735E6C2D916470001D40D9 /* Products */,
-				F17082EC0AD2E6980BBE0B63 /* Pods */,
 				0F20DB7BB98DC0F68E67FC02 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -67,15 +66,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F17082EC0AD2E6980BBE0B63 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0F7276C21541DD13E7A32929 /* Pods-pos-sdk.debug.xcconfig */,
-				1A313B483796E33EFDA3C065 /* Pods-pos-sdk.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -83,7 +73,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3E735E792D916471001D40D9 /* Build configuration list for PBXNativeTarget "pos-sdk" */;
 			buildPhases = (
-				040F1AF8B14DBC59A385F3E4 /* [CP] Check Pods Manifest.lock */,
 				3E735E672D916470001D40D9 /* Sources */,
 				3E735E682D916470001D40D9 /* Frameworks */,
 				3E735E692D916470001D40D9 /* Resources */,
@@ -124,6 +113,10 @@
 			);
 			mainGroup = 3E735E622D916470001D40D9;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3EF9338E2DBBC197009E904B /* XCRemoteSwiftPackageReference "pos-sdk" */,
+				3EF933912DBBC1C7009E904B /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3E735E6C2D916470001D40D9 /* Products */;
 			projectDirPath = "";
@@ -143,31 +136,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		040F1AF8B14DBC59A385F3E4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-pos-sdk-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3E735E672D916470001D40D9 /* Sources */ = {
@@ -301,7 +269,6 @@
 		};
 		3E735E7A2D916471001D40D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F7276C21541DD13E7A32929 /* Pods-pos-sdk.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -325,7 +292,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.paynl.example.pos-sdk";
+				PRODUCT_BUNDLE_IDENTIFIER = com.paynl.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -339,7 +306,6 @@
 		};
 		3E735E7B2D916471001D40D9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A313B483796E33EFDA3C065 /* Pods-pos-sdk.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -363,7 +329,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.paynl.example.pos-sdk";
+				PRODUCT_BUNDLE_IDENTIFIER = com.paynl.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -397,6 +363,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3EF933252DBBB7CA009E904B /* XCRemoteSwiftPackageReference "pos-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paynl/pos-sdk";
+			requirement = {
+				branch = test;
+				kind = branch;
+			};
+		};
+		3EF9338E2DBBC197009E904B /* XCRemoteSwiftPackageReference "pos-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paynl/pos-sdk";
+			requirement = {
+				branch = test;
+				kind = branch;
+			};
+		};
+		3EF933912DBBC1C7009E904B /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3EF933262DBBB7CA009E904B /* PayNlPOSSdkSwiftWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3EF933252DBBB7CA009E904B /* XCRemoteSwiftPackageReference "pos-sdk" */;
+			productName = PayNlPOSSdkSwiftWrapper;
+		};
+		3EF9338F2DBBC197009E904B /* PayNlPOSSdkSwiftWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3EF9338E2DBBC197009E904B /* XCRemoteSwiftPackageReference "pos-sdk" */;
+			productName = PayNlPOSSdkSwiftWrapper;
+		};
+		3EF933922DBBC1C7009E904B /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3EF933912DBBC1C7009E904B /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3E735E632D916470001D40D9 /* Project object */;
 }

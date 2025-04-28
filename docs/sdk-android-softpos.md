@@ -389,6 +389,13 @@ This function returns the `PayNlTransactionResult` type:
 | `result.reference`    | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
 | `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
 
+##### Tip
+
+If your app uses the [order:create](https://developer.pay.nl/reference/api_create_order-1) API, you might want to use
+`ecrInitiated` and `tguReference` fields.
+If `ecrInitiated: true` & `tguReference` equals the orderId from the order:create API, then this payment will be
+appended to that specific order/transaction, preventing a duplicated entry
+
 ##### Example
 
 ```java

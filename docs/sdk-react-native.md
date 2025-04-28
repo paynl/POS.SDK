@@ -381,6 +381,13 @@ This function returns the `PayNlTransactionResult` type:
 | `result.reference`    | string?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
 | `result.ticket`       | string                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
 
+##### Tip
+
+If your app uses the [order:create](https://developer.pay.nl/reference/api_create_order-1) API, you might want to use
+`ecrInitiated` and `tguReference` fields.
+If `ecrInitiated: true` & `tguReference` equals the orderId from the order:create API, then this payment will be
+appended to that specific order/transaction, preventing a duplicated entry
+
 ##### Example
 
 ```ts
@@ -406,6 +413,28 @@ class PayNLService {
             console.log(JSON.stringify(result));
             console.log('Ticket:')
             console.log(ticket)
+        } catch (e) {
+            console.error(`Error from PAY.POS sdk: ${error}`)
+        }
+    }
+}
+```
+
+#### Send ticket via E-mail
+
+After a succesfull transaction, it is possible to send the ticket via e-mail to someone else.
+For this, you need the transactionId (MV-code), the ticket self (both received after startTransaction), and the user's
+E-mail address
+
+##### Example
+
+```js
+import {PayNlSdk, type Transaction} from '@paynl/pos-sdk-react-native';
+
+class PayNLService {
+    async sendTicket(email: string, transaction: Transaction) {
+        try {
+            await PayNlSdk.sendTicket(email, transaction.transactionId, transaction.ticket);
         } catch (e) {
             console.error(`Error from PAY.POS sdk: ${error}`)
         }
