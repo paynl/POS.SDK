@@ -8,7 +8,7 @@ Use this SDK to get a native payment experience on your mobile platform
 
 You can use this SDK on the following platforms:
 
-- iOS 18+ (using Cocoapods) [docs](docs/sdk-ios.md) - [example](example-ios)
+- iOS 18+ (using Cocoapods or Swift Package Manager) [docs](docs/sdk-ios.md) - [example](example-ios)
 - Android softpos (using Gradle) [docs](docs/sdk-android-softpos.md) - [example](example-android-softpos)
 - React Native Turbo modules [docs](docs/sdk-react-native.md) - [example](example-react-native)
 

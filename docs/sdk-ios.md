@@ -6,12 +6,14 @@
 
 - iOS 18 or higher
 - iPhone only (iPad not supported)
-- Your project supports CocoaPods
+- Your project supports CocoaPods or Swift Package Manager
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have access to the `Tap to Pay on iPhone` entitlement
     - You can request this via [this form](https://developer.apple.com/contact/request/tap-to-pay-on-iphone/)
 
 ### Getting started
+
+#### CocoaPods
 
 To get started, make sure your app is using cocoapods.
 If not, create a `Podfile` at the root of your codebase.
@@ -50,6 +52,16 @@ Also make sure the `Pods` project is added to your `MyApp.xcworkspace/contents.x
 >
 > Also make sure you reopen your project with the `xcworkspace` file.
 > You can use the following command `xed .` in the root to open your project with the correct file
+
+#### Swift Package Manager
+
+> Also make sure you opened your project with the `xcworkspace` file.
+> You can use the following command `xed .` in the root to open your project with the correct file
+
+To get started using Swift Package Manager, right click on your app's project (blue icon) and select
+`Add Package Dependency`.
+Then use the search bar and copy paste this URL: https://github.com/paynl/pos-sdk.
+This will show the PAY.POS github repo, use the `Add Package`-button to add the dependency, and you are done!
 
 ### SDK flow
 
