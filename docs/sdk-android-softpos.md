@@ -73,12 +73,6 @@ dependencies {
 }
 ```
 
-> [!NOTE]
-> Please note, that the `sdk.softpos.staging` uses the Tinpay environment and is safe to use with a real payment card.
-> No money will be transferred, but you will get actual responses from the SDK. Perfect during development.
->
-> To activate you will need to use a different url for `Terminals:Create`
-
 ### SDK flow
 
 ```mermaid
@@ -231,9 +225,6 @@ class PayNLService {
 > [!NOTE]
 > After completing this method, you need to re-invoke the `initSdk` function
 
-> [!NOTE]
-> While using `sdk.softpos.staging`, you will need to use https://rest.tinpay.nl as base URL for `Terminals:Create`
-
 After using the `getActivationCode` and [Terminals:create](https://developer.pay.nl/reference/post_terminals), you can
 use this `loginViaCode`.
 It does not have a return type, but you need to provide the code from the `getActivationCode` to complete the login.
@@ -267,9 +258,6 @@ class PayNLService {
 
 > [!NOTE]
 > After completing this method, you need to re-invoke the `initSdk` function
-
-> [!NOTE]
-> While using `sdk.softpos.staging`, you will need to use https://rest.tinpay.nl as base URL for the API's below
 
 An alternative way to activate your device is via your PayNL account.
 For this you need your a-code, service code, and service secret.

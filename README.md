@@ -20,3 +20,8 @@ You can use this SDK on the following platforms:
 
 To get started, please read the documentation of the specific platform, but you can also use the example code to start
 your payment experience!
+
+### Help I get an error
+
+First check the [documentation here](docs/error-codes.md).
+After that you can contact PayNL suport for extra information if needed.
