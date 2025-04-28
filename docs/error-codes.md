@@ -11,7 +11,7 @@
 | SV-0007  | Terminal not activated       | The terminal is not activated, please use loginViaCode or loginViaCredentials to activate the terminal |
 | SV-0008  | API error                    | Please consult the logging to see what's wrong, or contact PayNL support                               |
 | SV-0009  | Transaction cancelled        | This is not really an error, the transaction is cancelled by the user                                  |
-| SV-00100 | NFC disabled                 | The kernel detected that the NFC adapter is disabled. Please activate it in the phone's settings       |
+| SV-0010  | NFC disabled                 | The kernel detected that the NFC adapter is disabled. Please activate it in the phone's settings       |
 
 ### Android softpos specific codes
 
