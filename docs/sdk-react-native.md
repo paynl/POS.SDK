@@ -164,7 +164,10 @@ import {PayNlSdk} from '@paynl/pos-sdk-react-native';
 class PayNLService {
     async initSdk() {
         const result = await PayNlSdk.initSdk({
-            integrationId: Platform.select({ios: '', default: ''}), // Default is for Android
+            integrationId: Platform.select({
+                ios: '',
+                default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
+            }),
             licenseName: '', // Required for Android softpos
         });
 
