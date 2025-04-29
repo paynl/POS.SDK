@@ -73,6 +73,15 @@ dependencies {
 }
 ```
 
+#### Why is there a staging and production version?
+
+A softpos application has strict security policies.
+One being the Android security patch, but also other things like ADB or timestamp mismatch and much more.
+
+During development, you do not want to be bothered with these security policies, thus we allow to disable those BUT ONLY
+DURING DEVELOPMENT.
+You are not able to use the staging version of the SDK in a production app!
+
 ### SDK flow
 
 ```mermaid
@@ -388,13 +397,6 @@ This function returns the `PayNlTransactionResult` type:
 | `result.orderId`      | String                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
 | `result.reference`    | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
 | `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
-
-##### Tip
-
-If your app uses the [order:create](https://developer.pay.nl/reference/api_create_order-1) API, you might want to use
-`ecrInitiated` and `tguReference` fields.
-If `ecrInitiated: true` & `tguReference` equals the orderId from the order:create API, then this payment will be
-appended to that specific order/transaction, preventing a duplicated entry
 
 ##### Example
 
