@@ -7,6 +7,7 @@
 - Android v8.0 or higher
     - Android security patch is not older than 2 years
 - Device support NFC (and is enabled)
+    - A hardPOS device (like the Sunmi P series or PAX) is not supported via this SDK
 - Your project supports Gradle (default for Android apps)
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have the gradle credentials from PayNL support
