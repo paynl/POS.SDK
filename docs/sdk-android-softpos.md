@@ -147,8 +147,10 @@ This function will initialize the SDK. It will return `PayNlInitResult` enum typ
 package com.paynl.example;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.paynl.pos.sdk.PosService;
+import com.paynl.pos.sdk.shared.exceptions.SVErrorBaseException;
 import com.paynl.pos.sdk.shared.models.paynl.PayNlInitResult;
 import com.paynl.pos.sdk.shared.payment.PaymentOverlayParams;
 
@@ -173,17 +175,18 @@ class PayNLService {
     // Uncomment the following setConfiguration method
     // this.posService.setConfiguration(integrationId, licenseName, overlayParams, useExternalDisplayIfAvailable, enableSound, enableLogging);
 
-    PayNlInitResult initResult = this.posService.initSdk();
-    switch (initResult) {
-      case needsLogin:
-        // Start login flow
-        break;
-      case readyForPayments:
-        // SDK is ready to start payments
-        break;
-      case failed:
-        // Something went wrong during initSDK. Please consult logcat to see why
-        break;
+    try {
+      PayNlInitResult initResult = this.posService.initSdk();
+      switch (initResult) {
+        case needsLogin:
+          // Start login flow
+          break;
+        case readyForPayments:
+          // SDK is ready to start payments
+          break;
+      }
+    } catch (SVErrorBaseException exception) {
+      Log.e("PayNLExample", String.format("Failed to initialize SDK - code: %s, description: %s", e.code, e.description));
     }
   }
 }

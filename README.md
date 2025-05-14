@@ -15,6 +15,7 @@ You can use this SDK on the following platforms:
 ### Coming soon
 
 - React Native Old archticture
+- Sunmi Hardpos SDK
 
 ### Getting started
 
