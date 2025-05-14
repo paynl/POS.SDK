@@ -109,8 +109,8 @@ flowchart LR;
   L --> A
   B --> F[PayNlSdk.startPayment]
   F --> H{Payment result}
-  H --> |PAID: Show Ticket & payerMessage to customer| M
-  M[PayNlSdk.sendTicket] --> F
+  H --> |PAID: Show Ticket & payerMessage to customer| N
+  N[PayNlSdk.sendTicket] --> F
   H --> |FAILED: Show payerMessage to customer| F
   B --> I[PayNlSdk.getTerminalInfo]
   B --> J[PayNlSdk.getAllowedCurrencies]
