@@ -4,7 +4,7 @@
 
 ### Requirements:
 
-- iOS 18 or higher
+- iOS 17 or higher
 - iPhone only (iPad not supported)
 - Your project supports CocoaPods or Swift Package Manager
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
