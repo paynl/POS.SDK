@@ -74,8 +74,8 @@ flowchart LR;
   L --> A
   B --> F[startPayment]
   F --> H{Payment result}
-  H --> |PAID: Show Ticket & payerMessage to customer| K
-  K[sendTicket] --> H
+  H --> |PAID: Show Ticket & payerMessage to customer| M
+  M[sendTicket] --> F
   H --> |FAILED: Show payerMessage to customer| F
   B --> I[getTerminalInfo]
   B --> J[getAllowedCurrencies]
