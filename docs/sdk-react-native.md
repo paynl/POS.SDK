@@ -79,6 +79,28 @@ allprojects {
 }
 ```
 
+##### Advanced
+
+It is also possible to pin the SDK version used by the React Native package.
+Go to your `android/build.gradle` and add the default configuration:
+
+```groovy
+buildscript {
+    ext {
+      buildToolsVersion = "35.0.0"
+      minSdkVersion = 26
+      compileSdkVersion = 36
+      targetSdkVersion = 36
+      ndkVersion = "27.1.12297006"
+      kotlinVersion = "2.0.21"
+      androidXBrowser = "1.8.0"
+
+      paynlPackage = "sdk.softpos" // <-- Allows you to switch between different version of the SDK (currently only softpos is supported, but sunmi hardpos is in development)
+      paynlVersion = "0.0.26" // <-- The SDk version being used. Check the Paynl docs to see the latest version
+    }
+}
+```
+
 #### React native
 
 Make sure you have a `.npmrc`-file containing to following at minimum at the same level as your
