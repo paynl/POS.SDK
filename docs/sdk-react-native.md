@@ -432,6 +432,7 @@ These events could be used to render/animate your on view.
 | PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                |
 
 ```js
+import {NativeEventEmitter, NativeModules} from 'react-native';
 import {PayNlSdk} from '@paynl/pos-sdk-react-native';
 
 class PayNLService {
