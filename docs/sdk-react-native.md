@@ -96,7 +96,7 @@ buildscript {
       androidXBrowser = "1.8.0"
 
       paynlPackage = "sdk.softpos" // <-- Allows you to switch between different version of the SDK (currently only softpos is supported, but sunmi hardpos is in development)
-      paynlVersion = "0.0.26" // <-- The SDk version being used. Check the Paynl docs to see the latest version
+      paynlVersion = "<LATEST_VERSION_HERE>" // <-- The SDK version being used. Check the Paynl docs to see the latest version
     }
 }
 ```
@@ -439,7 +439,7 @@ class PayNLService {
 }
 ```
 
-##### Events
+#### Payment Events
 
 During a transaction, it is possible to receive events.
 These events could be used to render/animate your on view.
@@ -452,6 +452,8 @@ These events could be used to render/animate your on view.
 | PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""} | The SDK has failed to process the payment. Please review the data to see why                                  |
 | PIN_WAITING          | {"usingSecondaryScreen":"true\|false"} | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String |
 | PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                |
+
+##### Example
 
 ```js
 import {NativeEventEmitter, NativeModules} from 'react-native';
