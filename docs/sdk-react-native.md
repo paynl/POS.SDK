@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- React native using new architecture (Turbo modules)
+- React native using Old and New Architecture
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have the requirements for [iOS](./sdk-ios.md#requirements)
 - Make sure you have the requirements for [Android softpos](./sdk-android-softpos.md#requirements)

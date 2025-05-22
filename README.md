@@ -10,11 +10,10 @@ You can use this SDK on the following platforms:
 
 - iOS 18+ (using Cocoapods or Swift Package Manager) [docs](docs/sdk-ios.md) - [example](example-ios)
 - Android softpos (using Gradle) [docs](docs/sdk-android-softpos.md) - [example](example-android-softpos)
-- React Native Turbo modules [docs](docs/sdk-react-native.md) - [example](example-react-native)
+- React Native (Old and New Architecture) [docs](docs/sdk-react-native.md) - [example](example-react-native)
 
 ### Coming soon
 
-- React Native Old archticture
 - Sunmi Hardpos SDK
 
 ### Getting started
