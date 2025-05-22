@@ -68,9 +68,10 @@ Go to `app/build.gradle` and go to the `dependencies` section.
 In there you can add the PayNL POS SDK via:
 
 ```groovy
+def PAYNL_VERSION = "<LATEST_VERSION_HERE>"
 dependencies {
-  debugImplementation "com.paynl.pos:sdk.softpos.staging:0.0.28"
-  releaseImplementation "com.paynl.pos:sdk.softpos:0.0.28"
+  debugImplementation "com.paynl.pos:sdk.softpos.staging:$PAYNL_VERSION"
+  releaseImplementation "com.paynl.pos:sdk.softpos:$PAYNL_VERSION"
 }
 ```
 
