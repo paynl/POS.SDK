@@ -417,6 +417,39 @@ class PayNLService {
 }
 ```
 
+##### Events
+
+During a transaction, it is possible to receive events.
+These events could be used to render/animate your on view.
+
+| **Event**            | **Data**                               | **Description**                                                                                               |
+|----------------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| PAYMENT_WAITING_CARD | null                                   | The SDK is ready to scan payment card                                                                         |
+| PAYMENT_PROCESSING   | null                                   | The SDK has successfully scanned the card and has send the payment for processing                             |
+| PAYMENT_COMPLETED    | null                                   | The SDK has successfully processed the payment and amount has been paid                                       |
+| PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""} | The SDK has failed to process the payment. Please review the data to see why                                  |
+| PIN_WAITING          | {"usingSecondaryScreen":"true\|false"} | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String |
+| PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                |
+
+```js
+import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+
+class PayNLService {
+    setPaymentListener() {
+        // Old architecture
+        const eventEmitter = new NativeEventEmitter(NativeModules.PayNlSdk);
+        eventEmitter.addListener('onPaymentEvent', (data) => {
+            console.log('paymentEvent', JSON.stringify(data));
+        });
+
+        // New architecture
+        PayNlSdk.onPaymentEvent((data) => {
+            console.log('paymentEvent', JSON.stringify(data));
+        });
+    }
+}
+```
+
 #### Send ticket via E-mail
 
 After a succesfull transaction, it is possible to send the ticket via e-mail to someone else.
