@@ -70,7 +70,7 @@ In there you can add the PayNL POS SDK via:
 ```groovy
 dependencies {
   debugImplementation "com.paynl.pos:sdk.softpos.staging:0.0.28"
-  releaseImplementation "com.paynl.pos:sdk.softpos:0.0.29"
+  releaseImplementation "com.paynl.pos:sdk.softpos:0.0.28"
 }
 ```
 
