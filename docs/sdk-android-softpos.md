@@ -4,7 +4,7 @@
 
 ### Requirements:
 
-- Android v8.0 or higher
+- Android v8.0 or higher (minSDK 26)
     - Android security patch is not older than 2 years
 - Device support NFC (and is enabled)
     - A hardPOS device (like the Sunmi P series or PAX) is not supported via this SDK
@@ -59,6 +59,29 @@ allprojects {
         }
       }
       // ---- END ----
+    }
+}
+```
+
+Next, let's make sure you do not get build errors.
+Go to your `android/app/build.gradle`-file and add the following:
+
+```groovy
+android {
+  ...
+  
+    packaging {
+        resources {
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/license.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/notice.txt"
+            excludes += "/META-INF/ASL2.0"
+            excludes += "/META-INF/*.kotlin_module"
+        }
     }
 }
 ```
@@ -449,14 +472,14 @@ class PayNLService {
 During a transaction, it is possible to receive events.
 These events could be used to render/animate yourown view.
 
-| **Event**            | **Data**                               | **Description**                                                                                               |
-|----------------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| PAYMENT_WAITING_CARD | null                                   | The SDK is ready to scan payment card                                                                         |
-| PAYMENT_PROCESSING   | null                                   | The SDK has successfully scanned the card and has send the payment for processing                             |
-| PAYMENT_COMPLETED    | null                                   | The SDK has successfully processed the payment and amount has been paid                                       |
-| PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""} | The SDK has failed to process the payment. Please review the data to see why                                  |
-| PIN_WAITING          | {"usingSecondaryScreen":"true\|false"} | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String |
-| PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                |
+| **Event**            | **Data**                               | **Description**                                                                                                                  |
+|----------------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| PAYMENT_WAITING_CARD | null                                   | The SDK is ready to scan payment card                                                                                            |
+| PAYMENT_PROCESSING   | null                                   | The SDK has successfully scanned the card and has send the payment for processing                                                |
+| PAYMENT_COMPLETED    | null                                   | The SDK has successfully processed the payment. NOTE: The transaction might not be paid, due to insufficient balance for example |
+| PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""} | The SDK has failed to process the payment. Please review the data to see why                                                     |
+| PIN_WAITING          | {"usingSecondaryScreen":"true\|false"} | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String                    |
+| PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                                   |
 
 ##### Example
 

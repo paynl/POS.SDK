@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- React native using Old and New Architecture
+- React native using Old and New Architecture (>= 0.75.0)
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have the requirements for [iOS](./sdk-ios.md#requirements)
 - Make sure you have the requirements for [Android softpos](./sdk-android-softpos.md#requirements)
@@ -49,7 +49,7 @@ GITHUB_USERNAME=...
 GITHUB_PERSONAL_TOKEN=...
 ```
 
-Last, go to your `android/build.gradle` and add the following repositories:
+Next, go to your `android/build.gradle` and add the following repositories:
 
 ```groovy
 allprojects {
@@ -75,6 +75,61 @@ allprojects {
         }
       }
       // ---- END ----
+    }
+}
+```
+
+Last, let's make sure you do not get build errors.
+Go to your `android/app/build.gradle`-file and add the following:
+
+```groovy
+android {
+  ...
+  
+    packaging {
+        resources {
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/license.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/notice.txt"
+            excludes += "/META-INF/ASL2.0"
+            excludes += "/META-INF/*.kotlin_module"
+        }
+    }
+}
+```
+
+##### Expo note
+
+If you get build errors while using expo, please update your `android/app/build.gradle`-file to the following:
+
+```groovy
+android {
+  ...
+  
+  // Prevent BouncyCastle conflicts
+  configurations {
+        all*.exclude module: 'bcprov-jdk15to18'
+        all*.exclude module: 'bcutil-jdk18on'
+        all*.exclude module: 'bcprov-jdk15on'
+        all*.exclude module: 'bcutil-jdk15on'
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/license.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/notice.txt"
+            excludes += "/META-INF/ASL2.0"
+            excludes += "/META-INF/*.kotlin_module"
+        }
     }
 }
 ```
@@ -444,14 +499,14 @@ class PayNLService {
 During a transaction, it is possible to receive events.
 These events could be used to render/animate your on view.
 
-| **Event**            | **Data**                               | **Description**                                                                                               |
-|----------------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| PAYMENT_WAITING_CARD | null                                   | The SDK is ready to scan payment card                                                                         |
-| PAYMENT_PROCESSING   | null                                   | The SDK has successfully scanned the card and has send the payment for processing                             |
-| PAYMENT_COMPLETED    | null                                   | The SDK has successfully processed the payment and amount has been paid                                       |
-| PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""} | The SDK has failed to process the payment. Please review the data to see why                                  |
-| PIN_WAITING          | {"usingSecondaryScreen":"true\|false"} | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String |
-| PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                |
+| **Event**            | **Data**                               | **Description**                                                                                                                  |
+|----------------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| PAYMENT_WAITING_CARD | null                                   | The SDK is ready to scan payment card                                                                                            |
+| PAYMENT_PROCESSING   | null                                   | The SDK has successfully scanned the card and has send the payment for processing                                                |
+| PAYMENT_COMPLETED    | null                                   | The SDK has successfully processed the payment. NOTE: The transaction might not be paid, due to insufficient balance for example |
+| PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""} | The SDK has failed to process the payment. Please review the data to see why                                                     |
+| PIN_WAITING          | {"usingSecondaryScreen":"true\|false"} | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String                    |
+| PIN_CANCELLED        | null                                   | The pincode input has been cancelled. The transaction itself is also cancelled                                                   |
 
 ##### Example
 
