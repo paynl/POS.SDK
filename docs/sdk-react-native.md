@@ -25,7 +25,7 @@ After installing the NPM package, make sure to update your Cocoapods via:
 
 ```bash
 cd ios
-pod install
+pod install --repo-update
 cd ..
 ```
 
