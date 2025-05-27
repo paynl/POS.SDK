@@ -22,9 +22,7 @@ Your `Podfile` needs to contain the following at minimum:
 
 ```ruby
 # PAY.POS SDK requirement
-platform :ios, 18.0
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/paynl/paynlSpec.git'
+platform :ios, 17.0
 
 target 'MyApp' do
     project './MyApp.xcodeproj'

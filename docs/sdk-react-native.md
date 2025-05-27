@@ -11,22 +11,22 @@
 
 ### Getting started
 
+#### React native
+
+Install the package via:
+
+```bash
+npm i paynl-pos-sdk-react-native
+```
+
 #### iOS Setup
 
-> [!NOTE]
-> If you are not planning to support Tap to Pay on iPhone, you can skip this
+After installing the NPM package, make sure to update your Cocoapods via:
 
-Update your `Podfile` adding the PayNL Spec repository:
-
-```ruby
-...
-
-platform :ios, 18.0
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/paynl/paynlSpec.git'
-
-target 'MyApp' do
-...
+```bash
+cd ios
+pod install
+cd ..
 ```
 
 #### Android setup
@@ -154,18 +154,6 @@ buildscript {
       paynlVersion = "<LATEST_VERSION_HERE>" // <-- The SDK version being used. Check the Paynl docs to see the latest version
     }
 }
-```
-
-#### React native
-
-We can install the package via:
-
-```bash
-npm i paynl-pos-sdk-react-native
-
-# Skip these if you do not develop for iOS
-cd ios
-pod install
 ```
 
 ### SDK flow
