@@ -158,17 +158,10 @@ buildscript {
 
 #### React native
 
-Make sure you have a `.npmrc`-file containing to following at minimum at the same level as your
-`package.json`:
-
-```
-@paynl:registry=https://npm.pkg.github.com
-```
-
-Now, we can install the package via:
+We can install the package via:
 
 ```bash
-npm i @paynl/pos-sdk-react-native
+npm i paynl-pos-sdk-react-native
 
 # Skip these if you do not develop for iOS
 cd ios
