@@ -230,7 +230,7 @@ This function will initialize the SDK. It will return `PayNlInitResult` enum typ
 
 ```ts
 import {Platform} from 'react-native';
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async initSdk() {
@@ -273,12 +273,12 @@ This function does not take parameters and has the following return type: `PayNl
 |----------------------|----------|---------------------------------------------------------------|
 | `response`           | object   |                                                               |
 | `response.code`      | string   | The activation code to be used in the `Terminals:Create` call |
-| `response.expiresAt` | string   | This activation response is valid till this unix timestamp    |
+| `response.expiresAt` | string   | This activation response is valid till this ISO8601 timestamp |
 
 ##### Example
 
 ```ts
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async getActivationCode() {
@@ -307,7 +307,7 @@ It does not have a return type, but you need to provide the code from the `getAc
 ##### Example
 
 ```ts
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async loginViaCode(code: string) {
@@ -339,7 +339,7 @@ and [Merchant:info](https://developer.pay.nl/reference/merchants_info).
 ##### Example
 
 ```ts
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async loginViaCredentials(aCode: string, serviceCode: string, serviceSecret: string) {
@@ -377,7 +377,7 @@ The available information is the following:
 ##### Example
 
 ```ts
-import {PayNlSdk, type TerminalInfo} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk, type TerminalInfo} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     getTerminalInfo(): TerminalInfo | undefined {
@@ -412,7 +412,7 @@ With an activated terminal, you can fetch the allowed currencies this SDK suppor
 ##### Example
 
 ```ts
-import {PayNlSdk, type AllowedCurrency} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk, type AllowedCurrency} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     getTerminalInfo(): AllowedCurrency[] | undefined {
@@ -458,7 +458,7 @@ This function returns the `PayNlTransactionResult` type:
 ##### Example
 
 ```ts
-import {PayNlSdk, type Transaction, type Service} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk, type Transaction, type Service} from 'paynl-pos-sdk-react-native';
 // React Native does not have a Base64 decoder build-in
 import {Buffer} from 'buffer';
 
@@ -505,7 +505,7 @@ These events could be used to render/animate your on view.
 
 ```js
 import {NativeEventEmitter, NativeModules} from 'react-native';
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     setPaymentListener() {
@@ -532,7 +532,7 @@ E-mail address
 ##### Example
 
 ```js
-import {PayNlSdk, type Transaction} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk, type Transaction} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async sendTicket(email: string, transaction: Transaction) {
@@ -557,7 +557,7 @@ Reasons can be: A switch between merchants or this device will not be used for a
 ##### Example
 
 ```ts
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     logout() {
@@ -577,7 +577,7 @@ To provide these logs, you can invoke the `sendLogs()` function
 ##### Example
 
 ```ts
-import {PayNlSdk} from '@paynl/pos-sdk-react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async sendLogs() {
