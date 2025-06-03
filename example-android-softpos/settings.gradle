@@ -12,7 +12,7 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -44,6 +44,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "PAY.POS"
 include ':app'
-
-include ':paynl-sdk-softpos'
-project(":paynl-sdk-softpos").projectDir = new File("../../pay-payments-sdk/sdk-android-softpos/sdk")
