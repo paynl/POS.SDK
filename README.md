@@ -12,10 +12,6 @@ You can use this SDK on the following platforms:
 - Android softpos (using Gradle) [docs](docs/sdk-android-softpos.md) - [example](example-android-softpos)
 - React Native (Old and New Architecture) [docs](docs/sdk-react-native.md) - [example](example-react-native)
 
-### Coming soon
-
-- Sunmi Hardpos SDK
-
 ### Getting started
 
 To get started, please read the documentation of the specific platform, but you can also use the example code to start
