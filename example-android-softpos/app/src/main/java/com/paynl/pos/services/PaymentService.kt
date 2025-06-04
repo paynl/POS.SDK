@@ -16,7 +16,7 @@ class PaymentService {
     private val executorService = Executors.newSingleThreadExecutor();
 
     fun setContext(context: Context) {
-        val integrationId = "b1fe4701-a473-4b20-a9a4-1f2ef8602909" // Received via PayNL support
+        val integrationId = "" // Received via PayNL support
         val license = "PayNL Partner SDK - Testing-lic_01JQNMTHEAEFC6GJT4SHVVJSV1-20250331_082424.license" // License for testing ONLY
         val overlayParams = PaymentOverlayParams()
 
