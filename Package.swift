@@ -17,7 +17,8 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(name: "PayNlPOSSdkSwift",
                       url: "https://paysoftpos.blob.core.windows.net/apk/pos-sdk-swift-package-manager-0.0.21.zip",
-                      checksum: "9e9db3076fbbfedaf4bd50cb71519ed8d8f93ba9785ef545b230990c78256e31"
+                      checksum: "6203b794df442a62d13d24bc23b4d37bc6dc92413be72e6015ebcaa3ccb52d51"
+
         )
 
     ]
