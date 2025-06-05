@@ -150,7 +150,6 @@ buildscript {
       kotlinVersion = "2.0.21"
       androidXBrowser = "1.8.0"
 
-      paynlPackage = "sdk.softpos" // <-- Allows you to switch between different version of the SDK (currently only softpos is supported, but sunmi hardpos is in development)
       paynlVersion = "<LATEST_VERSION_HERE>" // <-- The SDK version being used. Check the Paynl docs to see the latest version
     }
 }
@@ -483,7 +482,7 @@ These events could be used to render/animate your on view.
 | **Event**            | **Data**                                                                                                  | **Description**                                                                                                                                                                    |
 |----------------------|-----------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | PAYMENT_WAITING_CARD | null                                                                                                      | The SDK is ready to scan payment card                                                                                                                                              |
-| PAYMENT_PROCESSING   | {"schemeBrand":"MASTERCARD, MEASTRO, VISA, V_PAY, AMEX, BANCONTACT, UNKNOWN"}                            | The SDK has successfully scanned the card and has send the payment for processing. NOTE: You are required to show [the image](../brands) of that specific scheme during this event |
+| PAYMENT_PROCESSING   | {"schemeBrand":"MASTERCARD, MEASTRO, VISA, V_PAY, AMEX, BANCONTACT, UNKNOWN"}                             | The SDK has successfully scanned the card and has send the payment for processing. NOTE: You are required to show [the image](../brands) of that specific scheme during this event |
 | PAYMENT_COMPLETED    | {"statusAction:"PAID\|DECLINED","transactionId":"MV-xxxx-xxxx-xxxx",orderId":"",reference:"","ticket":""} | The SDK has successfully processed the payment. NOTE: The transaction might not be paid, due to insufficient balance for example                                                   |
 | PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""}                                                                    | The SDK has failed to process the payment. Please review the data to see why                                                                                                       |
 | PIN_WAITING          | {"usingSecondaryScreen":"true\|false"}                                                                    | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String                                                                      |
