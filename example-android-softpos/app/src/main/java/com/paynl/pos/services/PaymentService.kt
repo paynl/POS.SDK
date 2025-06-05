@@ -4,9 +4,14 @@ import android.content.Context
 import android.util.Log
 import com.paynl.pos.sdk.PosService
 import com.paynl.pos.sdk.shared.exceptions.SVErrorBaseException
+import com.paynl.pos.sdk.shared.models.offline.OfflineQueueModel
+import com.paynl.pos.sdk.shared.models.paynl.PayNlConfiguration
 import com.paynl.pos.sdk.shared.models.paynl.PayNlInitResult
+import com.paynl.pos.sdk.shared.models.paynl.PinPadLayoutParams
 import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransaction
 import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionAmount
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionResult
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionStats
 import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionStatus
 import com.paynl.pos.sdk.shared.payment.PaymentOverlayParams
 import java.util.concurrent.Executors
@@ -16,11 +21,19 @@ class PaymentService {
     private val executorService = Executors.newSingleThreadExecutor();
 
     fun setContext(context: Context) {
-        val integrationId = "" // Received via PayNL support
-        val license = "PayNL Partner SDK - Testing-lic_01JQNMTHEAEFC6GJT4SHVVJSV1-20250331_082424.license" // License for testing ONLY
-        val overlayParams = PaymentOverlayParams()
+        val configuration = PayNlConfiguration.Builder()
+            .setIntegrationId("") // Received via PayNL support
+            .setLicenseName("") // License for testing ONLY
+            .setEnableSound(true)
+            .setEnableLogging(true) // If set to false, PayNL cannot provide support
+            .setUseExternalDisplayIfAvailable(true) // Disable if you want the pinpad to always be shown on the primary screen
+            .setEnableOfflineProcessing(true)
+            .setEnforcePinCodeDuringOfflineProcessing(true)
+            .setOverlayParams(PaymentOverlayParams())
+            .setPinPadLayoutParams(PinPadLayoutParams())
+            .build()
 
-        paynlPosService = PosService(context, integrationId, license, overlayParams, true, true, true)
+        paynlPosService = PosService(context, configuration)
     }
 
     fun initSdk(): PayNlInitResult? {
@@ -57,7 +70,7 @@ class PaymentService {
         }
     }
 
-    fun startPayment(amount: Long, description: String, reference: String) {
+    fun startPayment(amount: Long, description: String, reference: String, resetForm: () -> Unit) {
         val service = paynlPosService ?: return
 
         val transaction = PayNlTransaction.Builder()
@@ -69,6 +82,12 @@ class PaymentService {
         // Make sure you start transaction on background thread
         executorService.submit {
             val transactionResult = service.startTransaction(transaction, null)
+            resetForm()
+
+            if (transactionResult.statusAction == PayNlTransactionStatus.OFFLINE) {
+                Log.w("PaymentService", "Payment in Offline queue")
+                return@submit
+            }
 
             if (transactionResult.statusAction != PayNlTransactionStatus.PAID) {
                 Log.e("PaymentService", "Payment failed...")
@@ -76,6 +95,26 @@ class PaymentService {
             }
 
             Log.i("PaymentService", String.format("Payment succeeded!"))
+        }
+    }
+
+    fun getOfflineQueue(): OfflineQueueModel {
+        return paynlPosService?.offlineQueue ?: OfflineQueueModel(0, ArrayList())
+    }
+
+    fun triggerOfflineProcessing(): List<PayNlTransactionResult>? {
+        return try {
+            paynlPosService?.triggerFullOfflineProcessing()
+        } catch (exception: SVErrorBaseException) {
+            null
+        }
+    }
+
+    fun triggerSingleOfflineProcessing(id: String): PayNlTransactionResult? {
+        return try {
+            paynlPosService?.triggerSingleOfflineProcessing(id)
+        } catch (exception: SVErrorBaseException) {
+            null
         }
     }
 

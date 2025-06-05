@@ -43,7 +43,7 @@ class RestPayService {
     companion object {
         val instance: RestPayService = RestPayService()
         val JSON = "application/json".toMediaType()
-        val SERVICE_ID = "SL-XXXX-XXXX"
-        val AT = "Basic ="
+        val SERVICE_ID = "SL-3712-5292"
+        val AT = "Basic QVQtMDA0MS00MDMxOjk4ZjQ5Y2YwY2NlMGI4YTc5NjM5ODUwMTc4MWJmNTI5ZTU5MTkzYTQ="
     }
 }

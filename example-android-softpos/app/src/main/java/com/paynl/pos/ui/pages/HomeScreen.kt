@@ -9,24 +9,33 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paynl.pos.R
+import com.paynl.pos.ui.components.PayNlOfflineSheet
 import com.paynl.pos.ui.components.PayNlPinPad
 import com.paynl.pos.ui.components.PayNlTextField
 import com.paynl.pos.ui.viewModel.HomeViewModel
@@ -38,6 +47,9 @@ fun HomeScreen(viewModel: HomeViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val isKeyboardOpen by keyboardAsState()
 
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -45,13 +57,43 @@ fun HomeScreen(viewModel: HomeViewModel) {
             .padding(horizontal = 30.dp, vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.paynl),
-            contentDescription = "App logo",
-            modifier = Modifier
-                .size(width = 90.dp, height = 90.dp)
-                .padding(bottom = 20.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            TextButton(onClick = { }) {
+                Image(
+                    imageVector = ImageVector.vectorResource(R.drawable.dots_vertical),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color(0x001D1D1D)),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1f)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.paynl),
+                    contentDescription = "App logo",
+                    modifier = Modifier
+                        .size(width = 80.dp, height = 80.dp)
+                        .padding(bottom = 15.dp)
+                )
+            }
+
+            TextButton(
+                onClick = { showBottomSheet = true },
+            ) {
+                Image(
+                    imageVector = ImageVector.vectorResource(R.drawable.dots_vertical),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color(0x801D1D1D)),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -82,7 +124,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
             value = uiState.reference,
             onValueChange = { viewModel.onReferenceChange(it) },
             label = { Text("Reference") },
-            modifier = Modifier.padding(bottom = 40.dp)
+            modifier = Modifier.padding(bottom = 20.dp)
         )
 
         AnimatedVisibility(
@@ -96,6 +138,16 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 isSpecialButtonEnabled = uiState.isSpecialButtonEnabled,
                 onNumber = { viewModel.addValue(it) },
                 onSubmit = { viewModel.startPayment() }
+            )
+        }
+
+        if (showBottomSheet) {
+            PayNlOfflineSheet(
+                offlineQueue = uiState.offlineQueue,
+                onDismiss = { showBottomSheet = false },
+                triggerFullOfflineProcessing = { viewModel.triggerFullOfflineProcessing() },
+                triggerSingleOfflineProcessing = {id -> viewModel.triggerSingleOfflineProcessing(id) },
+                triggerRefresh = { viewModel.refreshQueue() }
             )
         }
     }

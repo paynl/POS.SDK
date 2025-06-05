@@ -1,4 +1,4 @@
-package com.paynl.pos.ui.pages.activation
+package com.paynl.pos.ui.pages
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -32,9 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.paynl.pos.R
-import com.paynl.pos.ui.components.PayNlButtonPrimary
 import com.paynl.pos.ui.components.PayNlButtonSecondary
 import com.paynl.pos.ui.viewModel.OnboardingViewModel
 
@@ -95,7 +93,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel) {
                     .background(Color.Gray)
             ) { }
             Text(
-                "Klik op de code om code te activeren",
+                "Klik voor activatie",
                 modifier = Modifier.padding(horizontal = 5.dp),
                 style = MaterialTheme.typography.bodyMedium
             )

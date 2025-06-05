@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.paynl.pos.ui.pages.SplashScreen
 import com.paynl.pos.ui.pages.HomeScreen
-import com.paynl.pos.ui.pages.activation.OnboardingScreen
+import com.paynl.pos.ui.pages.OnboardingScreen
 import com.paynl.pos.ui.viewModel.HomeViewModel
 import com.paynl.pos.ui.viewModel.OnboardingViewModel
 import com.paynl.pos.ui.viewModel.SplashViewModel
@@ -33,9 +33,11 @@ object Home
 fun PayNlNavigation(context: Context) {
     val navController = rememberNavController()
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .windowInsetsPadding(WindowInsets.systemBars)
+    Box(
+//        contentAlignment = Alignment.TopEnd,
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
     ) {
         NavHost(navController = navController, startDestination = Splash) {
             composable<Splash> { SplashScreen(

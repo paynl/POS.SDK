@@ -21,8 +21,9 @@ class SplashViewModel(private val context: Context, private val navHostControlle
         Log.e("SplashScreen", "onStart")
 
         executeService.submit {
-            PaymentService.instance.setContext(context)
             try {
+                PaymentService.instance.setContext(context)
+
                 val initResult = PaymentService.instance.initSdk()
                 if (initResult == null) {
                     Log.e("SplashScreen", "Got error during init: EMPTY")
