@@ -21,10 +21,11 @@
 | SV-1001  | Failed to load terminal params | Contact PayNL support and share your logs                                                                                                    |
 | SV-1002  | Failed to load payment params  | Contact PayNL support and share your logs                                                                                                    |
 | SV-1003  | Failed to load keys            | Contact PayNL support and share your logs                                                                                                    |
-| SV-1004  | Failed to derive keys          | Contact PayNL support and share your logs                                                                                                    |
+| SV-1004  | Failed to derive keys          | Contact PayNL support and share your logs -> Most likely issue: initSDK has not been called after login                                      |
 | SV-1005  | Failed to encrypt data         | Contact PayNL support and share your logs                                                                                                    |
 | SV-1006  | Failed to scan card            | The provided card is not supported. Please ask the consumer to pay using a different card                                                    |
 | SV-1007  | Failed to capture PIN          | The user cancelled the PIN prompt or something went wrong during PIN capture. If the later, please contact PayNL Support and share your logs |
+| SV-1008  | Configuration is missing       | The SDK did not find a valid configuration. Consider using `setConfiguration` or the full constructor                                        |
 
 ### iOS specific codes
 
