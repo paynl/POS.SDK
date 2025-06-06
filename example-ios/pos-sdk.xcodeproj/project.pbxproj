@@ -377,7 +377,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/paynl/pos-sdk";
 			requirement = {
-				branch = test;
+				branch = master;
 				kind = branch;
 			};
 		};
