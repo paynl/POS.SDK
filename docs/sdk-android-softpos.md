@@ -540,6 +540,24 @@ class PayNLService {
 }
 ```
 
+#### Cancel running transaction
+
+The SDK allows you to cancel any running transaction from the background.
+If this method is triggered while no transaction is running, nothing will happen.
+
+##### Example
+
+```java
+class PayNLService {
+
+  // ...
+  
+  public void cancelTransaction() {
+    this.posService.cancelTransaction();
+  }
+}
+```
+
 #### Send ticket via E-mail
 
 After a succesfull transaction, it is possible to send the ticket via e-mail to someone else.
