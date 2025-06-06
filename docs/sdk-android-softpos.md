@@ -111,24 +111,50 @@ You are not able to use the staging version of the SDK in a production app!
 
 ```mermaid
 flowchart LR;
-  A[initSDK] --> B{readyForPayments}
-  A --> M{needsLogin}
-  B --> K[logout]
-  K --> L{Terminal:delete api}
-  L --> A
+  subgraph Starting point
+  A[initSDK]
+  end
+
+  subgraph Transaction flow
+  A --> B{readyForPayments}
   B --> F[startPayment]
   F --> H{Payment result}
   H --> |PAID: Show Ticket & payerMessage to customer| N
   N[sendTicket] --> F
   H --> |FAILED: Show payerMessage to customer| F
+  H --> |CANCELLED: Show paymentCancelled to customer| F
+  end
+
+  subgraph Get terminal information
   B --> I[getTerminalInfo]
   B --> J[getAllowedCurrencies]
+  end
+
+  subgraph Auth flow
+  A --> M{needsLogin}
+  B --> K[logout]
+  K --> L{Terminal:delete api}
+  L --> A
   M --> C[getActivationCode]
   C --> D{Terminal:Create API}
   D --> E[loginViaCode]
   E --> A
   M --> G[loginViaCredentials]
   G --> A
+
+  end
+
+  subgraph Offline processing
+  H -->|OFFLINE: Add to queue| O{Offline queue}
+  B --> P[getOfflineQueue]
+  P --> O
+  B --> Q[triggerFullOfflineProcessing]
+  Q -->|Process all items from queue| O
+  B --> R[triggerSingleOfflineProcessing]
+  R -->|Fetch single item with ID for processing| O
+  B --> S[clearOfflineItem]
+  S -->|Remove single item from queue| O
+  end
 ```
 
 ### API Spec
