@@ -13,9 +13,6 @@
 - Make sure you have the gradle credentials from PayNL support
 - Make sure you have a personal access token on Github with `read:packages` scope
 
-> [!WARNING]
-> Note that offline mode, as featured in the PAY.POS app, is not supported as of now
-
 ### Getting started
 
 To get started, create a `gradle.properties` file in your global gradle file:
