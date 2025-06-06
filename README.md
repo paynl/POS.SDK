@@ -2,7 +2,7 @@
 
 # PAY.POS SDK
 
-![NPM Version](https://img.shields.io/npm/v/paynl-pos-sdk-react-native)
+![NPM Version](https://img.shields.io/npm/v/paynl-pos-sdk-react-native?label=React%20Native&link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fpaynl-pos-sdk-react-native)
 
 Use this SDK to get a native payment experience on your mobile platform
 
