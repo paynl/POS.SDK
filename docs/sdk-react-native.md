@@ -159,24 +159,50 @@ buildscript {
 
 ```mermaid
 flowchart LR;
-  A[PayNlSdk.initSDK] --> B{readyForPayments}
-  A --> M{needsLogin}
-  B --> K[PayNlSdk.logout]
-  K --> L{Terminal:delete api}
-  L --> A
-  B --> F[PayNlSdk.startPayment]
+  subgraph Starting point
+  A[initSDK]
+  end
+
+  subgraph Transaction flow
+  A --> B{readyForPayments}
+  B --> F[startPayment]
   F --> H{Payment result}
   H --> |PAID: Show Ticket & payerMessage to customer| N
-  N[PayNlSdk.sendTicket] --> F
+  N[sendTicket] --> F
   H --> |FAILED: Show payerMessage to customer| F
-  B --> I[PayNlSdk.getTerminalInfo]
-  B --> J[PayNlSdk.getAllowedCurrencies]
-  M --> C[PayNlSdk.getActivationCode]
+  H --> |CANCELLED: Show paymentCancelled to customer| F
+  end
+
+  subgraph Get terminal information
+  B --> I[getTerminalInfo]
+  B --> J[getAllowedCurrencies]
+  end
+
+  subgraph Auth flow
+  A --> M{needsLogin}
+  B --> K[logout]
+  K --> L{Terminal:delete api}
+  L --> A
+  M --> C[getActivationCode]
   C --> D{Terminal:Create API}
-  D --> E[PayNlSdk.loginViaCode]
+  D --> E[loginViaCode]
   E --> A
-  M --> G[PayNlSdk.loginViaCredentials]
+  M --> G[loginViaCredentials]
   G --> A
+
+  end
+
+  subgraph Offline processing
+  H -->|OFFLINE: Add to queue| O{Offline queue}
+  B --> P[getOfflineQueue]
+  P --> O
+  B --> Q[triggerFullOfflineProcessing]
+  Q -->|Process all items from queue| O
+  B --> R[triggerSingleOfflineProcessing]
+  R -->|Fetch single item with ID for processing| O
+  B --> S[clearOfflineItem]
+  S -->|Remove single item from queue| O
+  end
 ```
 
 ### API Spec
@@ -185,33 +211,45 @@ flowchart LR;
 
 This function will initialize the SDK. It will return `PayNlInitResult` enum type.
 
-| **Name**                            | **Type**             | **Description**                                                                                                                                                                                                                                                              |
-|-------------------------------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| integrationId                       | string               | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                            |
-| licenseName                         | string               | The name of the license file in your assets folder                                                                                                                                                                                                                           |
-| overlayParams                       | PaymentOverlayParams | Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                          |
-| overlayParams.enabled               | boolean              | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                           |
-| overlayParams.closeDelayInMs        | number               | Configures an auto close delay on the overlay (default: 0 -> Keep open)                                                                                                                                                                                                      |
-| overlayParams.logoImage             | string               | The filename for your logo. Make sure the file is placed in the drawable folder (default: `paynl.xml` -> The PayNL logo)                                                                                                                                                     |
-| overlayParams.waitingCardAnimation  | string               | The filename for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `reader_animation.json`)               |
-| overlayParams.buttonShape           | string               | The filename for a custom background shape for the buttons in the overlay. Make sure the file is placed in the drawable folder (Default: pay_btn.xml)                                                                                                                        |
-| overlayParams.progressBarColor      | string               | The color of the loading spinner during processing of Payment. Hex-only (default: `#FF585FFF`)                                                                                                                                                                               |
-| overlayParams.successColor          | string               | The color of the success check when payment is success. Hex-only (default: `#FF00D388`)                                                                                                                                                                                      |
-| overlayParams.errorColor            | string               | The color of error during payment. Hex-only (default: `#FFC5362C`)                                                                                                                                                                                                           |
-| overlayParams.backgroundColor       | string               | The background color of the overlay & ticket viewer. Hex-only (default: `#FFFFFFFF`)                                                                                                                                                                                         |
-| overlayParams.amountTextColor       | string               | The text color of the amount. Hex-only (default: `#FF444444`)                                                                                                                                                                                                                |
-| overlayParams.payerMessageTextColor | string               | The text color of the payerMessage. Hex-only (default: `#FF888888`)                                                                                                                                                                                                          |
-| overlayParams.buttonTextColor       | string               | The text color of the buttons. Hex-only (default: `#FF000000`)                                                                                                                                                                                                               |
-| overlayParams.cancelButtonLabel     | string               | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                                   |
-| overlayParams.closeButtonLabel      | string               | The label text on the close button (default: `Sluiten`)                                                                                                                                                                                                                      |
-| overlayParams.waitingCardLabel      | string               | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                                |
-| overlayParams.processingCardLabel   | string               | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                                   |
-| overlayParams.ticketHeaderLabel     | string               | The label text for the ticket viewer header (default: `Betaling succesvol!`)                                                                                                                                                                                                 |
-| overlayParams.emailHeaderLabel      | string               | The label text for the email ticket header (default: `Voer email adres in`)                                                                                                                                                                                                  |
-| overlayParams.emailButtonLabel      | string               | The label text for the send ticket button (default: `Mailen`)                                                                                                                                                                                                                |
-| useExternalDisplayIfAvailable       | boolean              | (Android only) This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                          |
-| enableSound                         | boolean              | (Android only) During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`) |
-| enableLogging                       | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                        |
+| **Name**                              | **Type**             | **Description**                                                                                                                                                                                                                                                                                              |
+|---------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| integrationId                         | String               | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                                                            |
+| licenseName                           | String               | The name of the license file in your assets folder                                                                                                                                                                                                                                                           |
+| overlayParams                         | PaymentOverlayParams | Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                                                          |
+| overlayParams.enabled                 | boolean              | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                                                           |
+| overlayParams.closeDelayInMs          | long                 | Configures an auto close delay on the overlay (default: 0 -> Keep open)                                                                                                                                                                                                                                      |
+| overlayParams.logoImage               | int                  | The reference id for your logo (default: `R.drawable.paynl` -> The PayNL logo)                                                                                                                                                                                                                               |
+| overlayParams.waitingCardAnimation    | int                  | The reference id for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `R.raw.reader_animation`)                                          |
+| overlayParams.buttonShape             | int                  | The reference id for a custom background shape for the buttons in the overlay. (Default: R.drawable.pay_btn)                                                                                                                                                                                                 |
+| overlayParams.progressBarColor        | String               | The color of the loading spinner during processing of Payment. Hex-only (default: `#FF585FFF`)                                                                                                                                                                                                               |
+| overlayParams.successColor            | String               | The color of the success check when payment is success. Hex-only (default: `#FF00D388`)                                                                                                                                                                                                                      |
+| overlayParams.errorColor              | String               | The color of error during payment. Hex-only (default: `#FFC5362C`)                                                                                                                                                                                                                                           |
+| overlayParams.backgroundColor         | String               | The background color of the overlay & ticket viewer. Hex-only (default: `#FFFFFFFF`)                                                                                                                                                                                                                         |
+| overlayParams.amountTextColor         | String               | The text color of the amount. Hex-only (default: `#FF444444`)                                                                                                                                                                                                                                                |
+| overlayParams.payerMessageTextColor   | String               | The text color of the payerMessage. Hex-only (default: `#FF888888`)                                                                                                                                                                                                                                          |
+| overlayParams.buttonTextColor         | String               | The text color of the buttons. Hex-only (default: `#FF000000`)                                                                                                                                                                                                                                               |
+| overlayParams.cancelButtonLabel       | String               | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                                                                   |
+| overlayParams.closeButtonLabel        | String               | The label text on the close button (default: `Sluiten`)                                                                                                                                                                                                                                                      |
+| overlayParams.waitingCardLabel        | String               | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                                                                |
+| overlayParams.waitingPincode          | String               | The label text while waiting for the pincode (default: `Voer uw pincode in`)                                                                                                                                                                                                                                 |
+| overlayParams.processingCardLabel     | String               | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                                                                   |
+| overlayParams.paymentCancelled        | String               | The label text for payment cancelled (default: `Betaling afgebroken`)                                                                                                                                                                                                                                        |
+| overlayParams.ticketHeaderLabel       | String               | The label text for the ticket viewer header (default: `Betaling succesvol!`)                                                                                                                                                                                                                                 |
+| overlayParams.emailHeaderLabel        | String               | The label text for the email ticket header (default: `Voer email adres in`)                                                                                                                                                                                                                                  |
+| overlayParams.emailButtonLabel        | String               | The label text for the send ticket button (default: `Mailen`)                                                                                                                                                                                                                                                |
+| pinPadLayoutParams.hideShadow         | boolean              | The upper part of the screen shows a shadow during the WAITING_PINCODE. You can disable this and show your own content in the top part via this property (default: false)                                                                                                                                    |
+| pinPadLayoutParams.waitingPincode     | String               | The hint text during WAITING_PINCODE (default: `Voer uw pincode in`)                                                                                                                                                                                                                                         |
+| pinPadLayoutParams.backgroundColor    | String               | The background color of the overlay (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                                 |
+| pinPadLayoutParams.numTextColor       | String               | The text color of the numbers in the pin pad (default: `#FF444444`)                                                                                                                                                                                                                                          |
+| pinPadLayoutParams.okButtonColor      | String               | The background color of the OK button in the pin pad (default: `#FF585FFF`)                                                                                                                                                                                                                                  |
+| pinPadLayoutParams.okButtonTextColor  | String               | The text color of the OK button in the pin pad (default: `#FFFFFFFF`)                                                                                                                                                                                                                                        |
+| pinPadLayoutParams.clearButtonColor   | String               | The button color of the Clear button in the pin pad (default: `#FF888888`)                                                                                                                                                                                                                                   |
+| pinPadLayoutParams.deleteButtonColor  | String               | The button color of the Delete button in the pin pad (default: `#FFC5362C`)                                                                                                                                                                                                                                  |
+| useExternalDisplayIfAvailable         | String               | This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                                                         |
+| enableSound                           | boolean              | During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)                                                |
+| enableOfflineProcessing               | boolean              | ANDROID-ONLY Just like the PAY.POS app, PayNL is able to store your transaction when the mobile phone does not have internet. NOTE: It is not guaranteed that the payment will be approved. This is a major risk while using offline processing (default: `false`)                                           |
+| enforcePinCodeDuringOfflineProcessing | boolean              | ANDROID-ONLY If a payment will be queued for Offline processing, you can enforce a pin prompt for lower risk. NOTE: this will only trigger a pin prompt for supported card (virtual card do not have a pin code). Extra note: This feature still does not guaranteed a successful payment (default: `false`) |
+| enableLogging                         | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                                                        |
 
 ##### Example
 
@@ -569,6 +607,133 @@ import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 class PayNLService {
     async sendLogs() {
         await PayNlSdk.sendLogs();
+    }
+}
+```
+
+#### Get Offline queue - ANDROID ONLY
+
+If `configuration.setEnableOfflineProcessing` is set to true, you need to regularly fetch the content of the Offline
+Processing queue.
+Every transaction that has queued, need to be manually triggered for processing (or you can use the triggerFull
+function).
+To know if a trigger is needed, you can use this method.
+
+##### Response
+
+| **Property**         | **Type/value**     | **Description**                                                                                            |
+|----------------------|--------------------|------------------------------------------------------------------------------------------------------------|
+| `size`               | number             | The size of the queued transactions                                                                        |
+| `queue`              | OfflineQueueItem[] |                                                                                                            |
+| `queue[].id`         | string             | A short identifier of the queued transaction. Can be used for manual trigger or to clear it from the queue |
+| `queue[].reference`  | string?            | The reference provided during the `startTransaction`                                                       |
+| `queue[].enqueuedAt` | string (ISO 8601)  | The datetime of the moment this transaction was enqueued                                                   |
+
+##### Example
+
+```ts
+import {PayNlSdk, type OfflineQueueModel} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+    getOfflineQueue(): Promise<OfflineQueueModel> {
+        return PayNlSdk.getOfflineQueue();
+    }
+}
+```
+
+#### Trigger full offline sync - ANDROID ONLY
+
+If `configuration.setEnableOfflineProcessing` is set to true, you need to manually trigger a sync.
+You can choose to do a full sync or sync per queued item.
+Here is an example for full sync.
+
+##### Response
+
+| **Name**                | **Type**               | **Description**                                                                                                                                                                  |
+|-------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `result`                | object[]               | A list of all the processed transactions. Might not contain all items due to server errors                                                                                       |
+| `result[].statusAction` | PayNlTransactionStatus | The endresult of the transaction. Example: paid, cancelled, failed                                                                                                               |
+| `result[].payerMessage` | string                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
+| `result[].orderId`      | string                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) | 
+| `result[].reference`    | string?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
+| `result[].ticket`       | string                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
+
+##### Example
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+    async triggerFullOfflineProcessing() {
+        try {
+            await PayNlSdk.triggerFullOfflineProcessing();
+        } catch (e) {
+            console.error(`Error from PAY.POS sdk: ${error}`)
+        }
+    }
+}
+```
+
+#### Trigger single offline sync - ANDROID ONLY
+
+If `configuration.setEnableOfflineProcessing` is set to true, you need to manually trigger a sync.
+Here is an example for single sync.
+
+##### Request
+
+| **Property** | **Type/value** | **Description**                                 |
+|--------------|----------------|-------------------------------------------------|
+| `id`         | string         | The identifier fetched from `getOfflineQueue()` |
+
+##### Response
+
+| **Name**              | **Type**               | **Description**                                                                                                                                                                  |
+|-----------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `result`              | object                 | A list of all the processed transactions. Might not contain all items due to server errors                                                                                       |
+| `result.statusAction` | PayNlTransactionStatus | The endresult of the transaction. Example: paid, cancelled, failed                                                                                                               |
+| `result.payerMessage` | string                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
+| `result.orderId`      | string                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) | 
+| `result.reference`    | string?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
+| `result.ticket`       | string                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
+
+##### Example
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+    async triggerSingleOfflineProcessing(id: string) {
+        try {
+            await PayNlSdk.triggerSingleOfflineProcessing(id);
+        } catch (e) {
+            console.error(`Error from PAY.POS sdk: ${error}`)
+        }
+    }
+}
+```
+
+#### Clear item from offline queue - ANDROID ONLY
+
+An offline transaction is valid for 7days, after that the transaction cannot be processed.
+That being said, the SDK does not remove those transaction, you are responsible for maintaining the offline queue.
+To remove a single offline transaction, you can use this method.
+
+##### Request
+
+| **Property** | **Type/value** | **Description**                                 |
+|--------------|----------------|-------------------------------------------------|
+| `id`         | String         | The identifier fetched from `getOfflineQueue()` |
+
+##### Example
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+    async clearOfflineItem(id: string) {
+        if (!PayNlSdk.clearOfflineItem(id)) {
+            console.warn(`Could not remove item from queue -> Item is not found...`)
+        }
     }
 }
 ```
