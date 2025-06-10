@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "PayNlPOSSdkSwiftWrapper",
-    platforms: [ .iOS(.v16) ],
+    platforms: [ .iOS(.v18) ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -16,9 +16,8 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(name: "PayNlPOSSdkSwift",
-                      url: "https://paysoftpos.blob.core.windows.net/apk/pos-sdk-swift-package-manager-0.0.21.zip",
-                      checksum: "6203b794df442a62d13d24bc23b4d37bc6dc92413be72e6015ebcaa3ccb52d51"
-
+                      url: "https://paysoftpos.blob.core.windows.net/apk/pos-sdk-swift-package-manager-.zip",
+                      checksum: "828c5974f40283cc33d2a2dd0ed157d4e74dbd979d0955780adf23b5df8e6a15"
         )
 
     ]
