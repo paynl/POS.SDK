@@ -262,7 +262,7 @@ class PayNLService {
         try {
             const result = await PayNlSdk.initSdk({
                 integrationId: Platform.select({
-                    ios: '',
+                    ios: 'INTEGRATION_ID',
                     default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
                 }),
                 licenseName: '', // Required for Android softpos
@@ -276,6 +276,7 @@ class PayNLService {
                 case 'ready_for_payment':
                     // The SDK is ready to start payment
                     return;
+            }
         } catch (e) {
             console.error(`Error from PAY.POS sdk: ${error}`)
             return undefined;
