@@ -192,7 +192,7 @@ flowchart LR;
 
   end
 
-  subgraph Offline processing
+  subgraph Offline processing - ANDROID ONLY
   H -->|OFFLINE: Add to queue| O{Offline queue}
   B --> P[getOfflineQueue]
   P --> O
