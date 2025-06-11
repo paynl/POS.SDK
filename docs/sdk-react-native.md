@@ -259,26 +259,26 @@ import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
     async initSdk() {
-        const result = await PayNlSdk.initSdk({
-            integrationId: Platform.select({
-                ios: '',
-                default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
-            }),
-            licenseName: '', // Required for Android softpos
-        });
+        try {
+            const result = await PayNlSdk.initSdk({
+                integrationId: Platform.select({
+                    ios: '',
+                    default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
+                }),
+                licenseName: '', // Required for Android softpos
+            });
 
-        switch (result) {
-            case 'needs_login':
-                // Start login flow and reinitialized the SDK
-                return;
+            switch (result) {
+                case 'needs_login':
+                    // Start login flow and reinitialized the SDK
+                    return;
 
-            case 'ready_for_payment':
-                // The SDK is ready to start payment
-                return;
-
-            case 'failed':
-                // Failed to init SDK. Please consult logs or contact PayNL support
-                return;
+                case 'ready_for_payment':
+                    // The SDK is ready to start payment
+                    return;
+        } catch (e) {
+            console.error(`Error from PAY.POS sdk: ${error}`)
+            return undefined;
         }
     }
 }
