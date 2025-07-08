@@ -6,9 +6,8 @@
 
 - Only Sunmi P-devices are supported: [devices](https://www.sunmi.com/en/products#payment)
 - Make sure your P-device has the following software requirements:
-    - SunmiPayHardwareService version 3.3.0 (or version 5.0.34 for Bancontact support, for P2 smartpad Bancontact
-      version 3.3.334)
-    - Remote Key Injection (RKI) app version 1.3.32
+    - SunmiPayHardwareService version 3.3.0 or higher
+    - Remote Key Injection (RKI) app version 1.3.32 or higher
         - The RKI app must also have a certificate
     - if one or both are too lower,
       please [contact Sunmi support](https://sunmi-1.atlassian.net/servicedesk/customer/portal/18/group/23/create/414)
@@ -18,9 +17,6 @@
 #### How to check the software requirements
 
 ##### SunmiPayHardwareService
-
-> [!WARNING]
-> If you want to support Bancontact, make sure you have version 5.0.34 or 3.3.334 for P2 Smartpad
 
 Go to Apps & notifications → App info → three dots → Show system.
 Then scroll down to SunmiPayHardwareService → Advanced.
@@ -75,26 +71,31 @@ allprojects {
 ```
 
 Next, let's make sure you do not get build errors.
-Go to your `android/app/build.gradle`-file and add the following:
+Go to your `app/src/main/AndroidManifest.xml`-file and add the following:
 
-```groovy
-android {
-  ...
-  
-    packaging {
-        resources {
-            excludes += "/META-INF/DEPENDENCIES"
-            excludes += "/META-INF/LICENSE"
-            excludes += "/META-INF/LICENSE.txt"
-            excludes += "/META-INF/license.txt"
-            excludes += "/META-INF/NOTICE"
-            excludes += "/META-INF/NOTICE.txt"
-            excludes += "/META-INF/notice.txt"
-            excludes += "/META-INF/ASL2.0"
-            excludes += "/META-INF/*.kotlin_module"
-        }
-    }
-}
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- SUNMI Permissions -->
+    <uses-permission android:name="com.sunmi.perm.LED"/>
+    <uses-permission android:name="com.sunmi.perm.SECURITY"/>
+    <uses-permission android:name="com.sunmi.perm.PINPAD"/>
+    <uses-permission android:name="com.sunmi.perm.CONTACTLESS_CARD"/>
+    <uses-permission android:name="com.sunmi.perm.ICC"/>
+    <uses-permission android:name="com.sunmi.perm.MSR"/>
+    <uses-permission
+            android:name="android.permission.QUERY_ALL_PACKAGES"
+            tools:ignore="QueryAllPackagesPermission"/>
+
+    <queries>
+        <package android:name="com.sunmi.pay.hardware_v3"/>
+    </queries>
+
+    <application
+            android:allowBackup="true"
+    ...
 ```
 
 Last but not least, let's add the SDK to your Android app.
@@ -104,19 +105,9 @@ In there you can add the PayNL POS SDK via:
 ```groovy
 def PAYNL_VERSION = "<LATEST_VERSION_HERE>"
 dependencies {
-  debugImplementation "com.paynl.pos:sdk.softpos.staging:$PAYNL_VERSION"
-  releaseImplementation "com.paynl.pos:sdk.softpos:$PAYNL_VERSION"
+  implementation "com.paynl.pos:sdk.sunmi:$PAYNL_VERSION"
 }
 ```
-
-#### Why is there a staging and production version?
-
-A softpos application has strict security policies.
-One being the Android security patch, but also other things like ADB or timestamp mismatch and much more.
-
-During development, you do not want to be bothered with these security policies, thus we allow to disable those BUT ONLY
-DURING DEVELOPMENT.
-You are not able to use the staging version of the SDK in a production app!
 
 ### SDK flow
 

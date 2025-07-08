@@ -61,7 +61,7 @@ allprojects {
 ```
 
 Next, let's make sure you do not get build errors.
-Go to your `android/app/build.gradle`-file and add the following:
+Go to your `app/build.gradle`-file and add the following:
 
 ```groovy
 android {
