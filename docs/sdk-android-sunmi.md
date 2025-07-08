@@ -19,7 +19,7 @@
 
 ##### SunmiPayHardwareService
 
-> [!INFO]
+> [!WARNING]
 > If you want to support Bancontact, make sure you have version 5.0.34 or 3.3.334 for P2 Smartpad
 
 Go to Apps & notifications → App info → three dots → Show system.
