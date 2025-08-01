@@ -1,39 +1,13 @@
 <img src="https://www.pay.nl/uploads/1/brands/main_logo.png" width="100px" />
 
-# PAY.POS SDK - Sunmi Hardpos
+# PAY.POS SDK - PAX Hardpos
 
 ### Requirements:
 
-- Only Sunmi P-devices are supported: [devices](https://www.sunmi.com/en/products#payment)
-- Make sure your P-device has the following software requirements:
-    - SunmiPayHardwareService version 3.3.0 or higher
-    - Remote Key Injection (RKI) app version 1.3.32 or higher
-        - The RKI app must also have a certificate
-    - if one or both are too lower,
-      please [contact Sunmi support](https://sunmi-1.atlassian.net/servicedesk/customer/portal/18/group/23/create/414)
+- Only PAX are supported
+- Make sure your PAX device is enlisted on PAYNL's PAX portal
 - Make sure you have contacted PayNL support for an `integrationId` (required for initSDK)
 - Make sure you have a personal access token on Github with `read:packages` scope
-
-#### How to check the software requirements
-
-##### SunmiPayHardwareService
-
-Go to Apps & notifications → App info → three dots → Show system.
-Then scroll down to SunmiPayHardwareService → Advanced.
-At the very bottom, you will see the version and this must be higher then v3.3.0
-
-##### RKI app
-
-Go to Security Center → Password is `SM9876@@` → Advanced.
-There you will see Key Inject with a version below.
-This must be v1.3.32 or higher
-
-##### RKI certificate
-
-Go to Security Center → Password is `SM9876@@` → Advanced → Key Inject.
-Then go to Certificate → Certificate Query.
-Now you should get a pop-up with information about the certificate that is loaded in the device.
-If not, please contact Sunmi support or PayNL supoprt.
 
 ### Getting started
 
@@ -78,24 +52,20 @@ Go to your `app/src/main/AndroidManifest.xml`-file and add the following:
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- SUNMI Permissions -->
-    <uses-permission android:name="com.sunmi.perm.LED"/>
-    <uses-permission android:name="com.sunmi.perm.SECURITY"/>
-    <uses-permission android:name="com.sunmi.perm.PINPAD"/>
-    <uses-permission android:name="com.sunmi.perm.CONTACTLESS_CARD"/>
-    <uses-permission android:name="com.sunmi.perm.ICC"/>
-    <uses-permission android:name="com.sunmi.perm.MSR"/>
-    <uses-permission
-            android:name="android.permission.QUERY_ALL_PACKAGES"
-            tools:ignore="QueryAllPackagesPermission"/>
-
-    <queries>
-        <package android:name="com.sunmi.pay.hardware_v3"/>
-    </queries>
+    <!-- PAX Permissions -->
+    <uses-permission android:name="com.pax.permission.PRINTER"/>
+    <uses-permission android:name="com.pax.permission.PED"/>
+    <uses-permission android:name="com.pax.permission.ICC"/>
+    <uses-permission android:name="com.pax.permission.PICC"/>
+    <uses-permission android:name="com.pax.permission.MAGCARD"/>
 
     <application
             android:allowBackup="true"
-    ...
+            android:icon="@mipmap/ic_launcher"
+            android:label="PAY.POS"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:extractNativeLibs="true" <!-- DO NOT FORGET THIS LINE -->
 ```
 
 Last but not least, let's add the SDK to your Android app.
@@ -105,7 +75,7 @@ In there you can add the PayNL POS SDK via:
 ```groovy
 def PAYNL_VERSION = "<LATEST_VERSION_HERE>"
 dependencies {
-  implementation "com.paynl.pos:sdk.sunmi:$PAYNL_VERSION"
+  implementation "com.paynl.pos:sdk.pax:$PAYNL_VERSION"
 }
 ```
 

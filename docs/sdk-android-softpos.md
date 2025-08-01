@@ -506,6 +506,57 @@ class PayNLService {
 }
 ```
 
+#### Refunds
+
+In order to a refund payment, make sure the following is done:
+
+- SDK version is v0.0.67 or higher
+- SDK is activated
+- SL-code & TH-code have Refunds activated (contact PayNL support for this)
+- You have set the PayNLConfiguration to `setCore(PayNlCore.MULTI)`
+
+To do a refund, set the transactio type to refund:
+
+```java
+import android.util.Log;
+
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransaction;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionAmount;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionResult;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionStatus;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionType;`
+
+class PayNLService {
+
+  // ...
+  
+  public void startTransaction() {
+    try {
+      PayNlTransaction transaction = new PayNlTransaction.Builder()
+              .setType(PayNlTransactionType.REFUND)
+              .setAmount(new PayNlTransactionAmount(100, "EUR"))
+              .build();
+
+      PayNlTransactionResult result = this.posService.startTransaction(transaction, null);
+
+      if (result.statusAction != PayNlTransactionStatus.PAID) {
+        Log.w("PayNlExample", "Payment failed or cancelled...");
+        return;
+      }
+
+      Log.i("PayNLExample", "Payment processed!");
+      Log.i("PayNLExample", String.format("OrderId: %s\nReference: %s\nPayerMessage: %s", result.orderId, result.reference, result.payerMessage));
+
+      byte[] ticketBytes = Base64.getDecoder().decode(result.ticket);
+      Log.i("PayNLExample", String.format("Ticket data:\n\n%s", new String(ticketBytes)));
+
+    } catch (SVErrorBaseException e) {
+      Log.e("PayNLExample", String.format("Failed to process payment - code: %s, description: %s", e.code, e.description));
+    }
+  }
+}
+```
+
 #### Payment Events
 
 During a transaction, it is possible to receive events.
