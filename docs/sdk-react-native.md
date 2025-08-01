@@ -134,7 +134,7 @@ android {
 }
 ```
 
-##### Advanced
+##### Advanced - Version
 
 It is also possible to pin the SDK version used by the React Native package.
 Go to your `android/build.gradle` and add the default configuration:
@@ -152,6 +152,41 @@ buildscript {
 
       paynlVersion = "<LATEST_VERSION_HERE>" // <-- The SDK version being used. Check the Paynl docs to see the latest version
     }
+}
+```
+
+##### Advanced - Swapping between SDK's
+
+Other advanced option is to define which sdk you want to use.
+Like the Android Softpos, Android Sunmi hardpos, etc,
+Go to your `android/app/build.gradle` and add the following:
+
+```groovy
+android {
+
+  buildTypes {
+    debug {
+      rootProject.ext.paynlVersion = "0.0.66"
+      rootProject.ext.paynlPackage = "sdk.softpos"
+    }
+
+    debugSunmi {
+      matchingFallbacks = ['debug']
+      rootProject.ext.paynlVersion = "0.0.10"
+      rootProject.ext.paynlPackage = "sdk.sunmi"
+    }
+
+    release {
+      rootProject.ext.paynlVersion = "0.0.66"
+      rootProject.ext.paynlPackage = "sdk.softpos"
+    }
+
+    releaseSunmi {
+      matchingFallbacks = ['release']
+      rootProject.ext.paynlVersion = "0.0.10"
+      rootProject.ext.paynlPackage = "sdk.sunmi"
+    }
+  }
 }
 ```
 
