@@ -94,7 +94,9 @@ Go to your `app/src/main/AndroidManifest.xml`-file and add the following:
     </queries>
 
     <application
-            android:allowBackup="true"
+            android:name=".MainApplication"
+            android:allowBackup="false"
+            android:extractNativeLibs="true" <!-- DO NOT FORGET THIS LINE -->
     ...
 ```
 
@@ -509,6 +511,16 @@ class PayNLService {
 }
 ```
 
+#### MIFARE
+
+The SDK is able to scan MIFARE cards and return its serial number to you.
+
+In order to do this, make sure the following is done:
+
+- SDK version is v0.0.74
+- You have set the PayNLConfiguration to `setEnableMifareScanning(true)`
+- You handle statusAction `PayNlTransactionStatus.MIFARE`
+
 #### Refunds
 
 In order to a refund payment, make sure the following is done:
@@ -573,6 +585,7 @@ These events could be used to render/animate yourown view.
 | PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""}                                                                    | The SDK has failed to process the payment. Please review the data to see why                                                                                                       |
 | PIN_WAITING          | {"usingSecondaryScreen":"true\|false"}                                                                    | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String                                                                      |
 | PIN_CANCELLED        | null                                                                                                      | The pincode input has been cancelled. The transaction itself is also cancelled                                                                                                     |
+| MIFARE               | { "mifareSerial": "xxxxxx" }                                                                              | The SDK has detected a MIFARE card and has returned the serial number of this card                                                                                                 |
 
 ##### Example
 
