@@ -215,16 +215,18 @@ flowchart LR;
 
   subgraph Auth flow
   A --> M{needsLogin}
-  B --> K[logout]
-  K --> L{Terminal:delete api}
-  L --> A
   M --> C[getActivationCode]
   C --> D{Terminal:Create API}
   D --> E[loginViaCode]
   E --> A
   M --> G[loginViaCredentials]
   G --> A
-
+  end
+  
+  subgraph Logout flow
+  B --> K[logout]
+  K --> L{Terminal:delete api}
+  L --> A
   end
 
   subgraph Offline processing - ANDROID ONLY
@@ -282,6 +284,7 @@ This function will initialize the SDK. It will return `PayNlInitResult` enum typ
 | pinPadLayoutParams.deleteButtonColor  | String               | The button color of the Delete button in the pin pad (default: `#FFC5362C`)                                                                                                                                                                                                                                  |
 | useExternalDisplayIfAvailable         | String               | ANDROID-ONLY This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                                            |
 | enableSound                           | boolean              | ANDROID-ONLY During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)                                   |
+| configuration.enableMifareScanning    | boolean              | Allows the SDK to not only scan for Payment card, but also MIFARE cards (default: `false`)                                                                                                                                                                                                                   |
 | enableOfflineProcessing               | boolean              | ANDROID-ONLY Just like the PAY.POS app, PayNL is able to store your transaction when the mobile phone does not have internet. NOTE: It is not guaranteed that the payment will be approved. This is a major risk while using offline processing (default: `false`)                                           |
 | enforcePinCodeDuringOfflineProcessing | boolean              | ANDROID-ONLY If a payment will be queued for Offline processing, you can enforce a pin prompt for lower risk. NOTE: this will only trigger a pin prompt for supported card (virtual card do not have a pin code). Extra note: This feature still does not guaranteed a successful payment (default: `false`) |
 | enableLogging                         | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                                                        |
@@ -548,6 +551,16 @@ class PayNLService {
 }
 ```
 
+#### MIFARE - ANDROID ONLY
+
+The SDK is able to scan MIFARE cards and return its serial number to you.
+
+In order to do this, make sure the following is done:
+
+- SDK version is support MIFARE -> see docs of SDK to get more details
+- You have set the PayNLConfiguration to `enableMifareScanning: true`
+- You handle statusAction `PayNlTransactionStatus.MIFARE`
+
 #### Payment Events - ANDROID ONLY
 
 During a transaction, it is possible to receive events.
@@ -561,6 +574,7 @@ These events could be used to render/animate your on view.
 | PAYMENT_FAILED       | {"code": "SV-xxxx", "description": ""}                                                                    | The SDK has failed to process the payment. Please review the data to see why                                                                                                       |
 | PIN_WAITING          | {"usingSecondaryScreen":"true\|false"}                                                                    | The SDK is waiting for the pincode of the customer. Please note that `usingSecondaryScreen` is of type String                                                                      |
 | PIN_CANCELLED        | null                                                                                                      | The pincode input has been cancelled. The transaction itself is also cancelled                                                                                                     |
+| MIFARE               | { "mifareSerial": "xxxxxx" }                                                                              | The SDK has detected a MIFARE card and has returned the serial number of this card                                                                                                 |
 
 ##### Example
 
