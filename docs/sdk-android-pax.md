@@ -104,16 +104,18 @@ flowchart LR;
 
   subgraph Auth flow
   A --> M{needsLogin}
-  B --> K[logout]
-  K --> L{Terminal:delete api}
-  L --> A
   M --> C[getActivationCode]
   C --> D{Terminal:Create API}
   D --> E[loginViaCode]
   E --> A
   M --> G[loginViaCredentials]
   G --> A
-
+  end
+  
+  subgraph Logout flow
+  B --> K[logout]
+  K --> L{Terminal:delete api}
+  L --> A
   end
 
   subgraph Offline processing
