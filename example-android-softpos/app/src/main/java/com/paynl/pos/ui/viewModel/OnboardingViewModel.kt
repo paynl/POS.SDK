@@ -2,6 +2,7 @@ package com.paynl.pos.ui.viewModel
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import com.paynl.pos.Home

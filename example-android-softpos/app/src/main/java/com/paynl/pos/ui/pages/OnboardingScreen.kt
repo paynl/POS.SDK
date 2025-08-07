@@ -111,7 +111,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel) {
                 enter = slideInVertically(initialOffsetY = { it / 2 }),
             ) {
                 Text(
-                    uiState.activationCode.toString(),
+                    uiState.activationCode,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary
                 )

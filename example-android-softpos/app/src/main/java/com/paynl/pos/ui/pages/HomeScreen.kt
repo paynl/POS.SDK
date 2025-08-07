@@ -39,7 +39,6 @@ import com.paynl.pos.ui.components.PayNlOfflineSheet
 import com.paynl.pos.ui.components.PayNlPinPad
 import com.paynl.pos.ui.components.PayNlTextField
 import com.paynl.pos.ui.viewModel.HomeViewModel
-import java.nio.file.WatchEvent
 import java.util.Locale
 
 @Composable
@@ -54,7 +53,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .padding(horizontal = 30.dp, vertical = 20.dp),
+            .padding(horizontal = 20.dp, vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -77,7 +76,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     painter = painterResource(id = R.drawable.paynl),
                     contentDescription = "App logo",
                     modifier = Modifier
-                        .size(width = 80.dp, height = 80.dp)
+                        .size(width = 40.dp, height = 40.dp)
                         .padding(bottom = 15.dp)
                 )
             }
@@ -102,13 +101,13 @@ fun HomeScreen(viewModel: HomeViewModel) {
             Text(
                 String.format(Locale.UK, "€ %d,", (uiState.amount / 100).toInt()),
                 style = MaterialTheme.typography.titleLarge,
-                fontSize = 56.sp,
+                fontSize = 42.sp,
                 color = if (uiState.amount == 0.toLong()) Color(0x4D1D1D1D) else Color.Unspecified
             )
             Text(
                 String.format(Locale.UK, "%02d", uiState.amount.mod(100)),
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 36.sp,
+                fontSize = 32.sp,
                 color = if (uiState.amount == 0.toLong()) Color(0x4D1D1D1D) else Color.Unspecified
             )
         }
@@ -117,14 +116,14 @@ fun HomeScreen(viewModel: HomeViewModel) {
             value = uiState.description,
             onValueChange = { viewModel.onDescriptionChange(it) },
             label = { Text("Description") },
-            modifier = Modifier.padding(bottom = 20.dp)
+            modifier = Modifier.padding(bottom = 10.dp)
         )
 
         PayNlTextField(
             value = uiState.reference,
             onValueChange = { viewModel.onReferenceChange(it) },
             label = { Text("Reference") },
-            modifier = Modifier.padding(bottom = 20.dp)
+            modifier = Modifier.padding(bottom = 10.dp)
         )
 
         AnimatedVisibility(
