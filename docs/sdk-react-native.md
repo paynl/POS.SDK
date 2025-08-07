@@ -2,6 +2,32 @@
 
 # PAY.POS SDK - React Native
 
+### Table of content
+
+- [Requirements:](#requirements-)
+- [Getting started](#getting-started)
+- [SDK flow](#sdk-flow)
+- [API Spec](#api-spec)
+    * [Init sdk](#init-sdk)
+    * [Get activation code](#get-activation-code)
+    * [loginViaCode](#loginviacode)
+    * [loginViaCode](#loginviacode-1)
+    * [Get terminal info](#get-terminal-info)
+    * [Get allowed currencies](#get-allowed-currencies)
+    * [Start payment](#start-payment)
+        + [MIFARE](#mifare)
+        + [Refunds](#refunds)
+        + [Payment Events](#payment-events)
+    * [Cancel running transaction](#cancel-running-transaction)
+    * [Print ticket](#print-ticket)
+    * [Send ticket via E-mail](#send-ticket-via-e-mail)
+    * [Logout](#logout)
+    * [Send logs](#send-logs)
+    * [Get Offline queue](#get-offline-queue)
+    * [Trigger full offline sync](#trigger-full-offline-sync)
+    * [Trigger single offline sync](#trigger-single-offline-sync)
+    * [Clear item from offline queue](#clear-item-from-offline-queue)
+
 ### Requirements
 
 - React native using Old and New Architecture (>= 0.75.0)
@@ -203,7 +229,9 @@ flowchart LR;
   B --> F[startPayment]
   F --> H{Payment result}
   H --> |PAID: Show Ticket & payerMessage to customer| N
+  H --> |PAID: Show Ticket & payerMessage to customer| T
   N[sendTicket] --> F
+  T[printTicket] --> F
   H --> |FAILED: Show payerMessage to customer| F
   H --> |CANCELLED: Show paymentCancelled to customer| F
   end
@@ -598,9 +626,36 @@ class PayNLService {
 }
 ```
 
+#### Print ticket
+
+After a successful transaction, it is possible to print the ticket via the SDK (if the terminal has a supported printer,
+currently only Sunmi build-in printers are supported).
+You can check if the SDK can find a supported printer
+
+##### Example
+
+```js
+import {PayNlSdk, type Transaction} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+    async printTicket(transaction: Transaction) {
+        if (!PayNlSdk.hasPrinter()) {
+            console.warn('No supported printer found...');
+            return;
+        }
+
+        try {
+            await PayNlSdk.printTicket(transaction.ticket);
+        } catch (e) {
+            console.error(`Error from PAY.POS sdk: ${error}`)
+        }
+    }
+}
+```
+
 #### Send ticket via E-mail
 
-After a succesfull transaction, it is possible to send the ticket via e-mail to someone else.
+After a successful transaction, it is possible to send the ticket via e-mail to someone else.
 For this, you need the transactionId (MV-code), the ticket self (both received after startTransaction), and the user's
 E-mail address
 

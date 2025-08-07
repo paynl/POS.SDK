@@ -2,6 +2,32 @@
 
 # PAY.POS SDK - Android Softpos
 
+### Table of content
+
+- [Requirements:](#requirements-)
+- [Getting started](#getting-started)
+- [SDK flow](#sdk-flow)
+- [API Spec](#api-spec)
+    * [Init sdk](#init-sdk)
+    * [Get activation code](#get-activation-code)
+    * [loginViaCode](#loginviacode)
+    * [loginViaCode](#loginviacode-1)
+    * [Get terminal info](#get-terminal-info)
+    * [Get allowed currencies](#get-allowed-currencies)
+    * [Start payment](#start-payment)
+        + [MIFARE](#mifare)
+        + [Refunds](#refunds)
+        + [Payment Events](#payment-events)
+    * [Cancel running transaction](#cancel-running-transaction)
+    * [Print ticket](#print-ticket)
+    * [Send ticket via E-mail](#send-ticket-via-e-mail)
+    * [Logout](#logout)
+    * [Send logs](#send-logs)
+    * [Get Offline queue](#get-offline-queue)
+    * [Trigger full offline sync](#trigger-full-offline-sync)
+    * [Trigger single offline sync](#trigger-single-offline-sync)
+    * [Clear item from offline queue](#clear-item-from-offline-queue)
+
 ### Requirements:
 
 - Android v8.0 or higher (minSDK 26)
@@ -117,7 +143,9 @@ flowchart LR;
   B --> F[startPayment]
   F --> H{Payment result}
   H --> |PAID: Show Ticket & payerMessage to customer| N
+  H --> |PAID: Show Ticket & payerMessage to customer| T
   N[sendTicket] --> F
+  T[printTicket] --> F
   H --> |FAILED: Show payerMessage to customer| F
   H --> |CANCELLED: Show paymentCancelled to customer| F
   end
@@ -616,6 +644,36 @@ class PayNLService {
   
   public void cancelTransaction() {
     this.posService.cancelTransaction();
+  }
+}
+```
+
+#### Print ticket
+
+After a successful transaction, it is possible to print the ticket via the SDK (if the terminal has a supported printer,
+currently only Sunmi build-in printers are supported).
+You can check if the SDK can find a supported printer
+
+##### Example
+
+```java
+import android.util.Log;
+
+class PayNLService {
+
+  // ...
+  
+  public void printTicket(PayNlTransactionResult transaction) {
+    if (!this.posService.hasPrinter()) {
+      Log.w("PayNLExample", "No supported printer found...");
+      return;
+    }
+    
+    try {
+      this.posService.printTicket(transaction.ticket);
+    } catch (SVErrorBaseException e) {
+      Log.e("PayNLExample", String.format("Failed to send ticket - code: %s, description: %s", e.code, e.description));
+    }
   }
 }
 ```
