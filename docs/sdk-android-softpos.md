@@ -142,10 +142,8 @@ flowchart LR;
   A --> B{readyForPayments}
   B --> F[startPayment]
   F --> H{Payment result}
-  H --> |PAID: Show Ticket & payerMessage to customer| N
-  H --> |PAID: Show Ticket & payerMessage to customer| T
-  N[sendTicket] --> F
-  T[printTicket] --> F
+  B --> N[sendTicket]
+  B --> T[printTicket]
   H --> |FAILED: Show payerMessage to customer| F
   H --> |CANCELLED: Show paymentCancelled to customer| F
   end
