@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.78 - 07-08-2025
+
+- fix: better handling for NFC reader
+
 #### v0.0.76 - 07-08-2025
 
 - feat: add support for printing tickets using Sunmi printers
