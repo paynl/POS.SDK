@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.81 - 11-08-2025
+
+- fix: dual screen pinprompt fix
+
 #### v0.0.80 - 11-08-2025
 
 - fix: better error handling for sounds
