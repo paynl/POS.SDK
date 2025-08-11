@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.80 - 11-08-2025
+
+- fix: better error handling for sounds
+
 #### v0.0.78 - 07-08-2025
 
 - fix: better handling for NFC reader
@@ -34,6 +38,10 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.18 - 11-08-2025
+
+- fix: better error handling for sounds
+
 #### v0.0.17 - 07-08-2025
 
 - feat: add support for printing tickets
@@ -51,6 +59,10 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.8 - 11-08-2025
+
+- fix: better error handling for sounds
 
 #### v0.0.7 - 07-08-2025
 
