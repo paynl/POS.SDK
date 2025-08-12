@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.83 - 12-08-2025
+
+- fix: retry init kernel when failure detected
+
 #### v0.0.82 - 12-08-2025
 
 - fix: prevent app crash when scanning MIFARE before starting payment
