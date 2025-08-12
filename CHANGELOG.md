@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.82 - 12-08-2025
+
+- fix: prevent app crash when scanning MIFARE before starting payment
+
 #### v0.0.81 - 11-08-2025
 
 - fix: dual screen pinprompt fix
