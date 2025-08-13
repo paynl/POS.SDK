@@ -94,6 +94,10 @@
 
 ## React Native
 
+#### v0.0.49 - 12-08-2025
+
+- chore: update PAY.POS dependencies
+
 #### v0.0.48 - 07-08-2025
 
 - feat: add support for printing tickets
