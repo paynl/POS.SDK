@@ -569,7 +569,7 @@ class PayNLService {
 
   // ...
   
-  public void startTransaction() {
+  public void startRefund() {
     try {
       PayNlTransaction transaction = new PayNlTransaction.Builder()
               .setType(PayNlTransactionType.REFUND)
