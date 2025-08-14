@@ -307,7 +307,7 @@
 | PAY-722118    | PIN_NOT_ALLOWED                | Try again later or send logs and contact PayNL support                     |
 | PAY-722119    | PIN_INPUT_CANCELLED            | Pin input has been cancelled by customer. Start new transaction            |
 
-# PAX hardpos errors
+### PAX hardpos errors
 
 | **PAY-error** | **Title**                     | **Description**       |
 |---------------|-------------------------------|-----------------------|
