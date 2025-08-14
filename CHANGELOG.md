@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.84 - 13-08-2025
+
+- fix: retry init kernel caused issues
+
 #### v0.0.83 - 12-08-2025
 
 - fix: retry init kernel when failure detected
