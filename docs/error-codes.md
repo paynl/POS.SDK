@@ -2,7 +2,7 @@
 
 # PAY.POS SDK - Error codes NEW
 
-> [!NOTICE]
+> [!NOTE]
 > These are the new error codes. For the older SV-error, please review the bottom of this document
 
 ### Android softpos errors
