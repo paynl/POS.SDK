@@ -4,9 +4,9 @@
 
 ## Android softpos
 
-#### v0.0.84 - 13-08-2025
+#### v0.0.86 - 18-08-2025
 
-- fix: retry init kernel caused issues
+- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.83 - 12-08-2025
 
@@ -54,6 +54,11 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.19 - 18-08-2025
+
+- chore: improve battery consumption
+- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
+
 #### v0.0.18 - 11-08-2025
 
 - fix: better error handling for sounds
@@ -76,6 +81,10 @@
 
 ## Android PAX hardpos
 
+#### v0.0.9 - 18-08-2025
+
+- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
+
 #### v0.0.8 - 11-08-2025
 
 - fix: better error handling for sounds
@@ -97,6 +106,10 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## React Native
+
+#### v0.0.50 - 18-08-2025
+
+- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.49 - 12-08-2025
 
