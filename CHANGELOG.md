@@ -4,6 +4,14 @@
 
 ## Android softpos
 
+#### v0.0.88 - 19-08-2025
+
+- fix: hotfix for refunds
+
+#### v0.0.87 - 18-08-2025
+
+- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
+
 #### v0.0.86 - 18-08-2025
 
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
