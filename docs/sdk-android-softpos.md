@@ -650,8 +650,8 @@ class PayNLService {
 #### Print ticket
 
 After a successful transaction, it is possible to print the ticket via the SDK (if the terminal has a supported printer,
-currently only Sunmi build-in printers are supported).
-You can check if the SDK can find a supported printer
+currently only [Sunmi build-in printers](https://developer.sunmi.com/docs/en-US/xeghjk491/rfzeghjk557) are supported).
+You can check if the SDK can find a supported printer using `hasPrinter` function.
 
 ##### Example
 
