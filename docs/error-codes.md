@@ -287,6 +287,7 @@
 | PAY-720007    | PASSCODE_REQUIRED              | iPhone needs to have a passcode before it can support Tap to Pay on iPhone |
 | PAY-722003    | READER_NOT_INITIALIZED         | Try again later or send logs and contact PayNL support                     |
 | PAY-722002    | TOKEN_NOT_LOADED               | Try again later or send logs and contact PayNL support                     |
+| PAY-722001    | PROXIMITY_NOT_INITIALIZED      | Try again later or send logs and contact PayNL support                     |
 | PAY-722101    | ACCOUNT_NOT_LINKED             | Try again later or send logs and contact PayNL support                     |
 | PAY-722102    | PREPARE_FAILED                 | Try again later or send logs and contact PayNL support                     |
 | PAY-722103    | INVALID_READER_TOKEN           | Try again later or send logs and contact PayNL support                     |
