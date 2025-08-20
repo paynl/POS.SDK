@@ -113,6 +113,12 @@
 
 - fix: rework builder patterns to fix proguard issue
 
+## iOS - Tap to Pay on iPhone
+
+### v0.0.24 - 20-08-2025
+
+- fix: improve error reporting durign startPayment
+
 ## React Native
 
 #### v0.0.50 - 18-08-2025
