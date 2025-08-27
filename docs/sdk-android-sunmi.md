@@ -63,7 +63,10 @@ If not, please contact Sunmi support or PayNL supoprt.
 
 ### Getting started
 
-To get started, create a `gradle.properties` file in your global gradle file:
+To get started, [create a Github PAT](https://github.com/settings/tokens/new) with the following rights:
+`repo, write:packages`
+
+Use this token to create a `gradle.properties` file in your global gradle file:
 
 - MacOS: `~/.gradle/gradle.properties`
 - Windows: `USER_HOME/.gradle/gradle.properties`
@@ -84,11 +87,11 @@ allprojects {
        
        // ---- This needs to be added ----
        maven {
-        name = "PayNLMavenClientRegistry"
-        url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
+        name = "PayNLRegistry"
+        url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
         credentials {
-          username = project.PAYNL_REGISTRY_LOGIN
-          password = project.PAYNL_REGISTRY_TOKEN
+          username = project.GITHUB_USERNAME
+          password = project.GITHUB_PERSONAL_TOKEN
         }
       }
       // ---- END ----
