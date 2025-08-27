@@ -4,7 +4,7 @@
 
 ### Table of content
 
-- [Requirements:](#requirements-)
+- [Requirements](#requirements)
 - [Getting started](#getting-started)
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
@@ -28,7 +28,7 @@
     * [Trigger single offline sync](#trigger-single-offline-sync)
     * [Clear item from offline queue](#clear-item-from-offline-queue)
 
-### Requirements:
+### Requirements
 
 - Android v8.0 or higher (minSDK 26)
     - Android security patch is not older than 2 years

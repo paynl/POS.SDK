@@ -4,7 +4,7 @@
 
 ### Table of content
 
-- [Requirements:](#requirements-)
+- [Requirements](#requirements)
 - [Getting started](#getting-started)
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
@@ -28,7 +28,7 @@
     * [Trigger single offline sync](#trigger-single-offline-sync)
     * [Clear item from offline queue](#clear-item-from-offline-queue)
 
-### Requirements:
+### Requirements
 
 - Only Sunmi P-devices are supported: [devices](https://www.sunmi.com/en/products#payment)
 - Make sure your P-device has the following software requirements:
@@ -48,11 +48,15 @@ Go to Apps & notifications → App info → three dots → Show system.
 Then scroll down to SunmiPayHardwareService → Advanced.
 At the very bottom, you will see the version and this must be higher then v3.3.0
 
+<img src="images/sunmi_driver.png" width="100px"/>
+
 ##### RKI app
 
 Go to Security Center → Password is `SM9876@@` → Advanced.
 There you will see Key Inject with a version below.
 This must be v1.3.32 or higher
+
+<img src="images/sunmi_rki.png" width="100px"/>
 
 ##### RKI certificate
 
@@ -60,6 +64,8 @@ Go to Security Center → Password is `SM9876@@` → Advanced → Key Inject.
 Then go to Certificate → Certificate Query.
 Now you should get a pop-up with information about the certificate that is loaded in the device.
 If not, please contact Sunmi support or PayNL supoprt.
+
+<img src="images/sunmi_certificate.png" width="100px"/>
 
 ### Getting started
 
