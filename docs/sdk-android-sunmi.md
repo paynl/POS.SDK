@@ -11,7 +11,7 @@
     * [Init sdk](#init-sdk)
     * [Get activation code](#get-activation-code)
     * [loginViaCode](#loginviacode)
-    * [loginViaCode](#loginviacode-1)
+    * [loginViaCredentials](#loginViaCredentials)
     * [Get terminal info](#get-terminal-info)
     * [Get allowed currencies](#get-allowed-currencies)
     * [Start payment](#start-payment)
@@ -364,7 +364,7 @@ class PayNLService {
 }
 ```
 
-#### loginViaCode
+#### loginViaCredentials
 
 > [!WARNING]
 > Only use this if the `initSdk` method returned `.needsLogin`.
