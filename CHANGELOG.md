@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.92 - 08-09-2025
+- chore: improve logging
+
 #### v0.0.91 - 08-09-2025
 - fix: prevent MainThreadException during sendLogs
 
