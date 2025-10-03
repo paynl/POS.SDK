@@ -121,6 +121,18 @@
 
 ## React Native
 
+#### v0.0.55 - 03-10-2025
+
+- feat: add missing setConfiguration function
+
+#### v0.0.54 - 08-09-2025
+
+- chore: update dependency to 0.0.91
+
+#### v0.0.51 - 18-08-2025
+
+- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
+
 #### v0.0.50 - 18-08-2025
 
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot

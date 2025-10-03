@@ -9,6 +9,7 @@
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
     * [Init sdk](#init-sdk)
+    * [Set configuration](#set-configuration)
     * [Get activation code](#get-activation-code)
     * [loginViaCode](#loginviacode)
     * [loginViaCode](#loginviacode-1)
@@ -310,7 +311,7 @@ This function will initialize the SDK. It will return `PayNlInitResult` enum typ
 | pinPadLayoutParams.deleteButtonColor  | String               | The button color of the Delete button in the pin pad (default: `#FFC5362C`)                                                                                                                                                                                                                                  |
 | useExternalDisplayIfAvailable         | String               | ANDROID-ONLY This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                                            |
 | enableSound                           | boolean              | ANDROID-ONLY During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)                                   |
-| enableMifareScanning    | boolean              | Allows the SDK to not only scan for Payment card, but also MIFARE cards (default: `false`)                                                                                                                                                                                                                   |
+| enableMifareScanning                  | boolean              | Allows the SDK to not only scan for Payment card, but also MIFARE cards (default: `false`)                                                                                                                                                                                                                   |
 | enableOfflineProcessing               | boolean              | ANDROID-ONLY Just like the PAY.POS app, PayNL is able to store your transaction when the mobile phone does not have internet. NOTE: It is not guaranteed that the payment will be approved. This is a major risk while using offline processing (default: `false`)                                           |
 | enforcePinCodeDuringOfflineProcessing | boolean              | ANDROID-ONLY If a payment will be queued for Offline processing, you can enforce a pin prompt for lower risk. NOTE: this will only trigger a pin prompt for supported card (virtual card do not have a pin code). Extra note: This feature still does not guaranteed a successful payment (default: `false`) |
 | enableLogging                         | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                                                        |
@@ -322,30 +323,55 @@ import {Platform} from 'react-native';
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async initSdk() {
-        try {
-            const result = await PayNlSdk.initSdk({
-                integrationId: Platform.select({
-                    ios: 'INTEGRATION_ID',
-                    default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
-                }),
-                licenseName: '', // Required for Android softpos
-            });
+  async initSdk() {
+    try {
+      const result = await PayNlSdk.initSdk({
+        integrationId: Platform.select({
+          ios: 'INTEGRATION_ID',
+          default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
+        }),
+        licenseName: '', // Required for Android softpos
+      });
 
-            switch (result) {
-                case 'needs_login':
-                    // Start login flow and reinitialized the SDK
-                    return;
+      switch (result) {
+        case 'needs_login':
+          // Start login flow and reinitialized the SDK
+          return;
 
-                case 'ready_for_payment':
-                    // The SDK is ready to start payment
-                    return;
-            }
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-            return undefined;
-        }
+        case 'ready_for_payment':
+          // The SDK is ready to start payment
+          return;
+      }
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
+      return undefined;
     }
+  }
+}
+```
+
+#### Set configuration
+
+If you wish to update the configuration set during initSDK, you can use this function.
+See [init sdk](#init-sdk) for the possible parameters.
+
+##### Example
+
+```ts
+import {Platform} from 'react-native';
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+  setConfiguration() {
+    // NOTE: This is android only
+    PayNlSdk.setConfiguration({
+      integrationId: Platform.select({
+        ios: 'INTEGRATION_ID',
+        default: !__DEV__ ? 'PRODUCTION_ID' : 'DEVELOPMENT_ID',
+      }),
+      licenseName: '', // Required for Android softpos
+    });
+  }
 }
 ```
 
@@ -371,14 +397,14 @@ This function does not take parameters and has the following return type: `PayNl
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async getActivationCode() {
-        try {
-            const response = await PayNlSdk.getActivationCode();
-            // Call Terminal:Create API
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-        }
+  async getActivationCode() {
+    try {
+      const response = await PayNlSdk.getActivationCode();
+      // Call Terminal:Create API
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
     }
+  }
 }
 ```
 
@@ -400,13 +426,13 @@ It does not have a return type, but you need to provide the code from the `getAc
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async loginViaCode(code: string) {
-        try {
-            await PayNlSdk.loginViaCode(code);
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-        }
+  async loginViaCode(code: string) {
+    try {
+      await PayNlSdk.loginViaCode(code);
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
     }
+  }
 }
 ```
 
@@ -432,13 +458,13 @@ and [Merchant:info](https://developer.pay.nl/reference/merchants_info).
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async loginViaCredentials(aCode: string, serviceCode: string, serviceSecret: string) {
-        try {
-            await PayNlSdk.loginViaCredentials(aCode, serviceCode, serviceSecret);
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-        }
+  async loginViaCredentials(aCode: string, serviceCode: string, serviceSecret: string) {
+    try {
+      await PayNlSdk.loginViaCredentials(aCode, serviceCode, serviceSecret);
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
     }
+  }
 }
 ```
 
@@ -470,20 +496,20 @@ The available information is the following:
 import {PayNlSdk, type TerminalInfo} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    getTerminalInfo(): TerminalInfo | undefined {
-        try {
-            const info = PayNlSdk.getTerminalInfo();
-            if (!info) {
-                console.error('This terminal is not activated...')
-                return undefined;
-            }
+  getTerminalInfo(): TerminalInfo | undefined {
+    try {
+      const info = PayNlSdk.getTerminalInfo();
+      if (!info) {
+        console.error('This terminal is not activated...')
+        return undefined;
+      }
 
-            return info;
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`);
-            return undefined;
-        }
+      return info;
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`);
+      return undefined;
     }
+  }
 }
 ```
 
@@ -505,20 +531,20 @@ With an activated terminal, you can fetch the allowed currencies this SDK suppor
 import {PayNlSdk, type AllowedCurrency} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    getTerminalInfo(): AllowedCurrency[] | undefined {
-        try {
-            const currencies = PayNlSdk.getAllowedCurrencies();
-            if (!currencies || currencies.length === 0) {
-                console.error('This terminal is not activated...')
-                return undefined;
-            }
+  getTerminalInfo(): AllowedCurrency[] | undefined {
+    try {
+      const currencies = PayNlSdk.getAllowedCurrencies();
+      if (!currencies || currencies.length === 0) {
+        console.error('This terminal is not activated...')
+        return undefined;
+      }
 
-            return currencies;
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-            return undefined;
-        }
+      return currencies;
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
+      return undefined;
     }
+  }
 }
 ```
 
@@ -553,27 +579,27 @@ import {PayNlSdk, type Transaction, type Service} from 'paynl-pos-sdk-react-nati
 import {Buffer} from 'buffer';
 
 class PayNLService {
-    async startPayment(transaction: Transaction, forService?: Service) {
-        try {
-            const result = await PayNlSdk.startTransaction({transaction, forService});
-            if (result.statusAction !== 'PAID') {
-                console.error(`Failed to process payment. Reason: ${result.payerMessage}`);
-                return;
-            }
+  async startPayment(transaction: Transaction, forService?: Service) {
+    try {
+      const result = await PayNlSdk.startTransaction({transaction, forService});
+      if (result.statusAction !== 'PAID') {
+        console.error(`Failed to process payment. Reason: ${result.payerMessage}`);
+        return;
+      }
 
-            let ticket = '';
-            if (result.ticket !== '') {
-                const buff = new Buffer(result.ticket, 'base64');
-                ticket = buff.tostring('ascii');
-            }
+      let ticket = '';
+      if (result.ticket !== '') {
+        const buff = new Buffer(result.ticket, 'base64');
+        ticket = buff.tostring('ascii');
+      }
 
-            console.log(JSON.stringify(result));
-            console.log('Ticket:')
-            console.log(ticket)
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-        }
+      console.log(JSON.stringify(result));
+      console.log('Ticket:')
+      console.log(ticket)
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
     }
+  }
 }
 ```
 
@@ -688,9 +714,9 @@ Reasons can be: A switch between merchants or this device will not be used for a
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    logout() {
-        PayNlSdk.logout();
-    }
+  logout() {
+    PayNlSdk.logout();
+  }
 }
 ```
 
@@ -708,9 +734,9 @@ To provide these logs, you can invoke the `sendLogs()` function
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async sendLogs() {
-        await PayNlSdk.sendLogs();
-    }
+  async sendLogs() {
+    await PayNlSdk.sendLogs();
+  }
 }
 ```
 
@@ -738,9 +764,9 @@ To know if a trigger is needed, you can use this method.
 import {PayNlSdk, type OfflineQueueModel} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    getOfflineQueue(): Promise<OfflineQueueModel> {
-        return PayNlSdk.getOfflineQueue();
-    }
+  getOfflineQueue(): Promise<OfflineQueueModel> {
+    return PayNlSdk.getOfflineQueue();
+  }
 }
 ```
 
@@ -767,13 +793,13 @@ Here is an example for full sync.
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async triggerFullOfflineProcessing() {
-        try {
-            await PayNlSdk.triggerFullOfflineProcessing();
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-        }
+  async triggerFullOfflineProcessing() {
+    try {
+      await PayNlSdk.triggerFullOfflineProcessing();
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
     }
+  }
 }
 ```
 
@@ -805,13 +831,13 @@ Here is an example for single sync.
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async triggerSingleOfflineProcessing(id: string) {
-        try {
-            await PayNlSdk.triggerSingleOfflineProcessing(id);
-        } catch (e) {
-            console.error(`Error from PAY.POS sdk: ${error}`)
-        }
+  async triggerSingleOfflineProcessing(id: string) {
+    try {
+      await PayNlSdk.triggerSingleOfflineProcessing(id);
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
     }
+  }
 }
 ```
 
@@ -833,10 +859,10 @@ To remove a single offline transaction, you can use this method.
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
 
 class PayNLService {
-    async clearOfflineItem(id: string) {
-        if (!PayNlSdk.clearOfflineItem(id)) {
-            console.warn(`Could not remove item from queue -> Item is not found...`)
-        }
+  async clearOfflineItem(id: string) {
+    if (!PayNlSdk.clearOfflineItem(id)) {
+      console.warn(`Could not remove item from queue -> Item is not found...`)
     }
+  }
 }
 ```
