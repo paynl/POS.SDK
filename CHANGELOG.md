@@ -4,20 +4,19 @@
 
 ## Android softpos
 
-#### v0.0.88 - 19-08-2025
+#### v0.0.92 - 08-09-2025
+- chore: improve logging
 
+#### v0.0.91 - 08-09-2025
+- fix: prevent MainThreadException during sendLogs
+
+#### v0.0.88 - 19-08-2025
 - fix: hotfix for refunds
 
 #### v0.0.87 - 18-08-2025
-
-- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
-
-#### v0.0.86 - 18-08-2025
-
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.83 - 12-08-2025
-
 - fix: retry init kernel when failure detected
 
 #### v0.0.82 - 12-08-2025
@@ -62,8 +61,10 @@
 
 ## Android Sunmi hardpos
 
-#### v0.0.19 - 18-08-2025
+#### v0.0.23 - 08-09-2025
+- fix: prevent MainThreadException during sendLogs
 
+#### v0.0.20 - 18-08-2025
 - chore: improve battery consumption
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
@@ -89,8 +90,10 @@
 
 ## Android PAX hardpos
 
-#### v0.0.9 - 18-08-2025
+#### v0.0.12 - 08-09-2025
+- fix: prevent MainThreadException during sendLogs
 
+#### v0.0.10 - 18-08-2025
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.8 - 11-08-2025
@@ -116,7 +119,6 @@
 ## iOS - Tap to Pay on iPhone
 
 ### v0.0.24 - 20-08-2025
-
 - fix: improve error reporting durign startPayment
 
 ## React Native
@@ -135,6 +137,7 @@
 
 #### v0.0.50 - 18-08-2025
 
+#### v0.0.51 - 18-08-2025
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.49 - 12-08-2025
