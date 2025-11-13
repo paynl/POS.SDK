@@ -207,6 +207,7 @@ This function will initialize the SDK. It will return `PayNlInitResult` enum typ
 | configuration.enableOfflineProcessing               | boolean              | Just like the PAY.POS app, PayNL is able to store your transaction when the mobile phone does not have internet. NOTE: It is not guaranteed that the payment will be approved. This is a major risk while using offline processing (default: `false`)                                           |
 | configuration.enforcePinCodeDuringOfflineProcessing | boolean              | If a payment will be queued for Offline processing, you can enforce a pin prompt for lower risk. NOTE: this will only trigger a pin prompt for supported card (virtual card do not have a pin code). Extra note: This feature still does not guaranteed a successful payment (default: `false`) |
 | configuration.enableLogging                         | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                                           |
+| configuration.core                         | PayNLCore              | This is used to switch between processing hosts (default: MULTI)                                                                           |
 
 ##### Example
 

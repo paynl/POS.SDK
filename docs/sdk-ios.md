@@ -91,9 +91,10 @@ flowchart LR;
 
 This function will initialize the SDK. It will return `PayNlInitResult` enum type.
 
-| **Name**      | **Type** | **Description**                                                   |
-|---------------|----------|-------------------------------------------------------------------|
-| integrationId | String   | The UUID received from PayNL support in order to process payments |
+| **Name**      | **Type**  | **Description**                                                   |
+|---------------|-----------|-------------------------------------------------------------------|
+| integrationId | String    | The UUID received from PayNL support in order to process payments |
+| core          | PayNLCore | This is used to switch between processing hosts (default: MULTI)  |
 
 ##### Example
 
@@ -107,7 +108,7 @@ class PayNLService {
     }
     
     public func initSdk() async {
-          let result = try await self.posService.initSdk(integrationId: '')
+          let result = try await self.posService.initSdk(configuration: PayNlConfiguation(integration: '', core: PayNLCore.MULTI))
           switch result {
           case .needsLogin:
               // Start login flow
