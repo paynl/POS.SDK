@@ -4,6 +4,15 @@
 
 ## Android softpos
 
+#### v0.0.96 - 29-11-2025
+- BREAKING: Transaction processing timeout decreased from 60s to 10s
+
+#### v0.0.95 - 29-11-2025
+- chore: improved logging
+
+#### v0.0.94 - 13-11-2025
+- chore: MULTI core is default now
+
 #### v0.0.92 - 08-09-2025
 - chore: improve logging
 
@@ -61,6 +70,12 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.26 - 29-11-2025
+- BREAKING: Transaction processing timeout decreased from 60s to 10s
+
+#### v0.0.25 - 13-11-2025
+- chore: MULTI core is default now
+
 #### v0.0.23 - 08-09-2025
 - fix: prevent MainThreadException during sendLogs
 
@@ -90,6 +105,12 @@
 
 ## Android PAX hardpos
 
+#### v0.0.15 - 29-11-2025
+- BREAKING: Transaction processing timeout decreased from 60s to 10s
+
+#### v0.0.13 - 13-11-2025
+- chore: MULTI core is default now
+
 #### v0.0.12 - 08-09-2025
 - fix: prevent MainThreadException during sendLogs
 
@@ -118,24 +139,25 @@
 
 ## iOS - Tap to Pay on iPhone
 
+### v0.0.28 - 22-10-2025
+- feat: add refund
+
 ### v0.0.24 - 20-08-2025
-- fix: improve error reporting durign startPayment
+- fix: improve error reporting during startPayment
 
 ## React Native
 
-#### v0.0.55 - 03-10-2025
+#### v0.0.68 - 22-10-2025
+- fix: updated getOfflineQueue to async function to prevent blocking JS thread
 
+#### v0.0.57 - 22-10-2025
+- feat: add missing refund
+
+#### v0.0.55 - 03-10-2025
 - feat: add missing setConfiguration function
 
 #### v0.0.54 - 08-09-2025
-
 - chore: update dependency to 0.0.91
-
-#### v0.0.51 - 18-08-2025
-
-- feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
-
-#### v0.0.50 - 18-08-2025
 
 #### v0.0.51 - 18-08-2025
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
