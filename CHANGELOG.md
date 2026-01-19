@@ -70,6 +70,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.27 - 19-01-2026
+- fix: relaunch trx could not be cancelled
+
 #### v0.0.26 - 29-11-2025
 - BREAKING: Transaction processing timeout decreased from 60s to 10s
 
