@@ -105,6 +105,10 @@
 
 ## Android PAX hardpos
 
+#### v0.0.17 - 19-01-2026
+- fix: Add missing PIN_WAITING event
+- fix: PIN cancel did not dismiss the overlay
+
 #### v0.0.15 - 29-11-2025
 - BREAKING: Transaction processing timeout decreased from 60s to 10s
 
