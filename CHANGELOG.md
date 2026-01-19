@@ -70,6 +70,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.28 - 19-01-2026
+- fix: disable reader buzzer
+
 #### v0.0.27 - 19-01-2026
 - fix: relaunch trx could not be cancelled
 
