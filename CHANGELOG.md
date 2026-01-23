@@ -111,6 +111,9 @@
 
 ## Android PAX hardpos
 
+#### v0.0.18 - 23-01-2026
+- fix: SDK not re-processing payment after incorrect PIN
+
 #### v0.0.17 - 19-01-2026
 - fix: Add missing PIN_WAITING event
 - fix: PIN cancel did not dismiss the overlay
