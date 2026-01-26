@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.97 - 29-11-2025
+- fix: Transaction processing timeout increased from 10s to 30s
+
 #### v0.0.96 - 29-11-2025
 - BREAKING: Transaction processing timeout decreased from 60s to 10s
 
@@ -70,6 +73,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.29 - 29-11-2025
+- fix: Transaction processing timeout increased from 10s to 30s
+
 #### v0.0.28 - 19-01-2026
 - fix: disable reader buzzer
 
@@ -111,8 +117,8 @@
 
 ## Android PAX hardpos
 
-#### v0.0.18 - 23-01-2026
-- fix: SDK not re-processing payment after incorrect PIN
+#### v0.0.19 - 29-11-2025
+- fix: Transaction processing timeout increased from 10s to 30s
 
 #### v0.0.17 - 19-01-2026
 - fix: Add missing PIN_WAITING event
@@ -152,6 +158,9 @@
 
 ## iOS - Tap to Pay on iPhone
 
+### v0.0.32 - 09-01-2026
+- fix: show correct tradename during service injection
+
 ### v0.0.28 - 22-10-2025
 - feat: add refund
 
@@ -159,6 +168,7 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
 
 #### v0.0.68 - 22-10-2025
 - fix: updated getOfflineQueue to async function to prevent blocking JS thread
