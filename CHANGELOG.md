@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.98 - 29-01-2026
+- fix: Improved activation flow
+
 #### v0.0.97 - 29-11-2025
 - fix: Transaction processing timeout increased from 10s to 30s
 
@@ -73,6 +76,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.30 - 29-01-2026
+- fix: Improved activation flow
+
 #### v0.0.29 - 29-11-2025
 - fix: Transaction processing timeout increased from 10s to 30s
 
@@ -116,6 +122,9 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.20 - 29-01-2026
+- fix: Improved activation flow
 
 #### v0.0.19 - 29-11-2025
 - fix: Transaction processing timeout increased from 10s to 30s
