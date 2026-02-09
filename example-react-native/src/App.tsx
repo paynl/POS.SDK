@@ -2,8 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
 import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from "@gorhom/bottom-sheet";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
-import {PayNlSdk} from '@paynl/pos-sdk-react-native'
-import {A_CODE, SL_CODE, SL_SECRET} from "@env";
+import {PayNlSdk} from 'paynl-pos-sdk-react-native'
+import {SL_CODE, AT_CODE, AT_SECRET, INTEGRATION_ID, LICENSE_NAME} from "@env";
 import PaymentButton from "./PaymentButton";
 import TapToPayOnIphone from './assets/ttpoi.svg';
 import CheckCircle from './assets/check-circle.svg';
@@ -11,6 +11,7 @@ import XCircle from './assets/x-circle.svg';
 import {currencyResolver} from "./currencyResolver";
 import {Backdrop} from "./components/Backdrop";
 import {useSharedValue} from "react-native-reanimated";
+import {Buffer} from 'buffer';
 
 function App(): React.JSX.Element {
     const transactionResultBottomSheet = useRef<BottomSheetModal | null>(null)
@@ -167,7 +168,18 @@ const ErrorIcon = () => {
 async function initPaySDK(): Promise<boolean> {
     console.log('⌛ Initializing SDK')
     try {
-        const result = await PayNlSdk.initSdk();
+        const result = await PayNlSdk.initSdk({
+          integrationId: INTEGRATION_ID,
+          licenseName: LICENSE_NAME,
+          overlayParams: {
+            closeDelayInMs: 2000,
+          },
+          enableSound: false,
+          useExternalDisplay: false,
+          enableMifareScanning: false,
+          enableOfflineProcessing: false,
+          payNlCore: __DEV__ ? 'ZERO' : 'MULTI',
+        });
         if (result === 'needs_login') {
             return await loginSDK();
         }
@@ -183,7 +195,36 @@ async function initPaySDK(): Promise<boolean> {
 async function loginSDK() {
     console.log('⌛ Logging in...')
     try {
-        await PayNlSdk.loginViaCredentials(A_CODE, SL_CODE, SL_SECRET);
+      const code = await PayNlSdk.getActivationCode();
+      await sleep(3000);
+
+      console.log(
+        'Authorization: ' +
+          Buffer.from(AT_CODE + ':' + AT_SECRET).toString('base64'),
+      );
+
+      const response = await fetch('https://rest.pay.nl/v2/terminals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization:
+            'Basic ' +
+            Buffer.from(AT_CODE + ':' + AT_SECRET).toString('base64'),
+        },
+        body: JSON.stringify({
+          serviceId: SL_CODE,
+          activationCode: code.code,
+          name: 'React native example',
+          description: '-',
+        }),
+      });
+
+
+      console.log('Received response - Status: ' +  response.status);
+
+      await sleep(3000);
+      await PayNlSdk.loginViaCode(code.code);
 
         console.log('✅ Logged in -> Reinitializing')
         return await initPaySDK();
@@ -191,6 +232,10 @@ async function loginSDK() {
         console.warn("Failed to login PaySDK: " + e);
         return false;
     }
+}
+
+async function sleep(timeout: number = 2000) {
+  return new Promise<void>(resolve => setTimeout(resolve, timeout));
 }
 
 const styles = StyleSheet.create({

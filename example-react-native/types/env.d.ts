@@ -1,5 +1,7 @@
 declare module '@env' {
-    export const A_CODE: string;
     export const SL_CODE: string;
-    export const SL_SECRET: string;
+    export const AT_CODE: string;
+    export const AT_SECRET: string;
+    export const INTEGRATION_ID: string;
+    export const LICENSE_NAME: string;
 }

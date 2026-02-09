@@ -6,8 +6,6 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 platform :ios, 18.0
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/paynl/paynlSpec.git'
 
 prepare_react_native_project!
 
