@@ -84,7 +84,7 @@ allprojects {
        google()
        mavenCentral()
        
-       // ---- These two need to be added ----
+       // ---- Add these options ----
        maven {
         name = "PayNLRegistry"
         url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
@@ -93,6 +93,7 @@ allprojects {
           password = project.GITHUB_PERSONAL_TOKEN
         }
       }
+      // Only add this one if you wish to run SoftPOS. Not needed for HardPOS
        maven {
         name = "PayNLMavenClientRegistry"
         url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
@@ -112,7 +113,8 @@ Go to your `android/app/build.gradle`-file and add the following:
 ```groovy
 android {
   ...
-  
+
+    // Only needed if you wish to run SoftPOS
     packaging {
         resources {
             excludes += "/META-INF/DEPENDENCIES"
