@@ -179,6 +179,7 @@ buildscript {
       kotlinVersion = "2.0.21"
       androidXBrowser = "1.8.0"
 
+      paynlPackage = "sdk.softpos" // <-- The SDK variant being used. Possible values: "sdk.softpos", "sdk.sunmi", "sdk.pax"
       paynlVersion = "<LATEST_VERSION_HERE>" // <-- The SDK version being used. Check the Paynl docs to see the latest version
     }
 }
