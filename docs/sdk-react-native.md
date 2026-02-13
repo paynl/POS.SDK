@@ -4,7 +4,7 @@
 
 ### Table of content
 
-- [Requirements:](#requirements-)
+- [Requirements](#requirements)
 - [Getting started](#getting-started)
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
@@ -616,6 +616,47 @@ In order to do this, make sure the following is done:
 - SDK version is support MIFARE -> see docs of SDK to get more details
 - You have set the PayNLConfiguration to `enableMifareScanning: true`
 - You handle statusAction `PayNlTransactionStatus.MIFARE`
+
+#### Refunds
+
+In order to a refund payment, make sure the following is done:
+
+- SDK is activated
+- SL-code & TH-code have Refunds activated (contact PayNL support for this)
+- You have set the PayNLConfiguration to `setCore(PayNlCore.MULTI)`
+
+To do a refund, set the transactio type to refund:
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+// React Native does not have a Base64 decoder build-in
+import {Buffer} from 'buffer';
+
+class PayNLService {
+  async startRefund() {
+    try {
+      const transaction: Transaction = { amount: { value: 1, currency: 'EUR' }, type: 'REFUND' };
+      const result = await PayNlSdk.startTransaction({transaction});
+      if (result.statusAction !== 'PAID') {
+        console.error(`Failed to process payment. Reason: ${result.payerMessage}`);
+        return;
+      }
+
+      let ticket = '';
+      if (result.ticket !== '') {
+        const buff = new Buffer(result.ticket, 'base64');
+        ticket = buff.tostring('ascii');
+      }
+
+      console.log(JSON.stringify(result));
+      console.log('Ticket:')
+      console.log(ticket)
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
+    }
+  }
+}
+```
 
 #### Payment Events - ANDROID ONLY
 
