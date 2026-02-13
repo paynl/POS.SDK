@@ -196,24 +196,24 @@ android {
 
   buildTypes {
     debug {
-      rootProject.ext.paynlVersion = "0.0.66"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.softpos"
     }
 
     debugSunmi {
       matchingFallbacks = ['debug']
-      rootProject.ext.paynlVersion = "0.0.10"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.sunmi"
     }
 
     release {
-      rootProject.ext.paynlVersion = "0.0.66"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.softpos"
     }
 
     releaseSunmi {
       matchingFallbacks = ['release']
-      rootProject.ext.paynlVersion = "0.0.10"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.sunmi"
     }
   }
