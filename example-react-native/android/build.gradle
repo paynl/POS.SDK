@@ -27,25 +27,19 @@ allprojects {
        maven { url "https://cdn.veriff.me/android/" }
 
       maven {
-        def PAYNL_REGISTRY_LOGIN = project.PAYNL_REGISTRY_LOGIN
-        def PAYNL_REGISTRY_TOKEN = project.PAYNL_REGISTRY_TOKEN
-
         name = "PayNLRegistry"
         url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
         credentials {
-          username = PAYNL_REGISTRY_LOGIN
-          password = PAYNL_REGISTRY_TOKEN
+          username = project.GITHUB_USERNAME
+          password = project.GITHUB_PERSONAL_TOKEN
         }
       }
       maven {
-        def MINESEC_REGISTRY_LOGIN = project.MINESEC_REGISTRY_LOGIN
-        def MINESEC_REGISTRY_TOKEN = project.MINESEC_REGISTRY_TOKEN
-
-        name = "MineSecMavenClientRegistry"
+        name = "PayNLMavenClientRegistry"
         url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
         credentials {
-          username = MINESEC_REGISTRY_LOGIN
-          password = MINESEC_REGISTRY_TOKEN
+          username = project.PAYNL_REGISTRY_LOGIN
+          password = project.PAYNL_REGISTRY_TOKEN
         }
       }
     }
