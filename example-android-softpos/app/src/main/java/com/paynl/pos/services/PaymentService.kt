@@ -24,10 +24,10 @@ class PaymentService {
     fun setContext(context: Context) {
         val configuration = PayNlConfigurationBuilder()
             .setIntegrationId("")
-            .setLicenseName("")
+            .setLicenseName("PayNL Partner SDK - Testing-lic_01JQNMTHEAEFC6GJT4SHVVJSV1-20250331_082424.license")
             .setEnableSound(false)
             .setEnableMifareScanning(true)
-            .setCore(PayNlCore.CPOC)
+            .setCore(PayNlCore.ZERO)
             .setEnableLogging(true) // If set to false, PayNL cannot provide support
             .setUseExternalDisplayIfAvailable(true) // Disable if you want the pinpad to always be shown on the primary screen
             .setEnableOfflineProcessing(false)
@@ -57,12 +57,12 @@ class PaymentService {
     fun activate(code: String): Boolean {
         val service = paynlPosService ?: return false
 
-        if (!RestPayService.instance.activateTerminal(code)) {
-            return false
-        }
-
-        // Wait 5s before activating SDK
-        Thread.sleep(5000)
+//        if (!RestPayService.instance.activateTerminal(code)) {
+//            return false
+//        }
+//
+//        // Wait 5s before activating SDK
+//        Thread.sleep(5000)
 
         try {
             service.loginViaCode(code)
