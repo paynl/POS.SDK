@@ -4,7 +4,7 @@
 
 ### Table of content
 
-- [Requirements:](#requirements-)
+- [Requirements](#requirements)
 - [Getting started](#getting-started)
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
@@ -84,7 +84,7 @@ allprojects {
        google()
        mavenCentral()
        
-       // ---- These two need to be added ----
+       // ---- Add these options ----
        maven {
         name = "PayNLRegistry"
         url = uri("https://maven.pkg.github.com/paynl/pos-sdk")
@@ -93,6 +93,7 @@ allprojects {
           password = project.GITHUB_PERSONAL_TOKEN
         }
       }
+      // Only add this one if you wish to run SoftPOS. Not needed for HardPOS
        maven {
         name = "PayNLMavenClientRegistry"
         url = uri("https://maven.pkg.github.com/theminesec/ms-registry-client")
@@ -112,7 +113,8 @@ Go to your `android/app/build.gradle`-file and add the following:
 ```groovy
 android {
   ...
-  
+
+    // Only needed if you wish to run SoftPOS
     packaging {
         resources {
             excludes += "/META-INF/DEPENDENCIES"
@@ -177,6 +179,7 @@ buildscript {
       kotlinVersion = "2.0.21"
       androidXBrowser = "1.8.0"
 
+      paynlPackage = "sdk.softpos" // <-- The SDK variant being used. Possible values: "sdk.softpos", "sdk.sunmi", "sdk.pax"
       paynlVersion = "<LATEST_VERSION_HERE>" // <-- The SDK version being used. Check the Paynl docs to see the latest version
     }
 }
@@ -193,24 +196,24 @@ android {
 
   buildTypes {
     debug {
-      rootProject.ext.paynlVersion = "0.0.66"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.softpos"
     }
 
     debugSunmi {
       matchingFallbacks = ['debug']
-      rootProject.ext.paynlVersion = "0.0.10"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.sunmi"
     }
 
     release {
-      rootProject.ext.paynlVersion = "0.0.66"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.softpos"
     }
 
     releaseSunmi {
       matchingFallbacks = ['release']
-      rootProject.ext.paynlVersion = "0.0.10"
+      rootProject.ext.paynlVersion = "<LATEST_VERSION_HERE>"
       rootProject.ext.paynlPackage = "sdk.sunmi"
     }
   }
@@ -614,6 +617,47 @@ In order to do this, make sure the following is done:
 - You have set the PayNLConfiguration to `enableMifareScanning: true`
 - You handle statusAction `PayNlTransactionStatus.MIFARE`
 
+#### Refunds
+
+In order to a refund payment, make sure the following is done:
+
+- SDK is activated
+- SL-code & TH-code have Refunds activated (contact PayNL support for this)
+- You have set the PayNLConfiguration to `setCore(PayNlCore.MULTI)`
+
+To do a refund, set the transactio type to refund:
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+// React Native does not have a Base64 decoder build-in
+import {Buffer} from 'buffer';
+
+class PayNLService {
+  async startRefund() {
+    try {
+      const transaction: Transaction = { amount: { value: 1, currency: 'EUR' }, type: 'REFUND' };
+      const result = await PayNlSdk.startTransaction({transaction});
+      if (result.statusAction !== 'PAID') {
+        console.error(`Failed to process payment. Reason: ${result.payerMessage}`);
+        return;
+      }
+
+      let ticket = '';
+      if (result.ticket !== '') {
+        const buff = new Buffer(result.ticket, 'base64');
+        ticket = buff.tostring('ascii');
+      }
+
+      console.log(JSON.stringify(result));
+      console.log('Ticket:')
+      console.log(ticket)
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
+    }
+  }
+}
+```
+
 #### Payment Events - ANDROID ONLY
 
 During a transaction, it is possible to receive events.
@@ -654,7 +698,7 @@ class PayNLService {
 #### Print ticket
 
 After a successful transaction, it is possible to print the ticket via the SDK (if the terminal has a supported printer,
-currently only Sunmi build-in printers are supported).
+currently only Sunmi or PAX build-in printers are supported).
 You can check if the SDK can find a supported printer
 
 ##### Example
