@@ -4,6 +4,12 @@
 
 ## Android softpos
 
+#### v0.0.100 - 25-02-2026
+- chore: add DNS resolver (uses Google or Cloudflare resolvers)
+
+#### v0.0.99 - 16-02-2026
+- chore: add request timing logs
+
 #### v0.0.98 - 29-01-2026
 - fix: Improved activation flow
 
@@ -76,6 +82,12 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.32 - 25-02-2026
+- chore: add DNS resolver (uses Google or Cloudflare resolvers)
+
+#### v0.0.31 - 16-02-2026
+- chore: add request timing logs
+
 #### v0.0.30 - 29-01-2026
 - fix: Improved activation flow
 
@@ -122,6 +134,12 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.22 - 25-02-2026
+- chore: add DNS resolver (uses Google or Cloudflare resolvers)
+
+#### v0.0.21 - 16-02-2026
+- chore: add request timing logs
 
 #### v0.0.20 - 29-01-2026
 - fix: Improved activation flow
@@ -179,6 +197,9 @@
 ## React Native
 
 
+#### v0.0.71 - 25-02-2026
+- chore: bump version Softpos SDK
+
 #### v0.0.68 - 22-10-2025
 - fix: updated getOfflineQueue to async function to prevent blocking JS thread
 
@@ -217,3 +238,4 @@
 #### v0.0.38 - 28-07-2025
 
 - fix: correctly cast response models from offline processing
+
