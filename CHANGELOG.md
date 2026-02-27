@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.101 - 26-02-2026
+- chore: add 16KB page size support
+
 #### v0.0.100 - 25-02-2026
 - chore: add DNS resolver (uses Google or Cloudflare resolvers)
 
@@ -135,6 +138,9 @@
 
 ## Android PAX hardpos
 
+#### v0.0.23 - 27-02-2026
+- fix: Improve beeps during PIN prompt
+
 #### v0.0.22 - 25-02-2026
 - chore: add DNS resolver (uses Google or Cloudflare resolvers)
 
@@ -238,4 +244,3 @@
 #### v0.0.38 - 28-07-2025
 
 - fix: correctly cast response models from offline processing
-
