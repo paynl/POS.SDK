@@ -85,6 +85,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.33 - 27-02-2026
+- fix: show when offline PIN is incorrect
+
 #### v0.0.32 - 25-02-2026
 - chore: add DNS resolver (uses Google or Cloudflare resolvers)
 
@@ -137,6 +140,12 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### 0.0.24 - 27-02-2026
+- chore: update kernel
+- fix: offline pin prompt
+- fix: show when offline PIN is incorrect
+- fix: auto retry on failed contactless scan
 
 #### v0.0.23 - 27-02-2026
 - fix: Improve beeps during PIN prompt
