@@ -514,7 +514,7 @@ This function returns the `PayNlTransactionResult` type:
 | `result.payerMessage` | String                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
 | `result.orderId`      | String                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
 | `result.reference`    | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
-| `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
+| `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment. Make sure you use UTF8 encoding, otherwise you might get incorrect characters                                  |
 
 ##### Example
 
@@ -525,6 +525,9 @@ import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransaction;
 import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionAmount;
 import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionResult;
 import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionStatus;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 class PayNLService {
 
@@ -547,7 +550,7 @@ class PayNLService {
       Log.i("PayNLExample", String.format("OrderId: %s\nReference: %s\nPayerMessage: %s", result.orderId, result.reference, result.payerMessage));
 
       byte[] ticketBytes = Base64.getDecoder().decode(result.ticket);
-      Log.i("PayNLExample", String.format("Ticket data:\n\n%s", new String(ticketBytes)));
+      Log.i("PayNLExample", String.format("Ticket data:\n\n%s", new String(ticketBytes, StandardCharsets.UTF_8)));
 
     } catch (SVErrorBaseException e) {
       Log.e("PayNLExample", String.format("Failed to process payment - code: %s, description: %s", e.code, e.description));
