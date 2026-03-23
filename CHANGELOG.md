@@ -4,6 +4,12 @@
 
 ## Android softpos
 
+#### v0.0.103 - 23-03-2026
+- fix: expiresAt is now correct in getActivationCode
+
+#### v0.0.102 - 19-03-2026
+- chore: improved logs
+
 #### v0.0.101 - 26-02-2026
 - chore: add 16KB page size support
 
@@ -85,6 +91,13 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.35 - 23-03-2026
+- fix: expiresAt is now correct in getActivationCode
+
+#### v0.0.34 - 19-03-2026
+- chore: improved logs
+- fix: cleanup RKI connection after keyloading
+
 #### v0.0.33 - 27-02-2026
 - fix: show when offline PIN is incorrect
 
@@ -140,6 +153,12 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.26 - 23-03-2026
+- fix: expiresAt is now correct in getActivationCode
+
+#### v0.0.25 - 19-03-2026
+- chore: improved logs
 
 #### 0.0.24 - 27-02-2026
 - chore: update kernel
