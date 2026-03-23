@@ -573,7 +573,7 @@ This function returns the `PayNlTransactionResult` type:
 | `result.payerMessage` | string                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
 | `result.orderId`      | string                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
 | `result.reference`    | string?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
-| `result.ticket`       | string                 | A base64 encoded ticket. Only provided with a successful payment                                                                                                                 |
+| `result.ticket`       | string                 | A base64 encoded ticket. Only provided with a successful payment. Make sure you use UTF8 encoding, otherwise you might get incorrect characters                                  |
 
 ##### Example
 
@@ -594,7 +594,7 @@ class PayNLService {
       let ticket = '';
       if (result.ticket !== '') {
         const buff = new Buffer(result.ticket, 'base64');
-        ticket = buff.tostring('ascii');
+        ticket = buff.tostring('utf8');
       }
 
       console.log(JSON.stringify(result));
