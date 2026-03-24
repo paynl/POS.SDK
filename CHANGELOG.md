@@ -4,6 +4,10 @@
 
 ## Android softpos
 
+#### v0.0.104 - 24-03-2026
+- feat: Add customerKey & binData to transaction result
+- fix: proguard rules
+
 #### v0.0.103 - 23-03-2026
 - fix: expiresAt is now correct in getActivationCode
 
@@ -91,6 +95,10 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.36 - 24-03-2026
+- feat: Add customerKey & binData to transaction result
+- fix: proguard rules
+
 #### v0.0.35 - 23-03-2026
 - fix: expiresAt is now correct in getActivationCode
 
@@ -153,6 +161,10 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.27 - 24-03-2026
+- feat: Add customerKey & binData to transaction result
+- fix: proguard rules
 
 #### v0.0.26 - 23-03-2026
 - fix: expiresAt is now correct in getActivationCode
@@ -219,6 +231,9 @@
 
 ## iOS - Tap to Pay on iPhone
 
+### v0.0.33 - 24-03-2026
+- feat: Add customerKey & binData to transaction result
+
 ### v0.0.32 - 09-01-2026
 - fix: show correct tradename during service injection
 
@@ -230,6 +245,9 @@
 
 ## React Native
 
+#### v0.0.73 - 25-02-2026
+- chore: bump version Softpos SDK
+- feat: Add customerKey & binData to transaction result
 
 #### v0.0.71 - 25-02-2026
 - chore: bump version Softpos SDK
