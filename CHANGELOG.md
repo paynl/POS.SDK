@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.105 - 24-03-2026
+- feat: Add maskedPan to transaction result
+
 #### v0.0.104 - 24-03-2026
 - feat: Add customerKey & binData to transaction result
 - fix: proguard rules
@@ -95,6 +98,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.37 - 24-03-2026
+- feat: Add maskedPan to transaction result
+
 #### v0.0.36 - 24-03-2026
 - feat: Add customerKey & binData to transaction result
 - fix: proguard rules
@@ -161,6 +167,9 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.28 - 24-03-2026
+- feat: Add maskedPan to transaction result
 
 #### v0.0.27 - 24-03-2026
 - feat: Add customerKey & binData to transaction result
@@ -231,7 +240,10 @@
 
 ## iOS - Tap to Pay on iPhone
 
-### v0.0.33 - 24-03-2026
+#### v0.0.35 - 24-03-2026
+- feat: Add maskedPan to transaction result
+
+### v0.0.34 - 24-03-2026
 - feat: Add customerKey & binData to transaction result
 
 ### v0.0.32 - 09-01-2026
@@ -244,6 +256,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.76 - 24-03-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.73 - 25-02-2026
 - chore: bump version Softpos SDK

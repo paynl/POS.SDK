@@ -307,14 +307,26 @@ This function has 2 parameters:
 
 This function returns the `PayNlTransactionResult` type:
 
-| **Name**              | **Type**               | **Description**                                                                                                                                                                  |
-|-----------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `result`              | object                 |                                                                                                                                                                                  |
-| `result.statusAction` | PayNlTransactionStatus | The endresult of the transaction. Example: paid, failed                                                                                                                          |
-| `result.payerMessage` | String                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
-| `result.orderId`      | String                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
-| `result.reference`    | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
-| `result.ticket`       | String                 | A base64 encoded ticket. Only provided with a successful payment. Make sure you use UTF8 encoding, otherwise you might get incorrect characters                                  |
+| **Name**                      | **Type**               | **Description**                                                                                                                                                                  |
+|-------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `result`                      | object                 |                                                                                                                                                                                  |
+| `result.statusAction`         | PayNlTransactionStatus | The endresult of the transaction. Example: paid, failed                                                                                                                          |
+| `result.payerMessage`         | String                 | The message required to show on the UI. Example: `Betaling geslaagd`. Note: the language is determined by the user's card                                                        |
+| `result.orderId`              | String                 | The orderId belonging to this transaction. Can be used to query the transaction in the [Transaction:info api](https://developer.pay.nl/reference/get_transactions-transactionid) |
+| `result.reference`            | String?                | If provided, the SDK will echo back the provided reference in the transaction request                                                                                            |
+| `result.maskedPan`            | String?                | Masked identification of debit/credit card                                                                                                                                       |
+| `result.customerKey`          | String?                | An identifier of the customer                                                                                                                                                    |
+| `result.ticket`               | String                 | A base64 encoded ticket. Only provided with a successful payment. Make sure you use UTF8 encoding, otherwise you might get incorrect characters                                  |
+| `result.binData`              | object?                | Banking details of this specific transaction                                                                                                                                     |
+| `result.binData.anonymous`    | String                 |                                                                                                                                                                                  |
+| `result.binData.bankId`       | String                 |                                                                                                                                                                                  |
+| `result.binData.brandCode`    | String                 |                                                                                                                                                                                  |
+| `result.binData.brandName`    | String                 |                                                                                                                                                                                  |
+| `result.binData.brandProduct` | String                 |                                                                                                                                                                                  |
+| `result.binData.cardType`     | String                 |                                                                                                                                                                                  |
+| `result.binData.countryCode`  | String                 |                                                                                                                                                                                  |
+| `result.binData.fundType`     | String                 |                                                                                                                                                                                  |
+| `result.binData.scheme`       | String                 |                                                                                                                                                                                  |
 
 ##### Example
 
