@@ -3,6 +3,8 @@
 # PayNL POS.SDK changelog
 
 ## Android softpos
+#### v0.0.106 - 25-03-2026
+- fix: sendlogs
 
 #### v0.0.105 - 24-03-2026
 - feat: Add maskedPan to transaction result
@@ -256,6 +258,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.76 - 24-03-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.76 - 24-03-2026
 - chore: bump version Softpos SDK
