@@ -259,7 +259,7 @@
 
 ## React Native
 
-#### v0.0.76 - 24-03-2026
+#### v0.0.77 - 24-03-2026
 - chore: bump version Softpos SDK
 
 #### v0.0.76 - 24-03-2026
