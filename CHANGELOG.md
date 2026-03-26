@@ -242,6 +242,9 @@
 
 ## iOS - Tap to Pay on iPhone
 
+#### v0.0.36 - 26-03-2026
+- fix: small fixes for loginViaCode
+
 #### v0.0.35 - 24-03-2026
 - feat: Add maskedPan to transaction result
 
