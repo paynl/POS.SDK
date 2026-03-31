@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.108 - 31-03-2026
+- fix: crash with empty terminal info
+
 #### v0.0.107 - 31-03-2026
 - feat: update configuration to allow disabling/enable Pinpad scrambling
 - chore: disable pinpad scrambling by default
@@ -105,6 +108,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.38 - 31-03-2026
+- fix: crash with empty terminal info
+
 #### v0.0.37 - 24-03-2026
 - feat: Add maskedPan to transaction result
 
@@ -174,6 +180,9 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.29 - 31-03-2026
+- fix: crash with empty terminal info
 
 #### v0.0.28 - 24-03-2026
 - feat: Add maskedPan to transaction result
