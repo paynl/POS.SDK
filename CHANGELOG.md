@@ -3,6 +3,11 @@
 # PayNL POS.SDK changelog
 
 ## Android softpos
+
+#### v0.0.107 - 31-03-2026
+- feat: update configuration to allow disabling/enable Pinpad scrambling
+- chore: disable pinpad scrambling by default
+
 #### v0.0.106 - 25-03-2026
 - fix: sendlogs
 
@@ -261,6 +266,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.80 - 31-03-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.77 - 24-03-2026
 - chore: bump version Softpos SDK
