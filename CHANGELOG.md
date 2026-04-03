@@ -256,6 +256,9 @@
 
 ## iOS - Tap to Pay on iPhone
 
+#### v0.0.37 - 03-04-2026
+- fix: correctly map cancel action to CANCELLED status
+
 #### v0.0.36 - 26-03-2026
 - fix: small fixes for loginViaCode
 
@@ -275,6 +278,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.81 - 03-04-2026
+- chore: bump version iOS SDK
 
 #### v0.0.80 - 31-03-2026
 - chore: bump version Softpos SDK
