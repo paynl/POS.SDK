@@ -227,7 +227,20 @@ flowchart LR;
   subgraph Starting point
   A[initSDK]
   end
-
+ 
+  subgraph Auth flow
+  A --> M{needsLogin}
+  M --> C[getActivationCode]
+  C --> |Call own backend| D{Terminal:Create API}
+  subgraph Integrator Backend
+        D --> D2[Store TH-code and secret]
+  end
+  D2 --> E[loginViaCode]
+  E --> A
+  M --> G[loginViaCredentials]
+  G --> A
+  end
+  
   subgraph Transaction flow
   A --> B{readyForPayments}
   B --> F[startPayment]
@@ -243,23 +256,7 @@ flowchart LR;
   B --> J[getAllowedCurrencies]
   end
 
-  subgraph Auth flow
-  A --> M{needsLogin}
-  M --> C[getActivationCode]
-  C --> D{Terminal:Create API}
-  D --> E[loginViaCode]
-  E --> A
-  M --> G[loginViaCredentials]
-  G --> A
-  end
-  
-  subgraph Logout flow
-  B --> K[logout]
-  K --> L{Terminal:delete api}
-  L --> A
-  end
-
-  subgraph Offline processing - ANDROID ONLY
+  subgraph Offline processing
   H -->|OFFLINE: Add to queue| O{Offline queue}
   B --> P[getOfflineQueue]
   P --> O
@@ -269,6 +266,14 @@ flowchart LR;
   R -->|Fetch single item with ID for processing| O
   B --> S[clearOfflineItem]
   S -->|Remove single item from queue| O
+  end
+  
+  subgraph Logout flow
+  B --> K[logout]
+  K --> |Call own backend| L{Terminal:delete api}
+  subgraph Integrator Backend
+        L --> A
+  end
   end
 ```
 
