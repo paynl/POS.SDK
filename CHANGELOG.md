@@ -4,6 +4,16 @@
 
 ## Android softpos
 
+#### v0.0.108 - 31-03-2026
+- fix: crash with empty terminal info
+
+#### v0.0.107 - 31-03-2026
+- feat: update configuration to allow disabling/enable Pinpad scrambling
+- chore: disable pinpad scrambling by default
+
+#### v0.0.106 - 25-03-2026
+- fix: sendlogs
+
 #### v0.0.105 - 24-03-2026
 - feat: Add maskedPan to transaction result
 
@@ -98,6 +108,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.38 - 31-03-2026
+- fix: crash with empty terminal info
+
 #### v0.0.37 - 24-03-2026
 - feat: Add maskedPan to transaction result
 
@@ -167,6 +180,9 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.29 - 31-03-2026
+- fix: crash with empty terminal info
 
 #### v0.0.28 - 24-03-2026
 - feat: Add maskedPan to transaction result
@@ -240,6 +256,12 @@
 
 ## iOS - Tap to Pay on iPhone
 
+#### v0.0.37 - 03-04-2026
+- fix: correctly map cancel action to CANCELLED status
+
+#### v0.0.36 - 26-03-2026
+- fix: small fixes for loginViaCode
+
 #### v0.0.35 - 24-03-2026
 - feat: Add maskedPan to transaction result
 
@@ -256,6 +278,15 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.81 - 03-04-2026
+- chore: bump version iOS SDK
+
+#### v0.0.80 - 31-03-2026
+- chore: bump version Softpos SDK
+
+#### v0.0.77 - 24-03-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.76 - 24-03-2026
 - chore: bump version Softpos SDK
