@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.113 - 28-04-2026
+- fix: disable connection pooling
+
 #### v0.0.108 - 31-03-2026
 - fix: crash with empty terminal info
 
@@ -108,6 +111,9 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.39 - 28-04-2026
+- fix: disable connection pooling
+
 #### v0.0.38 - 31-03-2026
 - fix: crash with empty terminal info
 
@@ -180,6 +186,9 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.30 - 28-04-2026
+- fix: disable connection pooling
 
 #### v0.0.29 - 31-03-2026
 - fix: crash with empty terminal info
