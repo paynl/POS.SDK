@@ -4,8 +4,9 @@
 
 ## Android softpos
 
-#### v0.0.113 - 28-04-2026
-- fix: disable connection pooling
+#### v0.0.114 - 29-04-2026
+- chore: Add new PayNL Core: GCP-P
+- fix: pinpad button presses
 
 #### v0.0.108 - 31-03-2026
 - fix: crash with empty terminal info
@@ -111,8 +112,8 @@
 
 ## Android Sunmi hardpos
 
-#### v0.0.39 - 28-04-2026
-- fix: disable connection pooling
+#### v0.0.40 - 29-04-2026
+- chore: Add new PayNL Core: GCP-P
 
 #### v0.0.38 - 31-03-2026
 - fix: crash with empty terminal info
@@ -187,8 +188,8 @@
 
 ## Android PAX hardpos
 
-#### v0.0.30 - 28-04-2026
-- fix: disable connection pooling
+#### v0.0.31 - 29-04-2026
+- chore: Add new PayNL Core: GCP-P
 
 #### v0.0.29 - 31-03-2026
 - fix: crash with empty terminal info
@@ -265,6 +266,9 @@
 
 ## iOS - Tap to Pay on iPhone
 
+#### v0.0.38 - 29-04-2026
+- chore: Add new PayNL Core: GCP-P
+
 #### v0.0.37 - 03-04-2026
 - fix: correctly map cancel action to CANCELLED status
 
@@ -287,6 +291,11 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.82 - 29-04-2026
+- chore: Add new PayNL Core: GCP-P
+- chore: bump version iOS SDK
+- chore: bump version Softpos SDK
 
 #### v0.0.81 - 03-04-2026
 - chore: bump version iOS SDK
