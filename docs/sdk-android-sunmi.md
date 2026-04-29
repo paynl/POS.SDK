@@ -152,6 +152,19 @@ dependencies {
 }
 ```
 
+#### Environment Setup
+
+During the integration of the SDK, you will get 2 environments. Make sure you use the correct id's/licenses/etc with the different environment:
+
+- Development
+  - Integration ID (starting with `b`)
+  - License name: EMPTY
+  - PayNL Core: ZERO
+- Production
+  - Integration ID (starting with `c`)
+  - License name: EMPTY
+  - PayNL Core: MULTI
+
 ### SDK flow
 
 ```mermaid
