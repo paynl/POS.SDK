@@ -122,6 +122,21 @@ dependencies {
 }
 ```
 
+#### Environment Setup
+
+During the integration of the SDK, you will get 2 environments. Make sure you use the correct id's/licenses/etc with the different environment:
+
+- Development
+  - Integration ID (starting with `b`)
+  - License name: `PayNL Partner SDK - Testing-lic_01JQNMTHEAEFC6GJT4SHVVJSV1-20250331_082424.license`
+  - Make sure this file is available in the `app/src/main/assets` folder
+  - PayNL Core: ZERO
+- Production
+  - Integration ID (starting with `c`)
+  - License name: `provided by PayNL support`
+  - Make sure this file is available in the `app/src/main/assets` folder
+  - PayNL Core: MULTI
+
 #### Why is there a staging and production version?
 
 A softpos application has strict security policies.
