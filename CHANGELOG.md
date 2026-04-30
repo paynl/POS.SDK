@@ -6,7 +6,6 @@
 
 #### v0.0.114 - 29-04-2026
 - chore: Add new PayNL Core: GCP-P
-- fix: pinpad button presses
 
 #### v0.0.108 - 31-03-2026
 - fix: crash with empty terminal info
