@@ -753,7 +753,7 @@ import {PayNlSdk, type Transaction} from 'paynl-pos-sdk-react-native';
 class PayNLService {
     async sendTicket(email: string, transaction: Transaction) {
         try {
-            await PayNlSdk.sendTicket(email, transaction.transactionId, transaction.ticket);
+            await PayNlSdk.sendTicket(email, transaction.transactionId, transaction.transactionGuid, transaction.ticket);
         } catch (e) {
             console.error(`Error from PAY.POS sdk: ${error}`)
         }
