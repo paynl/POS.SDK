@@ -4,7 +4,11 @@
 
 ## Android softpos
 
-#### v0.0.114 - 29-04-2026
+#### v0.0.115 - 01-05-2026
+- fix: Route sendTicket to correct Core
+- feat: testConnection to core
+- fix: cancel payment race-condition
+- fix: disable connection pooling
 - chore: Add new PayNL Core: GCP-P
 
 #### v0.0.108 - 31-03-2026
@@ -111,6 +115,11 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.41 - 01-05-2026
+- fix: Route sendTicket to correct Core
+- feat: testConnection to core
+- fix: disable connection pooling
+
 #### v0.0.40 - 29-04-2026
 - chore: Add new PayNL Core: GCP-P
 
@@ -186,6 +195,11 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.32 - 01-05-2026
+- fix: Route sendTicket to correct Core
+- feat: testConnection to core
+- fix: disable connection pooling
 
 #### v0.0.31 - 29-04-2026
 - chore: Add new PayNL Core: GCP-P
@@ -264,6 +278,10 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## iOS - Tap to Pay on iPhone
+
+#### v0.0.39 - 01-05-2026
+- fix: Route sendTicket to correct Core
+- feat: testConnection to core
 
 #### v0.0.38 - 29-04-2026
 - chore: Add new PayNL Core: GCP-P
