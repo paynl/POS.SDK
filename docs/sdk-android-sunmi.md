@@ -9,6 +9,7 @@
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
     * [Init sdk](#init-sdk)
+    * [Test connection](#test-connection)
     * [Get activation code](#get-activation-code)
     * [loginViaCode](#loginviacode)
     * [loginViaCredentials](#loginViaCredentials)
