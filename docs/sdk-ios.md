@@ -124,6 +124,47 @@ class PayNLService {
 }
 ```
 
+
+#### Test Connection
+
+This function allows you to test the HTTP connectio to the selected PayNL Core.
+This function does not take parameters and has the following return type: `PayNlConnetionStatus`:
+
+| **Name**             | **Type** | **Description**                                               |
+|----------------------|----------|---------------------------------------------------------------|
+| `response`           | object   |                                                               |
+| `response.ok`        | Bool     | Whether the test was successful                               |
+| `response.httpCode`  | Int      | The actual httpCode from the selected core                    |
+
+```
+If the httpCode is 200 -> Core is ready
+If the httpCode is -1 -> An error occured during http call
+Else -> The selected Core is not ready
+```
+
+##### Example
+
+```swift
+import PayNlPOSSdkSwift
+
+class PayNLService {
+    ...
+
+    public func testConnection() async -> PayNlActivationStatus {
+        do {
+            return try await self.posService.testConnection()
+        } catch {
+            if let error = error as? PayNlSVError {
+                print("Got error from SDK: \(error.code) - \(error.description)")
+                return
+            }
+            
+            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
+        }
+    }
+}
+```
+
 #### Get activation code
 
 > [!WARNING]
@@ -145,16 +186,20 @@ This function does not take parameters and has the following return type: `PayNl
 ```swift
 import PayNlPOSSdkSwift
 
-public func getActivationCode() async -> PayNlActivationResponse {
-    do {
-        return try await self.posService.getActivationCode()
-    } catch {
-        if let error = error as? PayNlSVError {
-            print("Got error from SDK: \(error.code) - \(error.description)")
-            return
+class PayNLService {
+    ...
+
+    public func getActivationCode() async -> PayNlActivationResponse {
+        do {
+            return try await self.posService.getActivationCode()
+        } catch {
+            if let error = error as? PayNlSVError {
+                print("Got error from SDK: \(error.code) - \(error.description)")
+                return
+            }
+            
+            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
         }
-        
-        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -176,22 +221,26 @@ It does not have a return type, but you need to provide the code from the `getAc
 ```swift
 import PayNlPOSSdkSwift
 
-public func loginViaCode(code: String) async {
-    do {
-        try await self.posService.loginViaCode(code)
-    } catch {
-        if let error = error as? PayNlSVError {
-            switch error {
-            case .TERMINAL_NOT_ACTIVATED:
-                print("This activation code has not been activated, please use the Terminals:create endpoint to activate the code...")
-                return
-            default:
-                print("Got error from SDK: \(error.code) - \(error.description)")
-                return
+class PayNLService {
+    ...
+
+    public func loginViaCode(code: String) async {
+        do {
+            try await self.posService.loginViaCode(code)
+        } catch {
+            if let error = error as? PayNlSVError {
+                switch error {
+                case .TERMINAL_NOT_ACTIVATED:
+                    print("This activation code has not been activated, please use the Terminals:create endpoint to activate the code...")
+                    return
+                default:
+                    print("Got error from SDK: \(error.code) - \(error.description)")
+                    return
+                }
             }
+            
+            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
         }
-        
-        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -217,16 +266,20 @@ and [Merchant:info](https://developer.pay.nl/reference/merchants_info).
 ```swift
 import PayNlPOSSdkSwift
 
-public func loginViaCredentials(aCode: String, serviceCode: String, serviceSecret: String) async {
-    do {
-        try await self.posService.loginViaCredentials(aCode, serviceCode, serviceSecret)
-    } catch {
-        if let error = error as? PayNlSVError {
-            print("Got error from SDK: \(error.code) - \(error.description)")
-            return
+class PayNLService {
+    ...
+
+    public func loginViaCredentials(aCode: String, serviceCode: String, serviceSecret: String) async {
+        do {
+            try await self.posService.loginViaCredentials(aCode, serviceCode, serviceSecret)
+        } catch {
+            if let error = error as? PayNlSVError {
+                print("Got error from SDK: \(error.code) - \(error.description)")
+                return
+            }
+            
+            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
         }
-        
-        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -258,11 +311,15 @@ The available information is the following:
 ```swift
 import PayNlPOSSdkSwift
 
-public func getTerminalInfo() {
-    let data = self.posService.getTerminalInfo()
-    guard let data = data else {
-        print("This terminal is not activated...")
-        return
+class PayNLService {
+    ...
+
+    public func getTerminalInfo() {
+        let data = self.posService.getTerminalInfo()
+        guard let data = data else {
+            print("This terminal is not activated...")
+            return
+        }
     }
 }
 ```
@@ -284,11 +341,15 @@ With an activated terminal, you can fetch the allowed currencies this SDK suppor
 ```swift
 import PayNlPOSSdkSwift
 
-public func getAllowedCurrencies() {
-    let data = self.posService.getAllowedCurrencies()
-    guard let data = data else {
-        print("This terminal is not activated...")
-        return
+class PayNLService {
+    ...
+
+    public func getAllowedCurrencies() {
+        let data = self.posService.getAllowedCurrencies()
+        guard let data = data else {
+            print("This terminal is not activated...")
+            return
+        }
     }
 }
 ```
@@ -333,38 +394,42 @@ This function returns the `PayNlTransactionResult` type:
 ```swift
 import PayNlPOSSdkSwift
 
-public func startPayment(transaction: PayNlTransaction, service: PayNlTransactionService?) async {
-    do {
-        let result = try await self.posService.startPayment(transaction, service)
-        guard case .success = result.statusAction else {
-            print("Failed to process payment. Reason: \(result.payerMessage)")
-            return
-        }
-        
-        print("Transaction processed and paid!")
-        
-        guard let ticketDecoded = Data(base64Encoded: result.ticket),
-              let ticket = String(data: ticketDecoded, encoding: .utf8) else {
-            print("No ticket data")
-            return
-        }
-        
-        print("Ticket:")
-        print(ticket)
-    } catch {
-        if let error = error as? PayNlSVError {
-            switch error {
-            case .TRANSACTION_CANCELLED:
-                print("Transaction cancelled...")
-                return
-            
-            default:
-                print("Got error from SDK: \(error.code) - \(error.description)")
+class PayNLService {
+    ...
+
+        public func startPayment(transaction: PayNlTransaction, service: PayNlTransactionService?) async {
+        do {
+            let result = try await self.posService.startPayment(transaction, service)
+            guard case .success = result.statusAction else {
+                print("Failed to process payment. Reason: \(result.payerMessage)")
                 return
             }
+            
+            print("Transaction processed and paid!")
+            
+            guard let ticketDecoded = Data(base64Encoded: result.ticket),
+                  let ticket = String(data: ticketDecoded, encoding: .utf8) else {
+                print("No ticket data")
+                return
+            }
+            
+            print("Ticket:")
+            print(ticket)
+        } catch {
+            if let error = error as? PayNlSVError {
+                switch error {
+                case .TRANSACTION_CANCELLED:
+                    print("Transaction cancelled...")
+                    return
+                
+                default:
+                    print("Got error from SDK: \(error.code) - \(error.description)")
+                    return
+                }
+            }
+            
+            print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
         }
-        
-        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
     }
 }
 ```
@@ -380,21 +445,25 @@ E-mail address
 ```swift
 import PayNlPOSSdkSwift
 
-public func sendTicket(transaction: PayNlTransactionResult, email: String) async {
-  do {
-    await self.posService.sendTicket(
-      email: email,
-      transactionId: transaction.transactionId,
-      ticket: transaction.ticket
-    )
-  } catch {
-    if let error = error as? PayNlSVError {
-      print("Got error from SDK: \(error.code) - \(error.description)")
-      return
+class PayNLService {
+    ...
+
+    public func sendTicket(transaction: PayNlTransactionResult, email: String) async {
+      do {
+        await self.posService.sendTicket(
+          email: email,
+          transactionId: transaction.transactionId,
+          ticket: transaction.ticket
+        )
+      } catch {
+        if let error = error as? PayNlSVError {
+          print("Got error from SDK: \(error.code) - \(error.description)")
+          return
+        }
+        
+        print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
+      }
     }
-    
-    print("Unknown error from PAY.POS sdk: \(error.localizedDescription)")
-  }
 }
 ```
 
@@ -412,8 +481,12 @@ Reasons can be: A switch between merchants or this device will not be used for a
 ```swift
 import PayNlPOSSdkSwift
 
-public func logout() {
-    self.posService.logout()
+class PayNLService {
+    ...
+
+    public func logout() {
+        self.posService.logout()
+    }
 }
 ```
 
@@ -427,7 +500,11 @@ To provide these logs, you can invoke the `sendLogs()` function
 ```swift
 import PayNlPOSSdkSwift
 
-public func sendLogs() async {
-    await self.posService.sendLogs()
+class PayNLService {
+    ...
+
+    public func sendLogs() async {
+        await self.posService.sendLogs()
+    }
 }
 ```
