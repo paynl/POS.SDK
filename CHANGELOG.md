@@ -309,7 +309,7 @@
 
 ## React Native
 
-#### v0.0.82 - 29-04-2026
+#### v0.0.84 - 01-05-2026
 - chore: Add new PayNL Core: GCP-P
 - chore: bump version iOS SDK
 - chore: bump version Softpos SDK
