@@ -185,6 +185,10 @@ async function initPaySDK(): Promise<boolean> {
         }
 
         console.log('✅ Ready for payments!')
+        console.log('Terminal info: ' + JSON.stringify(PayNlSdk.getTerminalInfo()));
+        console.log(
+          'Allowed currencies: ' + JSON.stringify(PayNlSdk.getAllowedCurrencies()),
+        );
         return true;
     } catch (e) {
         console.warn("Failed to init PaySDK: " + e);
@@ -203,6 +207,7 @@ async function loginSDK() {
           Buffer.from(AT_CODE + ':' + AT_SECRET).toString('base64'),
       );
 
+      // Do this in your backend system
       const response = await fetch('https://rest.pay.nl/v2/terminals', {
         method: 'POST',
         headers: {
