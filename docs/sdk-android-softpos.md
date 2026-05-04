@@ -9,6 +9,7 @@
 - [SDK flow](#sdk-flow)
 - [API Spec](#api-spec)
     * [Init sdk](#init-sdk)
+    * [Test Connection](#test-connection)
     * [Get activation code](#get-activation-code)
     * [loginViaCode](#loginviacode)
     * [loginViaCode](#loginviacode-1)
@@ -121,6 +122,21 @@ dependencies {
   releaseImplementation "com.paynl.pos:sdk.softpos:$PAYNL_VERSION"
 }
 ```
+
+#### Environment Setup
+
+During the integration of the SDK, you will get 2 environments. Make sure you use the correct id's/licenses/etc with the different environment:
+
+- Development
+  - Integration ID (starting with `b`)
+  - License name: `PayNL Partner SDK - Testing-lic_01JQNMTHEAEFC6GJT4SHVVJSV1-20250331_082424.license`
+  - Make sure this file is available in the `app/src/main/assets` folder
+  - PayNL Core: ZERO
+- Production
+  - Integration ID (starting with `c`)
+  - License name: `provided by PayNL support`
+  - Make sure this file is available in the `app/src/main/assets` folder
+  - PayNL Core: MULTI
 
 #### Why is there a staging and production version?
 
@@ -288,6 +304,44 @@ class PayNLService {
       }
     } catch (SVErrorBaseException exception) {
       Log.e("PayNLExample", String.format("Failed to initialize SDK - code: %s, description: %s", e.code, e.description));
+    }
+  }
+}
+```
+
+#### Test Connection
+This function allows you to test the HTTP connectio to the selected PayNL Core.
+This function does not take parameters and has the following return type: `PayNlConnetionStatus`:
+
+| **Name**             | **Type** | **Description**                                               |
+|----------------------|----------|---------------------------------------------------------------|
+| `response`           | object   |                                                               |
+| `response.ok`        | Boolean  | Whether the test was successful                               |
+| `response.httpCode`  | Int      | The actual httpCode from the selected core                    |
+
+```
+If the httpCode is 200 -> Core is ready
+If the httpCode is -1 -> An error occured during http call
+Else -> The selected Core is not ready
+```
+
+##### Example
+
+```java
+import android.util.Log;
+
+import com.paynl.pos.sdk.shared.models.paynl.PayNlConnectionStatus;
+
+class PayNLService {
+
+  // ...
+  
+  public PayNlConnectionStatus testConnection() {
+    try {
+      return this.posService.testConnection();
+    } catch (SVErrorBaseException e) {
+      Log.e("PayNLExample", "posService has not received a configuration yet...");
+      return null;
     }
   }
 }
@@ -718,7 +772,7 @@ class PayNLService {
   
   public void sendTicket(PayNlTransactionResult transaction, String email) {
     try {
-      this.posService.sendTicket(email, transaction.transactionId, transaction.ticket);
+      this.posService.sendTicket(email, transaction.transactionId, transaction.transactionGuid, transaction.ticket);
     } catch (SVErrorBaseException e) {
       Log.e("PayNLExample", String.format("Failed to send ticket - code: %s, description: %s", e.code, e.description));
     }
