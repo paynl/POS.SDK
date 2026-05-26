@@ -4,6 +4,14 @@
 
 ## Android softpos
 
+#### v0.0.117 - 28-05-2026
+- feat: add more pinpad styling options
+- fix: pinpad touch hitbox
+
+#### v0.0.116 - 18-05-2026
+- fix: add transactionGuid property for SendTicketViaEmail
+- fix: prevent nullpointer exception
+
 #### v0.0.115 - 01-05-2026
 - fix: Route sendTicket to correct Core
 - feat: testConnection to core
@@ -115,6 +123,11 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.42 - 18-05-2026
+- feat: add MULTI_CARD exception (SV-0013)
+- fix: add transactionGuid property for SendTicketViaEmail
+- fix: prevent nullpointer exception
+
 #### v0.0.41 - 01-05-2026
 - fix: Route sendTicket to correct Core
 - feat: testConnection to core
@@ -195,6 +208,10 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.33 - 18-05-2026
+- fix: add transactionGuid property for SendTicketViaEmail
+- fix: prevent nullpointer exception
 
 #### v0.0.32 - 01-05-2026
 - fix: Route sendTicket to correct Core
@@ -308,6 +325,12 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.90 - 26-05-2026
+- chore: bump version Softpos SDK
+-
+#### v0.0.87 - 18-05-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.84 - 01-05-2026
 - chore: Add new PayNL Core: GCP-P
