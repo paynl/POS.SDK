@@ -47,7 +47,8 @@ class ViewModel: ObservableObject {
     
     func initSDK(_ attempt: Int = 0) {
         Task {
-            let result = await self.posService.initSdk(integrationId: "73e6219b-4f49-43d8-a419-07f037f67d40")
+            let configuration = PayNlConfiguation(integrationId: Configuration.integrationId, core: PayNlCore.MULTI)
+            let result = await self.posService.initSdk(configuration: configuration)
             switch result {
             case .needsLogin:
                 guard attempt < 2 else {
@@ -64,6 +65,9 @@ class ViewModel: ObservableObject {
             case .failed(let error):
                 self.logger.error("Got error from SDK: \(error.code) - \(error.description)")
                 break
+            @unknown default:
+                self.logger.error("Got unknown state from SDK")
+                break
             }
             
         }
@@ -76,7 +80,7 @@ class ViewModel: ObservableObject {
         
         Task {
             do {
-                let transaction = PayNlTransaction(amount: PayNlTransactionAmount(value: self.amount, currency: self.currency))
+                let transaction = PayNlTransaction(type: .PAYMENT, amount: PayNlTransactionAmount(value: self.amount, currency: self.currency))
                 let result = try await self.posService.startPayment(transaction: transaction, service: nil)
                 self.donePaying(result.payerMessage.isEmpty ? "Unknown error occured..." : result.payerMessage)
                 

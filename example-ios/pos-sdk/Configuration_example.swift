@@ -11,4 +11,5 @@
 //    public static let aCode = "A-XXXX-XXXX"
 //    public static let slCode = "SL-XXXX-XXXX"
 //    public static let slSecret = ""
+//    public static let integrationId = ""
 //}
