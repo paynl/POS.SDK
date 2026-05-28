@@ -16,8 +16,8 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(name: "PayNlPOSSdkSwift",
-                      url: "https://paysoftpos.blob.core.windows.net/apk/pos-sdk-swift-package-manager-0.0.41.zip",
-                      checksum: "b775553cc195fb46864ed6166ca338dc4573d4d390905114114974fd4d1605c3"
+                      url: "https://paysoftpos.blob.core.windows.net/apk/pos-sdk-swift-package-manager-0.0.43.zip",
+                      checksum: "cdd5ac29a098ef37b256d4dabdbdef499f52773d20c77e15925155973cc15c0b"
         )
 
     ]
