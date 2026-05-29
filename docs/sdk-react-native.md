@@ -809,6 +809,39 @@ class PayNLService {
 }
 ```
 
+#### Query logs
+
+> [!NOTE]
+> This only works if the SDK configuration contains `enabledLogging = true`
+
+If you encounter any issue, you can query up to 2 days worth of logs.
+
+##### Data
+
+| **Name**  | **Type** | **Description**                                                       |
+|-----------|----------|-----------------------------------------------------------------------|
+| `level`   | String   | The log level: INFO, WARNING or ERROR                                 |
+| `date`    | String   | The datetime of the logEntry. Format: `dd MMM yyyy '\|' HH:mm:ss.SSS` |
+| `message` | String   | The actual log message. (max length: 10_000)                          |
+| `line`    | String   | A formatted log line                                                  |
+
+##### Example
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+  async queryLogs() {
+    const days = 2; // Max allowed to query == 2 days
+    const logs = await PayNlSdk.queryLogs(days);
+    
+    for(const log of logs) {
+      console.log(log.line)
+    }
+  }
+}
+```
+
 #### Get Offline queue - ANDROID ONLY
 
 If `configuration.setEnableOfflineProcessing` is set to true, you need to regularly fetch the content of the Offline

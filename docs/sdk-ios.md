@@ -58,7 +58,7 @@ Also make sure the `Pods` project is added to your `MyApp.xcworkspace/contents.x
 
 To get started using Swift Package Manager, right click on your app's project (blue icon) and select
 `Add Package Dependency`.
-Then use the search bar and copy paste this URL: https://github.com/paynl/pos-sdk.
+Then use the search bar and copy paste this URL: `https://github.com/paynl/pos-sdk`.
 This will show the PAY.POS github repo, use the `Add Package`-button to add the dependency, and you are done!
 
 ### SDK flow
@@ -91,10 +91,11 @@ flowchart LR;
 
 This function will initialize the SDK. It will return `PayNlInitResult` enum type.
 
-| **Name**      | **Type**  | **Description**                                                   |
-|---------------|-----------|-------------------------------------------------------------------|
-| integrationId | String    | The UUID received from PayNL support in order to process payments |
-| core          | PayNLCore | This is used to switch between processing hosts (default: MULTI)  |
+| **Name**      | **Type**  | **Description**                                                                                                                                                                                                       |
+|---------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| integrationId | String    | The UUID received from PayNL support in order to process payments                                                                                                                                                     |
+| core          | PayNLCore | This is used to switch between processing hosts (default: MULTI)                                                                                                                                                      |
+| enableLogging | Bool      | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`) |
 
 ##### Example
 
@@ -108,7 +109,8 @@ class PayNLService {
     }
     
     public func initSdk() async {
-          let result = try await self.posService.initSdk(configuration: PayNlConfiguation(integration: '', core: PayNLCore.MULTI))
+          let configuration = PayNlConfiguation(integration: '')
+          let result = try await self.posService.initSdk(configuration: configuration)
           switch result {
           case .needsLogin:
               // Start login flow
@@ -492,6 +494,9 @@ class PayNLService {
 
 #### Send logs
 
+> [!NOTE]
+> This only works if the SDK configuration contains `enabledLogging = true`
+
 When encountering problems with the SDK, PayNL support needs the logs stored in the SDK.
 To provide these logs, you can invoke the `sendLogs()` function
 
@@ -505,6 +510,38 @@ class PayNLService {
 
     public func sendLogs() async {
         await self.posService.sendLogs()
+    }
+}
+```
+
+#### Query logs
+
+> [!NOTE]
+> This only works if the SDK configuration contains `enabledLogging = true`
+
+If you encounter any issue, you can query up to 2 days worth of logs.
+
+##### Data
+
+| **Name**  | **Type** | **Description**                                                       |
+|-----------|----------|-----------------------------------------------------------------------|
+| `level`   | String   | The log level: INFO, WARNING or ERROR                                 |
+| `date`    | String   | The datetime of the logEntry. Format: `dd MMM yyyy '\|' HH:mm:ss.SSS` |
+| `message` | String   | The actual log message. (max length: 10_000)                          |
+| `line`    | String   | A formatted log line                                                  |
+
+##### Example
+
+```swift
+import PayNlPOSSdkSwift
+
+class PayNLService {
+  public func queryLogs() async {
+        // Max allowed to query -> 2 days
+        let logs = await self.posService.queryLogs(days: 2)
+        logs.forEach { log in
+          print(log.line)
+        }
     }
 }
 ```

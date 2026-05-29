@@ -4,12 +4,20 @@
 
 ## Android softpos
 
-#### v0.0.117 - 28-05-2026
+#### v0.0.120 - 29-05-2026
+- feat: query for SDK logging (max 2 days)
+- fix: loginViaCredentials flow
+- fix: pinpad incorrect PIN message
+
+#### v0.0.119 - 29-05-2026
+- fix: kernel error -6 for MC cards
+
+#### v0.0.117 - 27-05-2026
 - feat: add more pinpad styling options
 - fix: pinpad touch hitbox
 
 #### v0.0.116 - 18-05-2026
-- fix: add transactionGuid property for SendTicketViaEmail
+- fix: add transactionGuid property for SendTicketViaEmailz
 - fix: prevent nullpointer exception
 
 #### v0.0.115 - 01-05-2026
@@ -82,46 +90,40 @@
 - fix: retry init kernel when failure detected
 
 #### v0.0.82 - 12-08-2025
-
 - fix: prevent app crash when scanning MIFARE before starting payment
 
 #### v0.0.81 - 11-08-2025
-
 - fix: dual screen pinprompt fix
 
 #### v0.0.80 - 11-08-2025
-
 - fix: better error handling for sounds
 
 #### v0.0.78 - 07-08-2025
-
 - fix: better handling for NFC reader
 
 #### v0.0.76 - 07-08-2025
-
 - feat: add support for printing tickets using Sunmi printers
 
 #### v0.0.75 - 06-08-2025
-
 - fix: prevent app crash when scanning mifare before/after payment
 
 #### v0.0.72 - 06-08-2025
-
 - feat: added support for Mifare
 
 #### v0.0.70 - 04-08-2025
-
 - feat: allow context to be updated
 
 #### v0.0.66 - 29-07-2025
-
 - fix: rework builder patterns to fix proguard issue
 
 #### v0.0.63 - 28-07-2025
-
 - fix: correctly handle pin prompt cancel
 
 ## Android Sunmi hardpos
+
+#### v0.0.44 - 29-05-2026
+- feat: query for SDK logging (max 2 days)
+- fix: loginViaCredentials flow
 
 #### v0.0.42 - 18-05-2026
 - feat: add MULTI_CARD exception (SV-0013)
@@ -188,26 +190,25 @@
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.18 - 11-08-2025
-
 - fix: better error handling for sounds
 
 #### v0.0.17 - 07-08-2025
-
 - feat: add support for printing tickets
 
 #### v0.0.15 - 06-08-2025
-
 - feat: added support for Mifare
 
 #### v0.0.11 - 04-08-2025
-
 - feat: allow context to be updated
 
 #### v0.0.8 - 29-07-2025
-
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.34 - 29-05-2026
+- feat: query for SDK logging (max 2 days)
+- fix: loginViaCredentials flow
 
 #### v0.0.33 - 18-05-2026
 - fix: add transactionGuid property for SendTicketViaEmail
@@ -296,6 +297,11 @@
 
 ## iOS - Tap to Pay on iPhone
 
+#### v0.0.47 - 28-05-2026
+- feat: query for SDK logging (max 2 days)
+- chore: add HTTP logging
+- fix: loginViaCredentials flow
+
 #### v0.0.39 - 01-05-2026
 - fix: Route sendTicket to correct Core
 - feat: testConnection to core
@@ -326,9 +332,14 @@
 
 ## React Native
 
+#### v0.0.91 - 29-05-2026
+- feat: query for SDK logging (max 2 days)
+- chore: bump version Softpos SDK
+- chore: bump version iOS SDK
+
 #### v0.0.90 - 26-05-2026
 - chore: bump version Softpos SDK
--
+
 #### v0.0.87 - 18-05-2026
 - chore: bump version Softpos SDK
 
@@ -372,25 +383,19 @@
 - feat: cancelPayment checks whether it is possible to cancel the payment. It will throw an error if it cannot
 
 #### v0.0.49 - 12-08-2025
-
 - chore: update PAY.POS dependencies
 
 #### v0.0.48 - 07-08-2025
-
 - feat: add support for printing tickets
 
 #### v0.0.45 - 04-08-2025
-
 - feat: added support for Mifare
 
 #### v0.0.42 - 04-08-2025
-
 - fix: hotfix to prevent app crash after app back in foreground
 
 #### v0.0.41 - 29-07-2025
-
 - fix: rework builder patterns to fix proguard issue
 
 #### v0.0.38 - 28-07-2025
-
 - fix: correctly cast response models from offline processing
