@@ -828,6 +828,46 @@ class PayNLService {
 }
 ```
 
+#### Query logs
+
+> [!NOTE]
+> This only works if the SDK configuration contains `enabledLogging = true`
+
+If you encounter any issue, you can query up to 2 days worth of logs.
+
+##### Data
+
+| **Name**  | **Type**        | **Description**                                                       |
+|-----------|-----------------|-----------------------------------------------------------------------|
+| `level`   | String          | The log level: INFO, WARNING or ERROR                                 |
+| `date`    | String          | The datetime of the logEntry. Format: `dd MMM yyyy '\|' HH:mm:ss.SSS` |
+| `message` | String          | The actual log message. (max length: 10_000)                          |
+| `getLine` | function String | Returns a formatted log line                                          |
+
+##### Example
+
+```java
+import android.util.Log;
+
+class PayNLService {
+
+  // ...
+  
+  public void queryLogs() {
+    try {
+      int days = 2; // Max allowed to query == 2 days
+      List<PayNlLogEntry> logs = this.posService.queryLogs(days);
+      
+      for (PayNlLogEntry log : logs) {
+        Log.i("PayNLExample", log.getLine());
+      }
+    } catch (SVErrorBaseException e) {
+      Log.e("PayNLExample", String.format("Failed to send logs - code: %s, description: %s", e.code, e.description));
+    }
+  }
+}
+```
+
 #### Get Offline queue
 
 If `configuration.setEnableOfflineProcessing` is set to true, you need to regularly fetch the content of the Offline
