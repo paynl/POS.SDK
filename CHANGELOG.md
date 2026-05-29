@@ -4,13 +4,13 @@
 
 ## Android softpos
 
+#### v0.0.121 - 29-05-2026
+- fix: kernel error -6 for MC cards
+
 #### v0.0.120 - 29-05-2026
 - feat: query for SDK logging (max 2 days)
 - fix: loginViaCredentials flow
 - fix: pinpad incorrect PIN message
-
-#### v0.0.119 - 29-05-2026
-- fix: kernel error -6 for MC cards
 
 #### v0.0.117 - 27-05-2026
 - feat: add more pinpad styling options
