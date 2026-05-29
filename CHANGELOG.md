@@ -206,7 +206,7 @@
 
 ## Android PAX hardpos
 
-#### v0.0.34 - 29-05-2026
+#### v0.0.35 - 29-05-2026
 - feat: query for SDK logging (max 2 days)
 - fix: loginViaCredentials flow
 
