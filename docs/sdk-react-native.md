@@ -719,6 +719,31 @@ class PayNLService {
 }
 ```
 
+#### Cancel running transaction
+
+The SDK allows you to cancel any running transaction from the background.
+If this method is triggered while no transaction is running, nothing will happen.
+
+##### Example
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+
+class PayNLService {
+
+  // ...
+  
+  public cancelTransaction() {
+    try { 
+       PayNlSdk..cancelTransaction();
+    } catch(e) {
+       // Either there is no transaction active or the transaction is already being processed and cannot be cancelled anymore
+       console.log('Failed to cancel transaction: ' + e);
+    }
+  }
+}
+```
+
 #### Print ticket
 
 After a successful transaction, it is possible to print the ticket via the SDK (if the terminal has a supported printer,
