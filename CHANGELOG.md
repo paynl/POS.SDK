@@ -4,7 +4,7 @@
 
 ## Android softpos
 
-#### v0.0.123 - 02-07-2026
+#### v0.0.124 - 02-07-2026
 - fix: returns needsLogin is API could not find terminal details
 
 #### v0.0.123 - 16-06-2026
