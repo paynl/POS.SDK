@@ -4,6 +4,15 @@
 
 ## Android softpos
 
+#### v0.0.124 - 02-07-2026
+- fix: returns needsLogin is API could not find terminal details
+
+#### v0.0.123 - 16-06-2026
+- chore: more debug logging
+
+#### v0.0.122 - 02-06-2026
+- fix: Add missing data for MAT
+
 #### v0.0.121 - 29-05-2026
 - fix: kernel error -6 for MC cards
 
@@ -17,7 +26,7 @@
 - fix: pinpad touch hitbox
 
 #### v0.0.116 - 18-05-2026
-- fix: add transactionGuid property for SendTicketViaEmailz
+- fix: add transactionGuid property for SendTicketViaEmail
 - fix: prevent nullpointer exception
 
 #### v0.0.115 - 01-05-2026
@@ -121,6 +130,18 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.48 - 02-07-2026
+- fix: returns needsLogin is API could not find terminal details
+
+#### v0.0.47 - 17-06-2026
+- fix: Pin skip error
+
+#### v0.0.46 - 16-06-2026
+- chore: more debug logging
+
+#### v0.0.45 - 02-06-2026
+- fix: Add missing data for MAT
+
 #### v0.0.44 - 29-05-2026
 - feat: query for SDK logging (max 2 days)
 - fix: loginViaCredentials flow
@@ -205,6 +226,15 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.38 - 02-07-2026
+- fix: returns needsLogin is API could not find terminal details
+
+#### v0.0.37 - 16-06-2026
+- chore: more debug logging
+
+#### v0.0.36 - 02-06-2026
+- fix: Add missing data for MAT
 
 #### v0.0.35 - 29-05-2026
 - feat: query for SDK logging (max 2 days)
@@ -331,6 +361,12 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.94 - 02-07-2026
+- chore: bump version Softpos SDK
+
+#### v0.0.92 - 02-06-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.91 - 29-05-2026
 - feat: query for SDK logging (max 2 days)
