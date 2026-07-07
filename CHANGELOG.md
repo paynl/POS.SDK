@@ -4,6 +4,9 @@
 
 ## Android softpos
 
+#### v0.0.125 - 07-07-2026
+- feat: add bottomMargin & bottomMarginColor for pinpad layout. Allowing you to push up the pinprompt on screen
+
 #### v0.0.124 - 02-07-2026
 - fix: returns needsLogin is API could not find terminal details
 
@@ -129,6 +132,9 @@
 - fix: correctly handle pin prompt cancel
 
 ## Android Sunmi hardpos
+
+#### v0.0.49 - 02-07-2026
+- fix: lower minSdk from 26 to 25
 
 #### v0.0.48 - 02-07-2026
 - fix: returns needsLogin is API could not find terminal details
@@ -361,6 +367,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.95 - 07-07-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.94 - 02-07-2026
 - chore: bump version Softpos SDK
