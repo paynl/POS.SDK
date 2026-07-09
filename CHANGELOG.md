@@ -4,10 +4,16 @@
 
 ## Android softpos
 
+#### v0.0.127 - 09-07-2026
+- feat: add AUTH-only to transaction types
+
+#### v0.0.126 - 09-07-2026
+- feat: add Idempotency key to route transactions and activations to the correct PayNL core
+
 #### v0.0.125 - 07-07-2026
 - feat: add bottomMargin & bottomMarginColor for pinpad layout. Allowing you to push up the pinprompt on screen
 
-#### v0.0.124 - 02-07-2026
+#### v0.0.124 - 02-07-2026[CHANGELOG.md](CHANGELOG.md)
 - fix: returns needsLogin is API could not find terminal details
 
 #### v0.0.123 - 16-06-2026
@@ -133,6 +139,12 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.51 - 09-07-2026
+- feat: add AUTH-only to transaction types
+
+#### v0.0.50 - 09-07-2026
+- feat: add Idempotency key to route transactions and activations to the correct PayNL core
+
 #### v0.0.49 - 02-07-2026
 - fix: lower minSdk from 26 to 25
 
@@ -232,6 +244,12 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.40 - 09-07-2026
+- feat: add AUTH-only to transaction types
+
+#### v0.0.39 - 09-07-2026
+- feat: add Idempotency key to route transactions and activations to the correct PayNL core
 
 #### v0.0.38 - 02-07-2026
 - fix: returns needsLogin is API could not find terminal details
@@ -367,6 +385,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.96 - 09-07-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.95 - 07-07-2026
 - chore: bump version Softpos SDK

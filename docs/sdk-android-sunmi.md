@@ -18,6 +18,7 @@
     * [Start payment](#start-payment)
         + [MIFARE](#mifare)
         + [Refunds](#refunds)
+        + [Authorize only](#authorize-only)
         + [Payment Events](#payment-events)
     * [Cancel running transaction](#cancel-running-transaction)
     * [Print ticket](#print-ticket)
@@ -615,7 +616,6 @@ The SDK is able to scan MIFARE cards and return its serial number to you.
 
 In order to do this, make sure the following is done:
 
-- SDK version is v0.0.74
 - You have set the PayNLConfiguration to `setEnableMifareScanning(true)`
 - You handle statusAction `PayNlTransactionStatus.MIFARE`
 
@@ -623,8 +623,6 @@ In order to do this, make sure the following is done:
 
 In order to a refund payment, make sure the following is done:
 
-- SDK version is v0.0.11 or higher
-- SDK is activated
 - SL-code & TH-code have Refunds activated (contact PayNL support for this)
 - You have set the PayNLConfiguration to `setCore(PayNlCore.MULTI)`
 
@@ -647,6 +645,55 @@ class PayNLService {
     try {
       PayNlTransaction transaction = new PayNlTransaction.Builder()
               .setType(PayNlTransactionType.REFUND)
+              .setAmount(new PayNlTransactionAmount(100, "EUR"))
+              .build();
+
+      PayNlTransactionResult result = this.posService.startTransaction(transaction, null);
+
+      if (result.statusAction != PayNlTransactionStatus.PAID) {
+        Log.w("PayNlExample", "Payment failed or cancelled...");
+        return;
+      }
+
+      Log.i("PayNLExample", "Payment processed!");
+      Log.i("PayNLExample", String.format("OrderId: %s\nReference: %s\nPayerMessage: %s", result.orderId, result.reference, result.payerMessage));
+
+      byte[] ticketBytes = Base64.getDecoder().decode(result.ticket);
+      Log.i("PayNLExample", String.format("Ticket data:\n\n%s", new String(ticketBytes)));
+
+    } catch (SVErrorBaseException e) {
+      Log.e("PayNLExample", String.format("Failed to process payment - code: %s, description: %s", e.code, e.description));
+    }
+  }
+}
+```
+
+#### Authorize only
+
+> [!NOTE]
+> This is a pilot feature currently, and might not be available yet on your terminals.
+
+In order to start an Authorize only transaction, you only need to change the transaction type to `AUTH`.
+
+After the AUTH-only transaction, store the `orderId`. Once you are ready to (partially) capture the authorized amount, use the following API call:
+- [Authorize Capture](https://developer.pay.nl/reference/patch_transactions-transactionid-capture)
+- [Authorize Void](https://developer.pay.nl/reference/patch_transactions-transactionid-void)
+
+```java
+import android.util.Log;
+
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransaction;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionAmount;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionResult;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionStatus;
+import com.paynl.pos.sdk.shared.models.paynl.transaction.PayNlTransactionType;`
+
+class PayNLService {
+
+  startAuthOnly() {
+    try {
+      PayNlTransaction transaction = new PayNlTransaction.Builder()
+              .setType(PayNlTransactionType.AUTH)
               .setAmount(new PayNlTransactionAmount(100, "EUR"))
               .build();
 
