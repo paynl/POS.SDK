@@ -18,6 +18,7 @@
     * [Start payment](#start-payment)
         + [MIFARE](#mifare)
         + [Refunds](#refunds)
+        + [Authorize only](#authorize-only)
         + [Payment Events](#payment-events)
     * [Cancel running transaction](#cancel-running-transaction)
     * [Print ticket](#print-ticket)
@@ -651,7 +652,7 @@ In order to a refund payment, make sure the following is done:
 - SL-code & TH-code have Refunds activated (contact PayNL support for this)
 - You have set the PayNLConfiguration to `setCore(PayNlCore.MULTI)`
 
-To do a refund, set the transactio type to refund:
+To do a refund, set the transaction type to refund:
 
 ```ts
 import {PayNlSdk} from 'paynl-pos-sdk-react-native';
@@ -662,6 +663,49 @@ class PayNLService {
   async startRefund() {
     try {
       const transaction: Transaction = { amount: { value: 1, currency: 'EUR' }, type: 'REFUND' };
+      const result = await PayNlSdk.startTransaction({transaction});
+      if (result.statusAction !== 'PAID') {
+        console.error(`Failed to process payment. Reason: ${result.payerMessage}`);
+        return;
+      }
+
+      let ticket = '';
+      if (result.ticket !== '') {
+        const buff = new Buffer(result.ticket, 'base64');
+        ticket = buff.tostring('ascii');
+      }
+
+      console.log(JSON.stringify(result));
+      console.log('Ticket:')
+      console.log(ticket)
+    } catch (e) {
+      console.error(`Error from PAY.POS sdk: ${error}`)
+    }
+  }
+}
+```
+
+#### Authorize only
+
+> [!NOTE]
+> This is a pilot feature currently, and might not be available yet on your terminals.
+> This is also an Android only feature as of now
+
+In order to start an Authorize only transaction, you only need to change the transaction type to `AUTH`.
+
+After the AUTH-only transaction, store the `orderId`. Once you are ready to (partially) capture the authorized amount, use the following API call:
+- [Authorize Capture](https://developer.pay.nl/reference/patch_transactions-transactionid-capture)
+- [Authorize Void](https://developer.pay.nl/reference/patch_transactions-transactionid-void)
+
+```ts
+import {PayNlSdk} from 'paynl-pos-sdk-react-native';
+// React Native does not have a Base64 decoder build-in
+import {Buffer} from 'buffer';
+
+class PayNLService {
+  async startAuthOnly() {
+    try {
+      const transaction: Transaction = { amount: { value: 1, currency: 'EUR' }, type: 'AUTH' };
       const result = await PayNlSdk.startTransaction({transaction});
       if (result.statusAction !== 'PAID') {
         console.error(`Failed to process payment. Reason: ${result.payerMessage}`);
