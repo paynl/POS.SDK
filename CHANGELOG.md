@@ -4,6 +4,21 @@
 
 ## Android softpos
 
+#### v0.0.130 - TBD
+- feat: update networking rules in SDK
+    - Added DNS resolvers including DHCP
+    - Added timeouts for DNS, connect, request, response
+    - Added retry flows:
+        - If failed to resolve DNS/connect/upload request -> Full retry
+        - If connection dropped while waiting on response -> Use transaction:Get to get status
+
+#### v0.0.129 - 21-08-2026
+- fix: update initSDK to check if terminal is still activated
+
+#### v0.0.128 - 21-07-2026
+- chore: added timestamp to transaction
+- chore: limit logsfile to 5MB
+
 #### v0.0.127 - 09-07-2026
 - feat: add AUTH-only to transaction types
 
@@ -13,7 +28,7 @@
 #### v0.0.125 - 07-07-2026
 - feat: add bottomMargin & bottomMarginColor for pinpad layout. Allowing you to push up the pinprompt on screen
 
-#### v0.0.124 - 02-07-2026[CHANGELOG.md](CHANGELOG.md)
+#### v0.0.124 - 02-07-2026
 - fix: returns needsLogin is API could not find terminal details
 
 #### v0.0.123 - 16-06-2026
@@ -139,6 +154,25 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.55 - TBD
+- fix: Bancontact CHIP flow
+- feat: update networking rules in SDK
+    - Added DNS resolvers including DHCP
+    - Added timeouts for DNS, connect, request, response
+    - Added retry flows:
+        - If failed to resolve DNS/connect/upload request -> Full retry
+        - If connection dropped while waiting on response -> Use transaction:Get to get status
+
+#### v0.0.54 - 21-08-2026
+- fix: update initSDK to check if terminal is still activated
+
+#### v0.0.53 - 12-08-2026
+- fix: battery drain issues
+
+#### v0.0.52 - 21-07-2026
+- chore: added timestamp to transaction
+- chore: limit logsfile to 5MB
+
 #### v0.0.51 - 09-07-2026
 - feat: add AUTH-only to transaction types
 
@@ -244,6 +278,23 @@
 - fix: rework builder patterns to fix proguard issue
 
 ## Android PAX hardpos
+
+#### v0.0.43 - TBD
+- fix: Bancontact CHIP flow
+- feat: update networking rules in SDK
+    - Added DNS resolvers including DHCP
+    - Added timeouts for DNS, connect, request, response
+    - Added retry flows:
+        - If failed to resolve DNS/connect/upload request -> Full retry
+        - If connection dropped while waiting on response -> Use transaction:Get to get status
+
+#### v0.0.42 - 21-08-2026
+- fix: NFC type
+- fix: update initSDK to check if terminal is still activated
+
+#### v0.0.41 - 21-07-2026
+- chore: added timestamp to transaction
+- chore: limit logsfile to 5MB
 
 #### v0.0.40 - 09-07-2026
 - feat: add AUTH-only to transaction types
@@ -385,6 +436,12 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.100 - 21-08-2026
+- chore: bump version Softpos SDK
+
+#### v0.0.97 - 21-07-2026
+- chore: bump version Softpos SDK
 
 #### v0.0.96 - 09-07-2026
 - chore: bump version Softpos SDK

@@ -223,59 +223,131 @@ android {
 
 ### SDK flow
 
+#### Login/Logout flow
 ```mermaid
 flowchart LR;
-  subgraph Starting point
   A[initSDK]
+  M{needsLogin}
+  T{Call initSDK again}
+  A-->B{readyForPayments}
+  B-->B2[see transaction flow]
+  A-->M
+  B-->K
+  M --> C
+  M --> G
+  E --> T
+  G-->T
+
+  subgraph Login
+    C[getActivationCode]
+    E[loginViaCode]
+    G[loginViaCredentials]
+
+    C --> |Call own backend| D{Terminal:Create API}
+
+    subgraph Integrator Backend
+      D --> D2[Store TH-code and secret]
+    end
+    D2 --> E
   end
- 
-  subgraph Auth flow
-  A --> M{needsLogin}
-  M --> C[getActivationCode]
-  C --> |Call own backend| D{Terminal:Create API}
-  subgraph Integrator Backend
-        D --> D2[Store TH-code and secret]
+
+  subgraph Logout flow
+    K[logout]
+    K --> |Call own backend| L
+    subgraph Integrator Backend
+      L{Terminal:delete api}
+    end
   end
-  D2 --> E[loginViaCode]
-  E --> A
-  M --> G[loginViaCredentials]
-  G --> A
-  end
-  
-  subgraph Transaction flow
-  A --> B{readyForPayments}
-  B --> F[startPayment]
-  F --> H{Payment result}
-  B --> N[sendTicket]
-  B --> T[printTicket]
-  H --> |FAILED: Show payerMessage to customer| F
-  H --> |CANCELLED: Show paymentCancelled to customer| F
+```
+
+#### Transaction flow
+```mermaid
+flowchart LR;
+  A[initSDK]
+  B{readyForPayments}
+  A-->B
+  B --> I
+  B --> J
+  B --> P
+  B --> Q
+  B --> R
+  B --> S
+  B --> F
+
+
+
+  subgraph Transaction Flow
+    F[startPayment]
+    F --> H{Payment result}
+    H --> N[sendTicket]
+    H --> T[printTicket]
+
+    H --> |FAILED: Show payerMessage to customer| F
+    H --> |CANCELLED: Show paymentCancelled to customer| F
   end
 
   subgraph Get terminal information
-  B --> I[getTerminalInfo]
-  B --> J[getAllowedCurrencies]
+    I[getTerminalInfo]
+    J[getAllowedCurrencies]
   end
 
   subgraph Offline processing
-  H -->|OFFLINE: Add to queue| O{Offline queue}
-  B --> P[getOfflineQueue]
-  P --> O
-  B --> Q[triggerFullOfflineProcessing]
-  Q -->|Process all items from queue| O
-  B --> R[triggerSingleOfflineProcessing]
-  R -->|Fetch single item with ID for processing| O
-  B --> S[clearOfflineItem]
-  S -->|Remove single item from queue| O
+    H -->|OFFLINE: Add to queue| O{Offline queue}
+    P[getOfflineQueue]
+    P --> O
+    Q[triggerFullOfflineProcessing]
+    Q -->|Process all items from queue| O
+    R[triggerSingleOfflineProcessing]
+    R -->|Fetch single item with ID for processing| O
+    S[clearOfflineItem]
+    S -->|Remove single item from queue| O
   end
-  
-  subgraph Logout flow
-  B --> K[logout]
-  K --> |Call own backend| L{Terminal:delete api}
-  subgraph Integrator Backend
-        L --> A
+```
+
+#### Transaction retry flows
+```mermaid
+flowchart LR;
+  A[Processing payment]
+
+  subgraph Network status
+    B{DNS resolve failed}
+    C{Connect failed}
+    D{Sending payload failed}
+    F{Connection dropped while waiting for response}
+    H{Received response}
   end
+
+  subgraph Network status retry
+    O{Connection dropped while waiting for response}
+    P{Received response}
+    Q{Any other network issue}
   end
+
+  subgraph Network status fetch
+    S{Received response}
+    T{Any other network issue}
+  end
+
+  A-->B
+  A-->C
+  A-->D
+  B--> |if transactionRetryDelay >= 0sec| E[Retry transaction process attempt after x sec]
+  C--> |if transactionRetryDelay >= 0sec| E[Retry transaction process attempt after x sec]
+  D--> |if transactionRetryDelay >= 0sec| E[Retry transaction process attempt after x sec]
+  E-->O
+  E-->P
+  E-->Q
+  P-->I
+  O-->|if transactionFetchDelay >= 0sec| G
+  Q-->R[Throw error]
+  A-->F
+  F--> |if transactionFetchDelay >= 0sec| G[Fetch transaction status after x sec]
+  G-->S
+  G-->T
+  T-->R
+  S-->I
+  A-->H
+  H-->I[Return transaction status]
 ```
 
 ### API Spec
@@ -284,56 +356,66 @@ flowchart LR;
 
 This function will initialize the SDK. It will return `PayNlInitResult` enum type.
 
-| **Name**                                 | **Type**             | **Description**                                                                                                                                                                                                                                                                                              |
-|------------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| integrationId                            | String               | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                                                            |
-| licenseName                              | String               | The name of the license file in your assets folder                                                                                                                                                                                                                                                           |
-| overlayParams                            | PaymentOverlayParams | ANDROID-ONLY Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                                             |
-| overlayParams.enabled                    | boolean              | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                                                           |
-| overlayParams.closeDelayInMs             | long                 | Configures an auto close delay on the overlay (default: 0 -> Keep open)                                                                                                                                                                                                                                      |
-| overlayParams.logoImage                  | int                  | The reference id for your logo (default: `R.drawable.paynl` -> The PayNL logo)                                                                                                                                                                                                                               |
-| overlayParams.waitingCardAnimation       | int                  | The reference id for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `R.raw.reader_animation`)                                          |
-| overlayParams.buttonShape                | int                  | The reference id for a custom background shape for the buttons in the overlay. (Default: R.drawable.pay_btn)                                                                                                                                                                                                 |
-| overlayParams.progressBarColor           | String               | The color of the loading spinner during processing of Payment. Hex-only (default: `#FF585FFF`)                                                                                                                                                                                                               |
-| overlayParams.successColor               | String               | The color of the success check when payment is success. Hex-only (default: `#FF00D388`)                                                                                                                                                                                                                      |
-| overlayParams.errorColor                 | String               | The color of error during payment. Hex-only (default: `#FFC5362C`)                                                                                                                                                                                                                                           |
-| overlayParams.backgroundColor            | String               | The background color of the overlay & ticket viewer. Hex-only (default: `#FFFFFFFF`)                                                                                                                                                                                                                         |
-| overlayParams.amountTextColor            | String               | The text color of the amount. Hex-only (default: `#FF444444`)                                                                                                                                                                                                                                                |
-| overlayParams.payerMessageTextColor      | String               | The text color of the payerMessage. Hex-only (default: `#FF888888`)                                                                                                                                                                                                                                          |
-| overlayParams.buttonTextColor            | String               | The text color of the buttons. Hex-only (default: `#FF000000`)                                                                                                                                                                                                                                               |
-| overlayParams.cancelButtonLabel          | String               | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                                                                   |
-| overlayParams.closeButtonLabel           | String               | The label text on the close button (default: `Sluiten`)                                                                                                                                                                                                                                                      |
-| overlayParams.waitingCardLabel           | String               | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                                                                |
-| overlayParams.waitingPincode             | String               | The label text while waiting for the pincode (default: `Voer uw pincode in`)                                                                                                                                                                                                                                 |
-| overlayParams.processingCardLabel        | String               | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                                                                   |
-| overlayParams.paymentCancelled           | String               | The label text for payment cancelled (default: `Betaling afgebroken`)                                                                                                                                                                                                                                        |
-| overlayParams.ticketHeaderLabel          | String               | The label text for the ticket viewer header (default: `Betaling succesvol!`)                                                                                                                                                                                                                                 |
-| overlayParams.emailHeaderLabel           | String               | The label text for the email ticket header (default: `Voer email adres in`)                                                                                                                                                                                                                                  |
-| overlayParams.emailButtonLabel           | String               | The label text for the send ticket button (default: `Mailen`)                                                                                                                                                                                                                                                |
-| pinPadLayoutParams.hideShadow            | boolean              | The upper part of the screen shows a shadow during the WAITING_PINCODE. You can disable this and show your own content in the top part via this property (default: false)                                                                                                                                    |
-| pinPadLayoutParams.useScrambledPinpad    | Boolean              | When enabled, this feature shuffels/scrambles the numbers on the pinpad (default: false)                                                                                                                                                                                                                     |
-| pinPadLayoutParams.waitingPincode        | String               | The hint text during WAITING_PINCODE (default: `Voer uw pincode in`)                                                                                                                                                                                                                                         |
-| pinPadLayoutParams.backgroundColor       | String               | The background color of the overlay (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                                 |
-| pinPadLayoutParams.portraitNumberSize    | Integer              | The fontsize of the number while in Portrait. Note, this does not resize the button (default: 56dp)                                                                                                                                                                                                          |
-| pinPadLayoutParams.landscapeNumberSize   | Integer              | The fontsize of the number while in Landscape. Note, this does not resize the button (default: 46dp)                                                                                                                                                                                                         |
-| pinPadLayoutParams.specialButtonTextSize | Integer              | The fontsize of the special buttons. Note, this does not resize the button (default: 56dp)                                                                                                                                                                                                                   |
-| pinPadLayoutParams.bottomMargin          | Integer              | Creates empty space between the bottom of the screen and the bottom of the pinprompt (default: 0dp)                                                                                                                                                                                                          |
-| pinPadLayoutParams.numTextColor          | String               | The text color of the numbers in the pin pad (default: `#FF17212F`)                                                                                                                                                                                                                                          |
-| pinPadLayoutParams.numBackgroundColor    | String               | The background color of the numbers in the pin pad (default: `#FFE3E3E3`)                                                                                                                                                                                                                                    |
-| pinPadLayoutParams.okButtonColor         | String               | The background color of the OK button in the pin pad (default: `#FF585FFF`)                                                                                                                                                                                                                                  |
-| pinPadLayoutParams.okButtonTextColor     | String               | The text color of the OK button in the pin pad (default: `#FFFFFFFF`)                                                                                                                                                                                                                                        |
-| pinPadLayoutParams.clearButtonColor      | String               | The button color of the Clear button in the pin pad (default: `#FF888888`)                                                                                                                                                                                                                                   |
-| pinPadLayoutParams.clearIconColor        | String               | The icon color of the Clear button in the pin pad (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                   |
-| pinPadLayoutParams.deleteButtonColor     | String               | The button color of the Delete button in the pin pad (default: `#FFC5362C`)                                                                                                                                                                                                                                  |
-| pinPadLayoutParams.deleteIconColor       | String               | The icon color of the Delete button in the pin pad (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                  |
-| pinPadLayoutParams.bottomMarginColor     | String               | The background color of the empty space because of the bottomMargin property (default: `#FFDDDDDD`)                                                                                                                                                                                                          |
-| useExternalDisplayIfAvailable            | String               | ANDROID-ONLY This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                                            |
-| enableSound                              | boolean              | ANDROID-ONLY During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)                                   |
-| enableMifareScanning                     | boolean              | Allows the SDK to not only scan for Payment card, but also MIFARE cards (default: `false`)                                                                                                                                                                                                                   |
-| enableOfflineProcessing                  | boolean              | ANDROID-ONLY Just like the PAY.POS app, PayNL is able to store your transaction when the mobile phone does not have internet. NOTE: It is not guaranteed that the payment will be approved. This is a major risk while using offline processing (default: `false`)                                           |
-| enforcePinCodeDuringOfflineProcessing    | boolean              | ANDROID-ONLY If a payment will be queued for Offline processing, you can enforce a pin prompt for lower risk. NOTE: this will only trigger a pin prompt for supported card (virtual card do not have a pin code). Extra note: This feature still does not guaranteed a successful payment (default: `false`) |
-| enableLogging                            | boolean              | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                                                        |
-| configuration.core                       | 'MULTI'              | 'ZERO'                                                                                                                                                                                                                                                                                                       | 'CPOC'              | This is used to switch between processing hosts (default: MULTI)                                                                           |
+| **Name**                                   | **Type**               | **Description**                                                                                                                                                                                                                                                                                              |
+|--------------------------------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| integrationId                              | string                 | The UUID received from PayNL support in order to process payments                                                                                                                                                                                                                                            |
+| licenseName                                | string                 | The name of the license file in your assets folder (Android softpos only)                                                                                                                                                                                                                                    |
+| overlayParams                              | PaymentOverlayParams   | ANDROID-ONLY Using these params you can configure the overlay during a payment (Opt-out feature)                                                                                                                                                                                                             |
+| overlayParams.enabled                      | boolean                | The enables/disables the overlay (default: `true`)                                                                                                                                                                                                                                                           |
+| overlayParams.closeDelayInMs               | number                 | Configures an auto close delay on the overlay (default: 0 -> Keep open)                                                                                                                                                                                                                                      |
+| overlayParams.logoImage                    | number                 | The reference id for your logo (default: `R.drawable.paynl` -> The PayNL logo)                                                                                                                                                                                                                               |
+| overlayParams.waitingCardAnimation         | number                 | The reference id for a lottie json animation shown while waiting for NFC detection. Make sure your [lottie json](http://airbnb.io/lottie/#/android?id=from-resraw-lottie_rawres-or-assets-lottie_filename) is in the raw folder (default: `R.raw.reader_animation`)                                          |
+| overlayParams.buttonShape                  | number                 | The reference id for a custom background shape for the buttons in the overlay. (Default: R.drawable.pay_btn)                                                                                                                                                                                                 |
+| overlayParams.progressBarColor             | string                 | The color of the loading spinner during processing of Payment. Hex-only (default: `#FF585FFF`)                                                                                                                                                                                                               |
+| overlayParams.successColor                 | string                 | The color of the success check when payment is success. Hex-only (default: `#FF00D388`)                                                                                                                                                                                                                      |
+| overlayParams.errorColor                   | string                 | The color of error during payment. Hex-only (default: `#FFC5362C`)                                                                                                                                                                                                                                           |
+| overlayParams.backgroundColor              | string                 | The background color of the overlay & ticket viewer. Hex-only (default: `#FFFFFFFF`)                                                                                                                                                                                                                         |
+| overlayParams.amountTextColor              | string                 | The text color of the amount. Hex-only (default: `#FF444444`)                                                                                                                                                                                                                                                |
+| overlayParams.payerMessageTextColor        | string                 | The text color of the payerMessage. Hex-only (default: `#FF888888`)                                                                                                                                                                                                                                          |
+| overlayParams.buttonTextColor              | string                 | The text color of the buttons. Hex-only (default: `#FF000000`)                                                                                                                                                                                                                                               |
+| overlayParams.cancelButtonLabel            | string                 | The label text on the cancel button (default: `Annuleren`)                                                                                                                                                                                                                                                   |
+| overlayParams.closeButtonLabel             | string                 | The label text on the close button (default: `Sluiten`)                                                                                                                                                                                                                                                      |
+| overlayParams.waitingCardLabel             | string                 | The label text while waiting for NFC detection (default: `Bied uw kaart aan`)                                                                                                                                                                                                                                |
+| overlayParams.waitingPincode               | string                 | The label text while waiting for the pincode (default: `Voer uw pincode in`)                                                                                                                                                                                                                                 |
+| overlayParams.processingCardLabel          | string                 | The label text while processing payment (default: `Betaling verwerken...`)                                                                                                                                                                                                                                   |
+| overlayParams.paymentCancelled             | string                 | The label text for payment cancelled (default: `Betaling afgebroken`)                                                                                                                                                                                                                                        |
+| overlayParams.ticketHeaderLabel            | string                 | The label text for the ticket viewer header (default: `Betaling succesvol!`)                                                                                                                                                                                                                                 |
+| overlayParams.emailHeaderLabel             | string                 | The label text for the email ticket header (default: `Voer email adres in`)                                                                                                                                                                                                                                  |
+| overlayParams.emailButtonLabel             | string                 | The label text for the send ticket button (default: `Mailen`)                                                                                                                                                                                                                                                |
+| pinPadLayoutParams.hideShadow              | boolean                | The upper part of the screen shows a shadow during the WAITING_PINCODE. You can disable this and show your own content in the top part via this property (default: false)                                                                                                                                    |
+| pinPadLayoutParams.useScrambledPinpad      | boolean                | When enabled, this feature shuffels/scrambles the numbers on the pinpad (default: false)                                                                                                                                                                                                                     |
+| pinPadLayoutParams.waitingPincode          | string                 | The hint text during WAITING_PINCODE (default: `Voer uw pincode in`)                                                                                                                                                                                                                                         |
+| pinPadLayoutParams.backgroundColor         | string                 | The background color of the overlay (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                                 |
+| pinPadLayoutParams.portraitNumberSize      | number                 | The fontsize of the number while in Portrait. Note, this does not resize the button (default: 56dp)                                                                                                                                                                                                          |
+| pinPadLayoutParams.landscapeNumberSize     | number                 | The fontsize of the number while in Landscape. Note, this does not resize the button (default: 46dp)                                                                                                                                                                                                         |
+| pinPadLayoutParams.specialButtonTextSize   | number                 | The fontsize of the special buttons. Note, this does not resize the button (default: 56dp)                                                                                                                                                                                                                   |
+| pinPadLayoutParams.bottomMargin            | number                 | Creates empty space between the bottom of the screen and the bottom of the pinprompt (default: 0dp)                                                                                                                                                                                                          |
+| pinPadLayoutParams.numTextColor            | string                 | The text color of the numbers in the pin pad (default: `#FF17212F`)                                                                                                                                                                                                                                          |
+| pinPadLayoutParams.numBackgroundColor      | string                 | The background color of the numbers in the pin pad (default: `#FFE3E3E3`)                                                                                                                                                                                                                                    |
+| pinPadLayoutParams.okButtonColor           | string                 | The background color of the OK button in the pin pad (default: `#FF585FFF`)                                                                                                                                                                                                                                  |
+| pinPadLayoutParams.okButtonTextColor       | string                 | The text color of the OK button in the pin pad (default: `#FFFFFFFF`)                                                                                                                                                                                                                                        |
+| pinPadLayoutParams.clearButtonColor        | string                 | The button color of the Clear button in the pin pad (default: `#FF888888`)                                                                                                                                                                                                                                   |
+| pinPadLayoutParams.clearIconColor          | string                 | The icon color of the Clear button in the pin pad (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                   |
+| pinPadLayoutParams.deleteButtonColor       | string                 | The button color of the Delete button in the pin pad (default: `#FFC5362C`)                                                                                                                                                                                                                                  |
+| pinPadLayoutParams.deleteIconColor         | string                 | The icon color of the Delete button in the pin pad (default: `#FFFFFFFFFF`)                                                                                                                                                                                                                                  |
+| pinPadLayoutParams.bottomMarginColor       | string                 | The background color of the empty space because of the bottomMargin property (default: `#FFDDDDDD`)                                                                                                                                                                                                          |
+| useExternalDisplayIfAvailable              | string                 | ANDROID-ONLY This will make sure the overlay and PIN prompt is show on the secondary screen, if a secondary screen is available (default: `true`)                                                                                                                                                            |
+| enableSound                                | boolean                | ANDROID-ONLY During a transaction, some user feedback is required to improve the User Experience. Example are: NFC scan beep or payment success beep. The SDK has a build-in tone generator which uses the phone's volume to generate the correct sounds (default: `true`)                                   |
+| enableMifareScanning                       | boolean                | Allows the SDK to not only scan for Payment card, but also MIFARE cards (default: `false`)                                                                                                                                                                                                                   |
+| enableOfflineProcessing                    | boolean                | ANDROID-ONLY Just like the PAY.POS app, PayNL is able to store your transaction when the mobile phone does not have internet. NOTE: It is not guaranteed that the payment will be approved. This is a major risk while using offline processing (default: `false`)                                           |
+| enforcePinCodeDuringOfflineProcessing      | boolean                | ANDROID-ONLY If a payment will be queued for Offline processing, you can enforce a pin prompt for lower risk. NOTE: this will only trigger a pin prompt for supported card (virtual card do not have a pin code). Extra note: This feature still does not guaranteed a successful payment (default: `false`) |
+| enableLogging                              | boolean                | If problems occure, PayNL support needs logs from the SDK to help you out. This feature can be disabled for minor performance improvements, BUT NO SUPPORT CAN BE GIVEN IF THIS FEATURE IS DISABLED (default: `true`)                                                                                        |
+| networkConfiguration                       | object                 | Customize how the SDK handles networking (Android only)                                                                                                                                                                                                                                                      |
+| networkConfiguration.dnsTimeout            | number                 | The timeout for DNS resolving (default: 3s)                                                                                                                                                                                                                                                                  |
+| networkConfiguration.useDhcp               | boolean                | Adds the DHCP DNS resolver to the DNS resolver list (default: true)                                                                                                                                                                                                                                          |
+| networkConfiguration.primaryDnsResolvers   | string[]               | Adds primary DNS resolver to the DNS resolver list, note this list has a higher priority than the DHCP DNS resolvers if enabled (default: 8.8.8.8 -> Google public DNS)                                                                                                                                      |
+| networkConfiguration.tertiaryDnsResolvers  | string[]               | Adds tertiary DNS resolver to the DNS resolver list, note this list has a lower priority than the DHCP DNS resolvers if enabled (default: 1.1.1.1 -> Cloudflare public DNS)                                                                                                                                  |
+| networkConfiguration.connectTimeout        | number                 | The timeout for connecting to PayNL servers (default: 3s)                                                                                                                                                                                                                                                    |
+| networkConfiguration.requestTimeout        | number                 | The timeout for sending request to PayNL servers (default: 5s)                                                                                                                                                                                                                                               |
+| networkConfiguration.responseTimeout       | number                 | The timeout for waiting for a response from PayNL servers (default: 20s)                                                                                                                                                                                                                                     |
+| networkConfiguration.transactionRetryDelay | number                 | If the SDK fails to send the transaction payload to PayNL, this property allows you to control if/when the SDK will retry. If < 0, retry is disabled. If = 0, retry immediatly, if > 0, retry in x seconds                                                                                                   |
+| networkConfiguration.transactionFetchDelay | number                 | If connection drops while waiting on a response from the servers, this property allows you to control if/when the SDK will fetch the latest transaction status. If < 0, retry is disabled. If = 0, fetch immediatly, if > 0, fetch in x seconds                                                              |
+| configuration.core                         | 'MULTI'/'ZERO'/'GCP-P' | This is used to switch between processing hosts (default: 'MULTI')                                                                                                                                                                                                                                           |
 
 ##### Example
 
