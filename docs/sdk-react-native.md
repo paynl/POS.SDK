@@ -57,6 +57,30 @@ pod install --repo-update
 cd ..
 ```
 
+##### I get errors during pod install
+
+If you get errors like these while upgrading your ReactNative project:
+
+```
+Specs satisfying the `PayNlPOSSdkSwift (= 0.0.39), PayNlPOSSdkSwift (~> 0.0.49)` dependency were found, but they required a higher minimum deployment target.    
+```
+
+Try the following:
+
+```bash
+cd ios
+pod update PayNlPOSSdkSwift
+```
+
+Or try this:
+
+```bash
+cd ios
+rm Podfile.lock
+rm -rf Pods
+pod install
+```
+
 #### Android setup
 
 > [!NOTE]
