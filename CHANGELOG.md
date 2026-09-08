@@ -4,7 +4,7 @@
 
 ## Android softpos
 
-#### v0.0.130 - 07-09-2026
+#### v0.0.131 - 07-09-2026
 > [!WARNING]
 > Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
 
@@ -158,7 +158,7 @@
 
 ## Android Sunmi hardpos
 
-#### v0.0.55 - 07-09-2026
+#### v0.0.56 - 07-09-2026
 > [!WARNING]
 > Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
 
@@ -287,7 +287,7 @@
 
 ## Android PAX hardpos
 
-#### v0.0.43 - 07-09-2026
+#### v0.0.44 - 07-09-2026
 > [!WARNING]
 > Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
 
@@ -457,6 +457,9 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.105 - 07-09-2026
+- chore: bump version Android Softpos SDK
 
 #### v0.0.103 - 07-09-2026
 - chore: bump version iOS Softpos SDK
