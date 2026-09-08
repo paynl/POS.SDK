@@ -4,13 +4,17 @@
 
 ## Android softpos
 
-#### v0.0.130 - TBD
+#### v0.0.131 - 07-09-2026
+> [!WARNING]
+> Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
+
+- chore: drop support for CPOC core
 - feat: update networking rules in SDK
-    - Added DNS resolvers including DHCP
-    - Added timeouts for DNS, connect, request, response
-    - Added retry flows:
-        - If failed to resolve DNS/connect/upload request -> Full retry
-        - If connection dropped while waiting on response -> Use transaction:Get to get status
+  - Added DNS resolvers including DHCP
+  - Added timeouts for DNS, connect, request, response
+  - Added retry flows:
+    - If failed to resolve DNS/connect/upload request -> Full retry
+    - If connection dropped while waiting on response -> Use transaction:Get to get status
 
 #### v0.0.129 - 21-08-2026
 - fix: update initSDK to check if terminal is still activated
@@ -154,14 +158,18 @@
 
 ## Android Sunmi hardpos
 
-#### v0.0.55 - TBD
+#### v0.0.56 - 07-09-2026
+> [!WARNING]
+> Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
+
+- chore: drop support for CPOC core
 - fix: Bancontact CHIP flow
 - feat: update networking rules in SDK
-    - Added DNS resolvers including DHCP
-    - Added timeouts for DNS, connect, request, response
-    - Added retry flows:
-        - If failed to resolve DNS/connect/upload request -> Full retry
-        - If connection dropped while waiting on response -> Use transaction:Get to get status
+  - Added DNS resolvers including DHCP
+  - Added timeouts for DNS, connect, request, response
+  - Added retry flows:
+    - If failed to resolve DNS/connect/upload request -> Full retry
+    - If connection dropped while waiting on response -> Use transaction:Get to get status
 
 #### v0.0.54 - 21-08-2026
 - fix: update initSDK to check if terminal is still activated
@@ -279,14 +287,18 @@
 
 ## Android PAX hardpos
 
-#### v0.0.43 - TBD
+#### v0.0.44 - 07-09-2026
+> [!WARNING]
+> Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
+
+- chore: drop support for CPOC core
 - fix: Bancontact CHIP flow
 - feat: update networking rules in SDK
-    - Added DNS resolvers including DHCP
-    - Added timeouts for DNS, connect, request, response
-    - Added retry flows:
-        - If failed to resolve DNS/connect/upload request -> Full retry
-        - If connection dropped while waiting on response -> Use transaction:Get to get status
+  - Added DNS resolvers including DHCP
+  - Added timeouts for DNS, connect, request, response
+  - Added retry flows:
+    - If failed to resolve DNS/connect/upload request -> Full retry
+    - If connection dropped while waiting on response -> Use transaction:Get to get status
 
 #### v0.0.42 - 21-08-2026
 - fix: NFC type
@@ -402,6 +414,15 @@
 
 ## iOS - Tap to Pay on iPhone
 
+#### v0.0.49 - 07-09-2026
+> [!WARNING]
+> Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
+
+- chore: drop support for CPOC core
+
+#### v0.0.48 - 31-08-2026
+- chore: Add Idempotency key to HTTP requests
+
 #### v0.0.47 - 28-05-2026
 - feat: query for SDK logging (max 2 days)
 - chore: add HTTP logging
@@ -436,6 +457,24 @@
 - fix: improve error reporting during startPayment
 
 ## React Native
+
+#### v0.0.105 - 07-09-2026
+- chore: bump version Android Softpos SDK
+
+#### v0.0.103 - 07-09-2026
+- chore: bump version iOS Softpos SDK
+- chore: bump version Android Softpos SDK
+
+#### v0.0.102 - 31-08-2026
+- chore: bump version iOS Softpos SDK
+
+#### v0.0.101 - 25-08-2026
+- chore: bump version Softpos SDK
+- feat: add support for networking configuration
+  - for Android softpos, use v0.0.130 or higher
+  - for Sunmi Hardpos, use v0.0.55 or higher
+  - for PAX Hardpos, use v0.0.43 or higher
+  - for iOS, not supported
 
 #### v0.0.100 - 21-08-2026
 - chore: bump version Softpos SDK
