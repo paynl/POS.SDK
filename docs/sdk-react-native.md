@@ -49,6 +49,9 @@ npm i paynl-pos-sdk-react-native
 
 #### iOS Setup
 
+> [!NOTE]
+> If you are not planning to support Tap to Pay on iPhone, you can skip this
+
 After installing the NPM package, make sure to update your Cocoapods via:
 
 ```bash
