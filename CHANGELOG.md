@@ -4,17 +4,23 @@
 
 ## Android softpos
 
+#### v0.0.132 - 28-09-2026
+- feat: add activationStatus check retry
+    - Default value: 3s, 5s, 10s, 20s -> Then throw error
+    - Values can be configured via `configurationBuilder.setTerminalActivationTimeouts`
+- fix: license param null error
+
 #### v0.0.131 - 07-09-2026
 > [!WARNING]
 > Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
 
 - chore: drop support for CPOC core
 - feat: update networking rules in SDK
-  - Added DNS resolvers including DHCP
-  - Added timeouts for DNS, connect, request, response
-  - Added retry flows:
-    - If failed to resolve DNS/connect/upload request -> Full retry
-    - If connection dropped while waiting on response -> Use transaction:Get to get status
+    - Added DNS resolvers including DHCP
+    - Added timeouts for DNS, connect, request, response
+    - Added retry flows:
+        - If failed to resolve DNS/connect/upload request -> Full retry
+        - If connection dropped while waiting on response -> Use transaction:Get to get status
 
 #### v0.0.129 - 21-08-2026
 - fix: update initSDK to check if terminal is still activated
@@ -158,6 +164,11 @@
 
 ## Android Sunmi hardpos
 
+#### v0.0.57 - 28-09-2026
+- feat: add activationStatus check retry
+    - Default value: 3s, 5s, 10s, 20s -> Then throw error
+    - Values can be configured via `configurationBuilder.setTerminalActivationTimeouts`
+
 #### v0.0.56 - 07-09-2026
 > [!WARNING]
 > Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
@@ -165,11 +176,11 @@
 - chore: drop support for CPOC core
 - fix: Bancontact CHIP flow
 - feat: update networking rules in SDK
-  - Added DNS resolvers including DHCP
-  - Added timeouts for DNS, connect, request, response
-  - Added retry flows:
-    - If failed to resolve DNS/connect/upload request -> Full retry
-    - If connection dropped while waiting on response -> Use transaction:Get to get status
+    - Added DNS resolvers including DHCP
+    - Added timeouts for DNS, connect, request, response
+    - Added retry flows:
+        - If failed to resolve DNS/connect/upload request -> Full retry
+        - If connection dropped while waiting on response -> Use transaction:Get to get status
 
 #### v0.0.54 - 21-08-2026
 - fix: update initSDK to check if terminal is still activated
@@ -287,6 +298,12 @@
 
 ## Android PAX hardpos
 
+#### v0.0.45 - 28-09-2026
+- feat: add activationStatus check retry
+    - Default value: 3s, 5s, 10s, 20s -> Then throw error
+    - Values can be configured via `configurationBuilder.setTerminalActivationTimeouts`
+- fix: improve kernel error messages
+
 #### v0.0.44 - 07-09-2026
 > [!WARNING]
 > Dropped support for CPOC core. Please migrate to MULTI, and GCP-P as fallback
@@ -294,11 +311,11 @@
 - chore: drop support for CPOC core
 - fix: Bancontact CHIP flow
 - feat: update networking rules in SDK
-  - Added DNS resolvers including DHCP
-  - Added timeouts for DNS, connect, request, response
-  - Added retry flows:
-    - If failed to resolve DNS/connect/upload request -> Full retry
-    - If connection dropped while waiting on response -> Use transaction:Get to get status
+    - Added DNS resolvers including DHCP
+    - Added timeouts for DNS, connect, request, response
+    - Added retry flows:
+        - If failed to resolve DNS/connect/upload request -> Full retry
+        - If connection dropped while waiting on response -> Use transaction:Get to get status
 
 #### v0.0.42 - 21-08-2026
 - fix: NFC type
@@ -458,6 +475,13 @@
 
 ## React Native
 
+#### v0.0.106 - 28-09-2026
+- feat: add activationStatus check retry
+    - Default value: 3s, 5s, 10s, 20s -> Then throw error
+    - Values can be configured via `configurationBuilder.setTerminalActivationTimeouts`
+- fix: add missing `object` property to info request
+- chore: bump version Android Softpos SDK
+
 #### v0.0.105 - 07-09-2026
 - chore: bump version Android Softpos SDK
 
@@ -471,10 +495,10 @@
 #### v0.0.101 - 25-08-2026
 - chore: bump version Softpos SDK
 - feat: add support for networking configuration
-  - for Android softpos, use v0.0.130 or higher
-  - for Sunmi Hardpos, use v0.0.55 or higher
-  - for PAX Hardpos, use v0.0.43 or higher
-  - for iOS, not supported
+    - for Android softpos, use v0.0.130 or higher
+    - for Sunmi Hardpos, use v0.0.55 or higher
+    - for PAX Hardpos, use v0.0.43 or higher
+    - for iOS, not supported
 
 #### v0.0.100 - 21-08-2026
 - chore: bump version Softpos SDK
