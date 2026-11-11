@@ -706,8 +706,7 @@ In order to do this, make sure the following is done:
 
 In order to a refund payment, make sure the following is done:
 
-- SL-code & TH-code have Refunds activated (contact PayNL support for this)
-- You have set the PayNLConfiguration to `setCore(PayNlCore.MULTI)`
+- SL-code & TH-code have Refunds activated (see PayNL dashboard)
 
 To do a refund, set the transactio type to refund:
 
